@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertodoey/constants/constants.dart';
+import 'package:fluttertodoey/pages/add_task_page.dart';
 import 'package:fluttertodoey/widgets/tasks_list_container.dart';
 
 class TasksPage extends StatelessWidget {
@@ -10,7 +11,19 @@ class TasksPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: kMainColor,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: AddTaskPage(),
+              ),
+            ),
+          );
+        },
         backgroundColor: kMainColor,
         child: Icon(
           Icons.add,
