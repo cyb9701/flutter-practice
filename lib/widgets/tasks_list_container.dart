@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertodoey/constants/constants.dart';
 import 'package:fluttertodoey/widgets/tasks_list_tile.dart';
 
-class TasksListContainer extends StatelessWidget {
+class TasksListContainer extends StatefulWidget {
+  TasksListContainer({@required this.tasksList});
+  final List tasksList;
+  @override
+  _TasksListContainerState createState() => _TasksListContainerState();
+}
+
+class _TasksListContainerState extends State<TasksListContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,13 +22,17 @@ class TasksListContainer extends StatelessWidget {
           topRight: Radius.circular(kRadiusValue),
         ),
       ),
-      child: ListView(
-        children: <Widget>[
-          TasksListTile(),
-          TasksListTile(),
-          TasksListTile(),
-          TasksListTile(),
-        ],
+      child: ListView.builder(
+        itemBuilder: (context, index) => TasksListTile(
+          textName: widget.tasksList[index].name,
+          isChecked: widget.tasksList[index].isDone,
+          checkBoxCallBack: (currentValue) {
+            setState(() {
+              widget.tasksList[index].toggleState();
+            });
+          },
+        ),
+        itemCount: widget.tasksList.length,
       ),
     );
   }

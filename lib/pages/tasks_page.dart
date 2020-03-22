@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertodoey/constants/constants.dart';
+import 'package:fluttertodoey/models/task.dart';
 import 'package:fluttertodoey/pages/add_task_page.dart';
 import 'package:fluttertodoey/widgets/tasks_list_container.dart';
 
-class TasksPage extends StatelessWidget {
+class TasksPage extends StatefulWidget {
+  @override
+  _TasksPageState createState() => _TasksPageState();
+}
+
+class _TasksPageState extends State<TasksPage> {
+  List<Task> tasks = [];
+
+  void addTasksPressed(String name) {
+    setState(() {
+      tasks.add(Task(name: name));
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -19,7 +34,9 @@ class TasksPage extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTaskPage(),
+                child: AddTaskPage(
+                  addTaskCallBack: addTasksPressed,
+                ),
               ),
             ),
           );
@@ -65,7 +82,7 @@ class TasksPage extends StatelessWidget {
                       height: 5.0,
                     ),
                     Text(
-                      ' 12 Tasks',
+                      ' ${tasks.length} Tasks',
                       style: TextStyle(color: kTitleColor, fontSize: 20.0),
                     ),
                   ],
@@ -77,7 +94,9 @@ class TasksPage extends StatelessWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            child: TasksListContainer(),
+            child: TasksListContainer(
+              tasksList: tasks,
+            ),
           ),
         ],
       ),

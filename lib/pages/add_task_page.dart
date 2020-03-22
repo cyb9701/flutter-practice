@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertodoey/constants/constants.dart';
 
 class AddTaskPage extends StatelessWidget {
+  AddTaskPage({@required this.addTaskCallBack});
+
   final TextEditingController textEditingController = TextEditingController();
+
+  final Function addTaskCallBack;
+  String addTaskName;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +53,10 @@ class AddTaskPage extends StatelessWidget {
               height: 50.0,
             ),
             TextField(
+              onChanged: (String value) {
+                addTaskName = value;
+              },
+              autofocus: true,
               textAlign: TextAlign.center,
               controller: textEditingController,
               decoration: InputDecoration(
@@ -79,7 +88,10 @@ class AddTaskPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
               color: kMainColor,
-              onPressed: () {},
+              onPressed: () {
+                addTaskCallBack(addTaskName);
+                textEditingController.clear();
+              },
               child: Text(
                 'Add',
                 style: TextStyle(color: Colors.white, fontSize: 20.0),
