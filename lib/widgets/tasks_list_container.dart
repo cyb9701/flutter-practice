@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertodoey/constants/constants.dart';
+import 'package:fluttertodoey/models/task_data.dart';
 import 'package:fluttertodoey/widgets/tasks_list_tile.dart';
+import 'package:provider/provider.dart';
 
-class TasksListContainer extends StatefulWidget {
-  TasksListContainer({@required this.tasksList});
-  final List tasksList;
-  @override
-  _TasksListContainerState createState() => _TasksListContainerState();
-}
-
-class _TasksListContainerState extends State<TasksListContainer> {
+class TasksListContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final providerTask = Provider.of<TaskData>(context);
     return Container(
       padding: EdgeInsets.only(left: 53.0, right: 53.0, bottom: 60.0),
       height: size.height * 0.63,
@@ -24,15 +20,17 @@ class _TasksListContainerState extends State<TasksListContainer> {
       ),
       child: ListView.builder(
         itemBuilder: (context, index) => TasksListTile(
-          textName: widget.tasksList[index].name,
-          isChecked: widget.tasksList[index].isDone,
+          textName: providerTask.tasksList[index].name,
+          isChecked: providerTask.tasksList[index].isDone,
           checkBoxCallBack: (currentValue) {
-            setState(() {
-              widget.tasksList[index].toggleState();
-            });
+            Provider.of<TaskData>(context, listen: false)
+                .updateTask(providerTask.tasksList[index]);
+          },
+          longPressed: () {
+            providerTask.deleteTask(providerTask.tasksList[index]);
           },
         ),
-        itemCount: widget.tasksList.length,
+        itemCount: providerTask.taskCount,
       ),
     );
   }

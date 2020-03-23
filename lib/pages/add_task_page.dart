@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertodoey/constants/constants.dart';
+import 'package:fluttertodoey/models/task_data.dart';
+import 'package:provider/provider.dart';
 
-class AddTaskPage extends StatelessWidget {
-  AddTaskPage({@required this.addTaskCallBack});
+class AddTaskPage extends StatefulWidget {
+  @override
+  _AddTaskPageState createState() => _AddTaskPageState();
+}
 
+class _AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController textEditingController = TextEditingController();
 
-  final Function addTaskCallBack;
   String addTaskName;
 
   @override
@@ -89,8 +93,9 @@ class AddTaskPage extends StatelessWidget {
               ),
               color: kMainColor,
               onPressed: () {
-                addTaskCallBack(addTaskName);
-                textEditingController.clear();
+                Provider.of<TaskData>(context, listen: false)
+                    .addNewTask(addTaskName);
+                Navigator.pop(context);
               },
               child: Text(
                 'Add',
