@@ -9,7 +9,8 @@ class TasksListContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final providerTask = Provider.of<TaskData>(context);
     return Container(
-      padding: EdgeInsets.only(left: 53.0, right: 53.0, bottom: 60.0),
+      padding:
+          EdgeInsets.only(top: 30.0, left: 53.0, right: 53.0, bottom: 80.0),
       height: size.height * 0.63,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -18,19 +19,48 @@ class TasksListContainer extends StatelessWidget {
           topRight: Radius.circular(kRadiusValue),
         ),
       ),
-      child: ListView.builder(
-        itemBuilder: (context, index) => TasksListTile(
-          textName: providerTask.tasksList[index].name,
-          isChecked: providerTask.tasksList[index].isDone,
-          checkBoxCallBack: (currentValue) {
-            Provider.of<TaskData>(context, listen: false)
-                .updateTask(providerTask.tasksList[index]);
-          },
-          longPressed: () {
-            providerTask.deleteTask(providerTask.tasksList[index]);
-          },
-        ),
-        itemCount: providerTask.taskCount,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'To Do List',
+            style: TextStyle(
+              fontSize: 30.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            height: 3.0,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kRadiusValue),
+                color: kMainColor),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) => TasksListTile(
+                textName: providerTask.tasksList[index].name,
+                isChecked: providerTask.tasksList[index].isDone,
+                checkBoxCallBack: (currentValue) {
+                  Provider.of<TaskData>(context, listen: false)
+                      .updateTask(providerTask.tasksList[index]);
+                },
+                longPressed: () {
+                  providerTask.deleteTask(providerTask.tasksList[index]);
+                },
+              ),
+              itemCount: providerTask.taskCount,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0),
+            height: 3.0,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kRadiusValue),
+                color: kMainColor),
+          ),
+        ],
       ),
     );
   }

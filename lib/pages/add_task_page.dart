@@ -81,7 +81,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 labelText: 'Task',
-                labelStyle: TextStyle(fontSize: 20.0, color: Colors.blueGrey),
+                labelStyle: TextStyle(fontSize: 30.0, color: Colors.blueGrey),
               ),
             ),
             SizedBox(
@@ -93,9 +93,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               color: kMainColor,
               onPressed: () {
-                Provider.of<TaskData>(context, listen: false)
-                    .addNewTask(addTaskName);
-                Navigator.pop(context);
+                if (addTaskName == null) {
+                  Navigator.pop(context);
+                } else if (addTaskName.isNotEmpty) {
+                  Provider.of<TaskData>(context, listen: false)
+                      .addNewTask(addTaskName);
+                  Navigator.pop(context);
+                }
               },
               child: Text(
                 'Add',
