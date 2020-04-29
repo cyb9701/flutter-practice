@@ -44,11 +44,8 @@ class _MemoStreamState extends State<MemoStream> {
         .collection(widget.logInUsrEmail)
         .orderBy('id', descending: false)
         .snapshots()
-        .asyncMap((documents) {
-      print('@@@@@@ ${documents.documents[1]} @@@@@@');
-      return Future.wait(
-          [for (var memo in documents.documents) generateMemoMaterial(memo)]);
-    });
+        .asyncMap((data) => Future.wait(
+            [for (var memo in data.documents) generateMemoMaterial(memo)]));
     print('@@@@@@ Key:${HiveDB().getKey()} @@@@@@');
     super.initState();
   }
@@ -61,6 +58,7 @@ class _MemoStreamState extends State<MemoStream> {
         if (!snapshot.hasData) return LinearProgressIndicator();
 
         final memoList = snapshot.data;
+        print('@@@@@@@@@@@@@@@@@@@@@ ${snapshot.data.length}');
         return Expanded(
           child: new ListView.builder(
               itemCount: memoList.length,

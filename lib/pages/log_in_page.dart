@@ -73,7 +73,6 @@ class _LogInPageState extends State<LogInPage> {
                   } else if (logInUsr != null) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MemoPage()));
-                    _idController.clear();
                     _pwController.clear();
                   }
                 } on PlatformException catch (e) {
