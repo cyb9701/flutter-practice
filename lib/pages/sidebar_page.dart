@@ -4,13 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/menu_clipper.dart';
 import 'package:flutteridmemo/constants/constants.dart';
+import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SideBarPage extends StatefulWidget {
-  SideBarPage({@required this.logInUsr});
-
-  final String logInUsr;
-
   @override
   _SideBarPageState createState() => _SideBarPageState();
 }
@@ -21,6 +18,7 @@ class _SideBarPageState extends State<SideBarPage>
   StreamController<bool> isOpenedStreamController;
   Stream<bool> isOpenedStream;
   StreamSink<bool> isOpenedSink;
+  final usrEmail = HiveDB().getUsrEmail();
 
   void onIconPressed() {
     final animationStatus = _animationController.status;
@@ -134,7 +132,7 @@ class _SideBarPageState extends State<SideBarPage>
         borderRadius: BorderRadius.circular(kRadiusValue20),
       ),
       child: Text(
-        widget.logInUsr == null ? 'ERROR' : widget.logInUsr,
+        usrEmail == null ? 'ERROR' : usrEmail,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
       ),
     );

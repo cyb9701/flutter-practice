@@ -7,13 +7,13 @@ import 'package:flutteridmemo/pages/modify_page.dart';
 
 class MemoMaterial extends StatefulWidget {
   MemoMaterial({
-    @required this.logInUsrEmail,
-    @required this.doc,
-    @required this.title,
-    @required this.usrID,
-    @required this.usrPW,
-    @required this.text,
-    @required this.createTime,
+    this.logInUsrEmail,
+    this.doc,
+    this.title,
+    this.usrID,
+    this.usrPW,
+    this.text,
+    this.createTime,
   });
 
   final String logInUsrEmail;
@@ -29,35 +29,38 @@ class MemoMaterial extends StatefulWidget {
 }
 
 class _MemoMaterialState extends State<MemoMaterial> {
-  String _logInUsrEmail = 'Loading';
-  String _doc = 'Loading';
-  String _title = 'Loading';
-  String _usrID = 'Loading';
-  String _usrPW = 'Loading';
-  String _text = 'Loading';
-  String _createTime = 'Loading';
-
-  void getData() {
-    setState(() {
-      _logInUsrEmail = widget.logInUsrEmail;
-      _doc = widget.doc;
-      _title = widget.title;
-      _usrID = widget.usrID;
-      _usrPW = widget.usrPW;
-      _text = widget.text;
-      _createTime = widget.createTime;
-    });
-  }
+//  String _logInUsrEmail = 'Loading';
+//  String _doc = 'Loading';
+//  String _title = 'Loading';
+//  String _usrID = 'Loading';
+//  String _usrPW = 'Loading';
+//  String _text = 'Loading';
+//  String _createTime = 'Loading';
+//
+//  void getData() {
+//    setState(() {
+//      _logInUsrEmail = widget.logInUsrEmail;
+//      _doc = widget.doc;
+//      _title = widget.title;
+//      _usrID = widget.usrID;
+//      _usrPW = widget.usrPW;
+//      _text = widget.text;
+//      _createTime = widget.createTime;
+//    });
+//  }
 
   void deleteDataFirebaseDoc() {
-    Firestore.instance.collection(_logInUsrEmail).document(_doc).delete();
+    Firestore.instance
+        .collection(widget.logInUsrEmail)
+        .document(widget.doc)
+        .delete();
   }
 
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
+//  @override
+//  void initState() {
+//    getData();
+//    super.initState();
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,25 +83,25 @@ class _MemoMaterialState extends State<MemoMaterial> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Text(
-                _title,
+                widget.title,
                 style: kMemoTitleTextStyle,
               ),
               SizedBox(
                 height: 20.0,
               ),
               Text(
-                _usrID,
+                widget.usrID,
                 style: kMemoIDPWTextStyle,
               ),
               SizedBox(
                 height: 7.0,
               ),
               Text(
-                _usrPW,
+                widget.usrPW,
                 style: kMemoIDPWTextStyle,
               ),
               SizedBox(
-                height: _text == null ? 0.0 : 7.0,
+                height: widget.text == null ? 0.0 : 7.0,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -108,14 +111,14 @@ class _MemoMaterialState extends State<MemoMaterial> {
                     child: Container(
                       padding: EdgeInsets.only(right: 20.0),
                       child: Text(
-                        _text == null ? '' : _text,
+                        widget.text == null ? '' : widget.text,
                         style: kMemoTextTextStyle,
                         softWrap: true,
                       ),
                     ),
                   ),
                   Text(
-                    _createTime,
+                    widget.createTime,
                     style: TextStyle(color: kColorBlue),
                   ),
                 ],
@@ -141,12 +144,12 @@ class _MemoMaterialState extends State<MemoMaterial> {
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: ModifyPage(
-                  logInUsr: _logInUsrEmail,
-                  doc: _doc,
-                  title: _title,
-                  usrID: _usrID,
-                  usrPW: _usrPW,
-                  text: _text == null ? null : _text),
+                  logInUsr: widget.logInUsrEmail,
+                  doc: widget.doc,
+                  title: widget.title,
+                  usrID: widget.usrID,
+                  usrPW: widget.usrPW,
+                  text: widget.text == null ? null : widget.text),
             ),
           ),
         );
@@ -161,8 +164,9 @@ class _MemoMaterialState extends State<MemoMaterial> {
       icon: Icons.cancel,
       onTap: () {
         final actionSheet = new CupertinoAlertDialog(
-          title: new Text("Dialog Title"),
-          content: new Text("This is my content"),
+          title: new Text("삭제"),
+          content: new Text(
+              "${widget.title} 메모를 정말로 삭제하시겠습니까?\n사용자의 모든 기기에서 삭제되면 복구 불가능합니다."),
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
@@ -170,13 +174,13 @@ class _MemoMaterialState extends State<MemoMaterial> {
                 deleteDataFirebaseDoc();
                 Navigator.pop(context);
               },
-              child: Text("Yes"),
+              child: Text("삭제"),
             ),
             CupertinoDialogAction(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text("No"),
+              child: Text("취소"),
             )
           ],
         );
@@ -187,30 +191,3 @@ class _MemoMaterialState extends State<MemoMaterial> {
     );
   }
 }
-
-//CupertinoActionSheet(
-//title: Text(
-//'${widget.title} 메모를 정말로 삭제하시겠습니까?\n사용자의 모든 기기에서 삭제되면 복구 불가능합니다.'),
-//actions: <Widget>[
-//CupertinoActionSheetAction(
-//onPressed: () {
-//deleteDataFirebaseDoc();
-//Navigator.pop(context);
-//},
-//child: Text(
-//'삭제',
-//style:
-//TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-//),
-//),
-//],
-//cancelButton: CupertinoActionSheetAction(
-//onPressed: () {
-//Navigator.pop(context);
-//},
-//child: Text(
-//'취소',
-//style: TextStyle(fontWeight: FontWeight.bold),
-//),
-//),
-//)

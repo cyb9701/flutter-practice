@@ -2,15 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/round_button.dart';
 import 'package:flutteridmemo/constants/constants.dart';
+import 'package:flutteridmemo/cryption/e2ee.dart';
+import 'package:flutteridmemo/database/hive_db.dart';
 
 class ModifyPage extends StatefulWidget {
   ModifyPage(
-      {@required this.logInUsr,
-      @required this.doc,
-      @required this.title,
-      @required this.usrID,
-      @required this.usrPW,
-      @required this.text});
+      {this.logInUsr, this.doc, this.title, this.usrID, this.usrPW, this.text});
 
   final String logInUsr;
   final String doc;
@@ -24,7 +21,13 @@ class ModifyPage extends StatefulWidget {
 }
 
 class _ModifyPageState extends State<ModifyPage> {
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _usrIDController = TextEditingController();
+  TextEditingController _usrPWController = TextEditingController();
+  TextEditingController _textController = TextEditingController();
   final Firestore _fireStore = Firestore.instance;
+  E2EE e2ee = E2EE();
+  String _key = HiveDB().getKey();
   FocusNode nodeOne = FocusNode();
   FocusNode nodeTwo = FocusNode();
   FocusNode nodeThree = FocusNode();
@@ -36,21 +39,34 @@ class _ModifyPageState extends State<ModifyPage> {
   String _modifyText;
 
   void getData() {
-    setState(() {
-      _modifyTitle = widget.title;
-      _modifyUsrID = widget.usrID;
-      _modifyUsrPW = widget.usrPW;
-      _modifyText = widget.text;
-    });
+    _modifyTitle = widget.title;
+    _modifyUsrID = widget.usrID;
+    _modifyUsrPW = widget.usrPW;
+    _modifyText = widget.text;
   }
 
-  void updateMemoFirebaseDoc(String modifyTitle, String modifyUsrID,
-      String modifyUsrPW, String modifyText) {
+  Future<void> updateMemoFirebaseDoc(String modifyTitle, String modifyUsrID,
+      String modifyUsrPW, String modifyText) async {
+    final title = modifyTitle == ''
+        ? await e2ee.encryptE2EE(widget.title, _key)
+        : await e2ee.encryptE2EE(modifyTitle, _key);
+
+    final usrID = modifyUsrID == ''
+        ? await e2ee.encryptE2EE(widget.usrID, _key)
+        : await e2ee.encryptE2EE(modifyUsrID, _key);
+
+    final usrPW = modifyUsrPW == ''
+        ? await e2ee.encryptE2EE(widget.usrPW, _key)
+        : await e2ee.encryptE2EE(modifyUsrPW, _key);
+
+    final text =
+        modifyText == '' ? null : await e2ee.encryptE2EE(modifyText, _key);
+
     _fireStore.collection(widget.logInUsr).document(widget.doc).updateData({
-      'title': modifyTitle,
-      'usrID': modifyUsrID,
-      'usrPW': modifyUsrPW,
-      'text': modifyText,
+      'title': title,
+      'usrID': usrID,
+      'usrPW': usrPW,
+      'text': text,
     });
   }
 
@@ -58,6 +74,15 @@ class _ModifyPageState extends State<ModifyPage> {
   void initState() {
     getData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _usrIDController.dispose();
+    _usrPWController.dispose();
+    _textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -123,8 +148,8 @@ class _ModifyPageState extends State<ModifyPage> {
   TextField buildTitleTextField() {
     return TextField(
       focusNode: nodeOne,
-      controller: TextEditingController(),
-      decoration: kTextFieldDecoration.copyWith(labelText: _modifyTitle),
+      controller: _titleController..text = widget.title,
+      decoration: kTextFieldDecoration,
       onChanged: (String newUsrTitle) {
         _modifyTitle = newUsrTitle;
       },
@@ -134,8 +159,8 @@ class _ModifyPageState extends State<ModifyPage> {
   TextField buildIDTextField() {
     return TextField(
       focusNode: nodeTwo,
-      controller: TextEditingController(),
-      decoration: kTextFieldDecoration.copyWith(labelText: _modifyUsrID),
+      controller: _usrIDController..text = widget.usrID,
+      decoration: kTextFieldDecoration,
       onChanged: (String newUsrID) {
         _modifyUsrID = newUsrID;
       },
@@ -145,9 +170,10 @@ class _ModifyPageState extends State<ModifyPage> {
   TextField buildPWTextField() {
     return TextField(
       focusNode: nodeThree,
-      controller: TextEditingController(),
-      decoration: kTextFieldDecoration.copyWith(labelText: _modifyUsrPW),
+      controller: _usrPWController..text = widget.usrPW,
+      decoration: kTextFieldDecoration,
       onChanged: (String newUsrPW) {
+//        final encryptUsrPW = await e2ee.encryptE2EE(newUsrPW, _key);
         _modifyUsrPW = newUsrPW;
       },
     );
@@ -158,12 +184,10 @@ class _ModifyPageState extends State<ModifyPage> {
       focusNode: nodeFour,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
-      controller: TextEditingController(),
-      decoration: kTextFieldDecoration.copyWith(
-        labelText: _modifyText == null ? '메모' : _modifyText,
-        contentPadding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
-      ),
+      controller: _textController..text = widget.text,
+      decoration: kTextFieldDecoration,
       onChanged: (String newText) {
+//        final encryptText = await e2ee.encryptE2EE(newText, _key);
         _modifyText = newText;
       },
     );
@@ -171,7 +195,7 @@ class _ModifyPageState extends State<ModifyPage> {
 
   Text buildWarningText() {
     return Text(
-      '* 원하는 부분만 수정 가능합니다.',
+      '* 원하는 부분만 수정 가능합니다.\n* 변경 취소를 원하시면 바깥 화면을 터치하세요.',
       style: TextStyle(color: Colors.redAccent),
       textAlign: TextAlign.end,
     );

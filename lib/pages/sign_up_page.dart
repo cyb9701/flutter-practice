@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
@@ -17,6 +16,7 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _pwController = TextEditingController();
   final _auth = FirebaseAuth.instance;
   E2EE e2ee = E2EE();
+  HiveDB hiveDB = HiveDB();
   String _randomKey = '';
   Box<String> databaseBox;
   String _id;
@@ -37,6 +37,13 @@ class _SignUpPageState extends State<SignUpPage> {
     // TODO: implement initState
     super.initState();
     initPlatformState();
+  }
+
+  @override
+  void dispose() {
+    _idController.dispose();
+    _pwController.dispose();
+    super.dispose();
   }
 
   @override
@@ -79,15 +86,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       email: _id, password: _pw);
 
                   if (newUsr != null) {
-                    HiveDB().saveKey(_randomKey);
-                    await Firestore.instance.collection(_id).add({
-                      'id': DateTime.now().toString(),
-                      'title': await e2ee.encryptE2EE('사이트', _randomKey),
-                      'usrID': await e2ee.encryptE2EE('아이디', _randomKey),
-                      'usrPW': await e2ee.encryptE2EE('비밀번호', _randomKey),
-                      'text': await e2ee.encryptE2EE('메모', _randomKey),
-                      'createTime': DateTime.now().year.toString(),
-                    });
+                    hiveDB.saveKey(_randomKey);
+                    hiveDB.saveUsrEmail(_id);
+//                    await Firestore.instance.collection(_id).add({
+//                      'id': DateTime.now().toString(),
+//                      'title': await e2ee.encryptE2EE('사이트', _randomKey),
+//                      'usrID': await e2ee.encryptE2EE('아이디', _randomKey),
+//                      'usrPW': await e2ee.encryptE2EE('비밀번호', _randomKey),
+//                      'text': await e2ee.encryptE2EE('메모', _randomKey),
+//                      'createTime': DateTime.now().year.toString(),
+//                    });
                     Navigator.pop(context);
                     _idController.clear();
                     _pwController.clear();

@@ -2,6 +2,7 @@ import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/constants/constants.dart';
+import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/add_page.dart';
 import 'package:flutteridmemo/pages/sidebar_page.dart';
 import 'package:flutteridmemo/utils/admob_service.dart';
@@ -13,25 +14,26 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-  final _auth = FirebaseAuth.instance;
+//  final _auth = FirebaseAuth.instance;
+//  String logInUsrEmail = 'Loading';
+//  void getCurrentUsr() async {
+//    try {
+//      final currentUsr = await _auth.currentUser();
+//      if (currentUsr != null) {
+//        setState(() {
+//          logInUsr = currentUsr;
+//          logInUsrEmail = logInUsr.email;
+//        });
+//      }
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
+
   FirebaseUser logInUsr;
-  String logInUsrEmail = 'Loading...';
   TextEditingController searchController = TextEditingController();
   String searchValue;
-
-  void getCurrentUsr() async {
-    try {
-      final currentUsr = await _auth.currentUser();
-      if (currentUsr != null) {
-        setState(() {
-          logInUsr = currentUsr;
-          logInUsrEmail = logInUsr.email;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  final usrEmail = HiveDB().getUsrEmail();
 
   void searchMemo() {
     searchController.addListener(() {
@@ -44,7 +46,7 @@ class _MemoPageState extends State<MemoPage> {
 
   @override
   void initState() {
-    getCurrentUsr();
+//    getCurrentUsr();
     FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
     searchMemo();
     super.initState();
@@ -52,7 +54,7 @@ class _MemoPageState extends State<MemoPage> {
 
   @override
   void dispose() {
-    getCurrentUsr();
+//    getCurrentUsr();
     FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
     searchMemo();
     super.dispose();
@@ -68,9 +70,7 @@ class _MemoPageState extends State<MemoPage> {
         child: Stack(
           children: <Widget>[
             buildMainPage(context),
-            SideBarPage(
-              logInUsr: logInUsrEmail,
-            ),
+            SideBarPage(),
           ],
         ),
       ),
@@ -86,7 +86,7 @@ class _MemoPageState extends State<MemoPage> {
         children: <Widget>[
           buildContainerAppBar(),
           buildSearchBar(),
-          MemoStream(logInUsrEmail: logInUsrEmail, search: searchValue),
+          MemoStream(search: searchValue),
         ],
       ),
     );
@@ -148,7 +148,7 @@ class _MemoPageState extends State<MemoPage> {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddPage(logInUsr: logInUsrEmail),
+                child: AddPage(logInUsr: usrEmail),
               ),
             ),
           );

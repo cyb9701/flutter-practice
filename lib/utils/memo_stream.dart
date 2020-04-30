@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:flutteridmemo/components/memo_material.dart';
+import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 
 class MemoStream extends StatefulWidget {
-  MemoStream({@required this.logInUsrEmail, @required this.search});
+  MemoStream({this.search});
 
-  final String logInUsrEmail;
   final String search;
 
   @override
@@ -18,17 +18,25 @@ class _MemoStreamState extends State<MemoStream> {
   final _fireStore = Firestore.instance;
   final crypt = new PlatformStringCryptor();
   final key = HiveDB().getKey();
+  E2EE e2ee = E2EE();
+  final usrEmail = HiveDB().getUsrEmail();
 
   Stream<List<MemoMaterial>> memosStream;
 
   Future<MemoMaterial> generateMemoMaterial(DocumentSnapshot memo) async {
-    final memoTitle = await crypt.decrypt(memo.data['title'], key);
-    final memoUsrID = await crypt.decrypt(memo.data['usrID'], key);
-    final memoUsrPW = await crypt.decrypt(memo.data['usrPW'], key);
-    final memoText = await crypt.decrypt(memo.data['title'], key);
+//    final memoTitle = await crypt.decrypt(memo.data['title'], key);
+//    final memoUsrID = await crypt.decrypt(memo.data['usrID'], key);
+//    final memoUsrPW = await crypt.decrypt(memo.data['usrPW'], key);
+//    final memoText = await crypt.decrypt(memo.data['text'], key);
+    final memoTitle = await e2ee.decryptE22EE(memo.data['title']);
+    final memoUsrID = await e2ee.decryptE22EE(memo.data['usrID']);
+    final memoUsrPW = await e2ee.decryptE22EE(memo.data['usrPW']);
+    final memoText = (memo.data['text'] == null)
+        ? null
+        : await e2ee.decryptE22EE(memo.data['text']);
 
     return MemoMaterial(
-      logInUsrEmail: widget.logInUsrEmail,
+      logInUsrEmail: usrEmail,
       doc: memo.documentID,
       title: memoTitle,
       usrID: memoUsrID,
@@ -40,25 +48,25 @@ class _MemoStreamState extends State<MemoStream> {
 
   @override
   void initState() {
-    memosStream = _fireStore
-        .collection(widget.logInUsrEmail)
-        .orderBy('id', descending: false)
-        .snapshots()
-        .asyncMap((data) => Future.wait(
-            [for (var memo in data.documents) generateMemoMaterial(memo)]));
-    print('@@@@@@ Key:${HiveDB().getKey()} @@@@@@');
     super.initState();
+    print('@@@@@@ Key: $key @@@@@@');
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MemoMaterial>>(
-      stream: memosStream,
+      stream: memosStream = _fireStore
+          .collection(usrEmail.toString())
+          .orderBy('id', descending: false)
+          .snapshots()
+          .asyncMap((data) => Future.wait(
+              [for (var memo in data.documents) generateMemoMaterial(memo)])),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return LinearProgressIndicator();
 
         final memoList = snapshot.data;
-        print('@@@@@@@@@@@@@@@@@@@@@ ${snapshot.data.length}');
+        print('@@@@@@ Memo Counter: ${snapshot.data.length} @@@@@@');
+        print('@@@@@@ LogInUsr: $usrEmail @@@@@@');
         return Expanded(
           child: new ListView.builder(
               itemCount: memoList.length,

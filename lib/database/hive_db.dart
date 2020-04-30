@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 
 class HiveDB {
-  Box<String> databaseBox = Hive.box<String>("keyDB");
+  Box<String> databaseBox = Hive.box<String>("DB");
 
   void saveKey(String randomKey) {
     databaseBox.put('privateKey', randomKey);
@@ -9,6 +9,15 @@ class HiveDB {
 
   String getKey() {
     String key = databaseBox.get('privateKey');
+    return key;
+  }
+
+  void saveUsrEmail(String usrEmail) {
+    databaseBox.put('usrEmail', usrEmail);
+  }
+
+  String getUsrEmail() {
+    String key = databaseBox.get('usrEmail');
     return key;
   }
 }

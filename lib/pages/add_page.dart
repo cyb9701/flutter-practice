@@ -9,7 +9,7 @@ import 'package:flutteridmemo/utils/admob_service.dart';
 import 'package:intl/intl.dart';
 
 class AddPage extends StatefulWidget {
-  AddPage({@required this.logInUsr});
+  AddPage({this.logInUsr});
 
   final String logInUsr;
 
@@ -35,7 +35,7 @@ class _AddPageState extends State<AddPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('@@@@@@@@@@@@@@ Key:${HiveDB().getKey()} @@@@@@@@@@@@@@');
+    print('@@@@@@ Key:${HiveDB().getKey()} @@@@@@');
   }
 
   @override
@@ -114,7 +114,7 @@ class _AddPageState extends State<AddPage> {
         focusNode: nodeTwo,
         controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(
-            labelText: '아이디', hintText: 'Ex. ****@naver.com / 페이스북 로그인'),
+            labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
         onChanged: (String newUsrID) async {
           final encryptUsrID = await e2ee.encryptE2EE(newUsrID, _key);
           _usrID = encryptUsrID;
@@ -152,8 +152,12 @@ class _AddPageState extends State<AddPage> {
               EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
         ),
         onChanged: (String newText) async {
-          final encryptText = await e2ee.encryptE2EE(newText, _key);
-          _text = encryptText;
+          if (newText.isEmpty) {
+            _text = null;
+          } else {
+            final encryptText = await e2ee.encryptE2EE(newText, _key);
+            _text = encryptText;
+          }
         });
   }
 

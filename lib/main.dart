@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Directory document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
-  await Hive.openBox<String>("keyDB");
+  await Hive.openBox<String>("DB");
   runApp(MyApp());
 }
 

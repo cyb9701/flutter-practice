@@ -18,6 +18,7 @@ class _LogInPageState extends State<LogInPage> {
   final _auth = FirebaseAuth.instance;
   String _randomKey = '';
   final key = HiveDB().getKey();
+  final usrEmail = HiveDB().getUsrEmail();
   String _id;
   String _pw;
 
@@ -35,6 +36,13 @@ class _LogInPageState extends State<LogInPage> {
     // TODO: implement initState
     super.initState();
     initPlatformState();
+  }
+
+  @override
+  void dispose() {
+    _idController.dispose();
+    _pwController.dispose();
+    super.dispose();
   }
 
   @override
@@ -68,9 +76,14 @@ class _LogInPageState extends State<LogInPage> {
                 try {
                   final logInUsr = await _auth.signInWithEmailAndPassword(
                       email: _id, password: _pw);
+
                   if (key == null) {
                     HiveDB().saveKey(_randomKey);
+                  } else if (usrEmail != _id) {
+                    HiveDB().saveUsrEmail(_id);
                   } else if (logInUsr != null) {
+                    print('@@@@@@ Key: $key @@@@@@');
+                    print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MemoPage()));
                     _pwController.clear();
