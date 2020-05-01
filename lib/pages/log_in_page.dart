@@ -73,7 +73,7 @@ class _LogInPageState extends State<LogInPage> {
           RoundButton(
             title: 'gogo',
             color: Colors.red,
-            icon: Icons.input,
+            icon: Icons.arrow_forward,
             onPressed: () async {
               try {
                 final logInUsr = await _auth.signInWithEmailAndPassword(

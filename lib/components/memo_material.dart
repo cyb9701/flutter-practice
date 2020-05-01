@@ -14,6 +14,7 @@ class MemoMaterial extends StatefulWidget {
     this.usrPW,
     this.text,
     this.createTime,
+    this.color,
   });
 
   final String logInUsrEmail;
@@ -23,6 +24,7 @@ class MemoMaterial extends StatefulWidget {
   final String usrPW;
   final String text;
   final String createTime;
+  final String color;
 
   @override
   _MemoMaterialState createState() => _MemoMaterialState();
@@ -77,6 +79,11 @@ class _MemoMaterialState extends State<MemoMaterial> {
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           decoration: BoxDecoration(
             color: kColorGrey,
+            border: Border.all(
+                color: widget.color != null
+                    ? Color(int.parse(widget.color))
+                    : kColorGrey,
+                width: 1.0),
             borderRadius: BorderRadius.circular(kRadiusValue20),
           ),
           child: Column(

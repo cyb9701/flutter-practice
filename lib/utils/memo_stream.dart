@@ -43,6 +43,7 @@ class _MemoStreamState extends State<MemoStream> {
       usrPW: memoUsrPW,
       text: memoText,
       createTime: memo.data['createTime'],
+      color: memo.data['color'],
     );
   }
 

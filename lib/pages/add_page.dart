@@ -29,6 +29,7 @@ class _AddPageState extends State<AddPage> {
   String _usrPW;
   String _text;
   DateTime _createTime;
+  String _color;
 
   @override
   void initState() {
@@ -182,6 +183,7 @@ class _AddPageState extends State<AddPage> {
               'usrPW': _usrPW,
               'text': _text,
               'createTime': dateFormat,
+              'color': _color,
             });
 
             print('@@@@@@ Add New Memo @@@@@@');

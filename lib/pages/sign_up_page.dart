@@ -81,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
           RoundButton(
             title: 'gogo',
             color: Colors.blue,
-            icon: Icons.fiber_new,
+            icon: Icons.person_add,
             onPressed: () async {
               try {
                 final newUsr = await _auth.createUserWithEmailAndPassword(
