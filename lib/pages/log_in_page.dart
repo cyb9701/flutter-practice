@@ -71,28 +71,30 @@ class _LogInPageState extends State<LogInPage> {
             height: 100,
           ),
           RoundButton(
-              title: 'gogo',
-              onPressed: () async {
-                try {
-                  final logInUsr = await _auth.signInWithEmailAndPassword(
-                      email: _id, password: _pw);
+            title: 'gogo',
+            color: Colors.red,
+            icon: Icons.input,
+            onPressed: () async {
+              try {
+                final logInUsr = await _auth.signInWithEmailAndPassword(
+                    email: _id, password: _pw);
 
-                  if (key == null) {
-                    HiveDB().saveKey(_randomKey);
-                  } else if (usrEmail != _id) {
-                    HiveDB().saveUsrEmail(_id);
-                  } else if (logInUsr != null) {
-                    print('@@@@@@ Key: $key @@@@@@');
-                    print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MemoPage()));
-                    _pwController.clear();
-                  }
-                } on PlatformException catch (e) {
-                  print(e);
+                if (key == null) {
+                  HiveDB().saveKey(_randomKey);
+                } else if (usrEmail != _id) {
+                  HiveDB().saveUsrEmail(_id);
+                } else if (logInUsr != null) {
+                  print('@@@@@@ Key: $key @@@@@@');
+                  print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemoPage()));
+                  _pwController.clear();
                 }
-              },
-              color: Colors.red),
+              } on PlatformException catch (e) {
+                print(e);
+              }
+            },
+          ),
           SizedBox(
             height: 100,
           ),

@@ -168,7 +168,9 @@ class _MemoPageState extends State<MemoPage> {
           ),
           suffixIcon: InkWell(
             onTap: () {
-              searchController.clear();
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => searchController.clear());
+              FocusScope.of(context).requestFocus(new FocusNode());
             },
             child: Icon(
               Icons.cancel,

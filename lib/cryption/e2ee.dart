@@ -5,7 +5,7 @@ class E2EE {
   final crypt = new PlatformStringCryptor();
   final key = HiveDB().getKey();
 
-  Future<String> encryptE2EE(String value, String key) async {
+  Future<String> encryptE2EE(String value) async {
     final encrypted = await crypt.encrypt(value, key);
     return encrypted;
   }

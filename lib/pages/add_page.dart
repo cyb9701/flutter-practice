@@ -24,7 +24,6 @@ class _AddPageState extends State<AddPage> {
   FocusNode nodeThree = FocusNode();
   FocusNode nodeFour = FocusNode();
   E2EE e2ee = E2EE();
-  String _key = HiveDB().getKey();
   String _title;
   String _usrID;
   String _usrPW;
@@ -104,7 +103,7 @@ class _AddPageState extends State<AddPage> {
         controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
         onChanged: (String newTitle) async {
-          final encryptTitle = await e2ee.encryptE2EE(newTitle, _key);
+          final encryptTitle = await e2ee.encryptE2EE(newTitle);
           _title = encryptTitle;
         });
   }
@@ -116,7 +115,7 @@ class _AddPageState extends State<AddPage> {
         decoration: kTextFieldDecoration.copyWith(
             labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
         onChanged: (String newUsrID) async {
-          final encryptUsrID = await e2ee.encryptE2EE(newUsrID, _key);
+          final encryptUsrID = await e2ee.encryptE2EE(newUsrID);
           _usrID = encryptUsrID;
         });
   }
@@ -127,7 +126,7 @@ class _AddPageState extends State<AddPage> {
         controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
         onChanged: (String newUsrPW) async {
-          final encryptUsrPW = await e2ee.encryptE2EE(newUsrPW, _key);
+          final encryptUsrPW = await e2ee.encryptE2EE(newUsrPW);
           _usrPW = encryptUsrPW;
         });
   }
@@ -155,7 +154,7 @@ class _AddPageState extends State<AddPage> {
           if (newText.isEmpty) {
             _text = null;
           } else {
-            final encryptText = await e2ee.encryptE2EE(newText, _key);
+            final encryptText = await e2ee.encryptE2EE(newText);
             _text = encryptText;
           }
         });
@@ -163,9 +162,11 @@ class _AddPageState extends State<AddPage> {
 
   Widget buildAddBtn(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.2),
+      padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
       child: RoundButton(
-        title: '추가',
+        title: '메모 추가',
+        color: kColorGreen,
+        icon: Icons.add,
         onPressed: () {
           if (_title == null || _usrID == null || _usrPW == null) {
             print('@@@@@@ Title or UsrID is empty @@@@@@');
@@ -194,7 +195,6 @@ class _AddPageState extends State<AddPage> {
               );
           }
         },
-        color: kColorGreen,
       ),
     );
   }

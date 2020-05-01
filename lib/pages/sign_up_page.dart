@@ -79,32 +79,26 @@ class _SignUpPageState extends State<SignUpPage> {
             height: 100,
           ),
           RoundButton(
-              title: 'gogo',
-              onPressed: () async {
-                try {
-                  final newUsr = await _auth.createUserWithEmailAndPassword(
-                      email: _id, password: _pw);
+            title: 'gogo',
+            color: Colors.blue,
+            icon: Icons.fiber_new,
+            onPressed: () async {
+              try {
+                final newUsr = await _auth.createUserWithEmailAndPassword(
+                    email: _id, password: _pw);
 
-                  if (newUsr != null) {
-                    hiveDB.saveKey(_randomKey);
-                    hiveDB.saveUsrEmail(_id);
-//                    await Firestore.instance.collection(_id).add({
-//                      'id': DateTime.now().toString(),
-//                      'title': await e2ee.encryptE2EE('사이트', _randomKey),
-//                      'usrID': await e2ee.encryptE2EE('아이디', _randomKey),
-//                      'usrPW': await e2ee.encryptE2EE('비밀번호', _randomKey),
-//                      'text': await e2ee.encryptE2EE('메모', _randomKey),
-//                      'createTime': DateTime.now().year.toString(),
-//                    });
-                    Navigator.pop(context);
-                    _idController.clear();
-                    _pwController.clear();
-                  }
-                } catch (e) {
-                  print(e);
+                if (newUsr != null) {
+                  hiveDB.saveKey(_randomKey);
+                  hiveDB.saveUsrEmail(_id);
+                  Navigator.pop(context);
+                  _idController.clear();
+                  _pwController.clear();
                 }
-              },
-              color: Colors.blue)
+              } catch (e) {
+                print(e);
+              }
+            },
+          ),
         ],
       )),
     );

@@ -21,7 +21,7 @@ const kMemoTextTextStyle = TextStyle(fontSize: 15.0);
 const kButtonTextStyle = TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
-  fontSize: 25,
+  fontSize: 20,
 );
 
 const kTextFieldDecoration = InputDecoration(
