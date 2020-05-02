@@ -7,6 +7,16 @@ const kColorBlack = Color(0xFF232528);
 const kColorGrey = Color(0xFF2B2F32);
 const kColorBlue = Color(0xFF059FFF);
 
+const kColorYoutube = '0xFFe53222';
+const kColorFacebook = '0xFF4967ad';
+const kColorKakao = '0xFFf3d749';
+const kColorInstagram = '0xFFc92b52';
+const kColorNaver = '0xFF5ac351';
+const kColorGoogle = '0xFF5084ed';
+const kColorDaum = '0xFF448eee';
+const kColorDiscord = '0xFF667ac2';
+const kColorNetflix = '0xFFa12423';
+
 const kDuration = Duration(milliseconds: 500);
 
 const double kRadiusValue10 = 10.0;

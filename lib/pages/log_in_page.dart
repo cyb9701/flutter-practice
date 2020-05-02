@@ -22,6 +22,14 @@ class _LogInPageState extends State<LogInPage> {
   String _id;
   String _pw;
 
+  Future<void> autoLogIn() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    if (user != null) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MemoPage()));
+    }
+  }
+
   initPlatformState() async {
     final crypt = new PlatformStringCryptor();
     final key = await crypt.generateRandomKey();
@@ -33,8 +41,8 @@ class _LogInPageState extends State<LogInPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    autoLogIn();
     initPlatformState();
   }
 

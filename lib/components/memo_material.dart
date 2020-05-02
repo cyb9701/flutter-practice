@@ -31,38 +31,12 @@ class MemoMaterial extends StatefulWidget {
 }
 
 class _MemoMaterialState extends State<MemoMaterial> {
-//  String _logInUsrEmail = 'Loading';
-//  String _doc = 'Loading';
-//  String _title = 'Loading';
-//  String _usrID = 'Loading';
-//  String _usrPW = 'Loading';
-//  String _text = 'Loading';
-//  String _createTime = 'Loading';
-//
-//  void getData() {
-//    setState(() {
-//      _logInUsrEmail = widget.logInUsrEmail;
-//      _doc = widget.doc;
-//      _title = widget.title;
-//      _usrID = widget.usrID;
-//      _usrPW = widget.usrPW;
-//      _text = widget.text;
-//      _createTime = widget.createTime;
-//    });
-//  }
-
   void deleteDataFirebaseDoc() {
     Firestore.instance
         .collection(widget.logInUsrEmail)
         .document(widget.doc)
         .delete();
   }
-
-//  @override
-//  void initState() {
-//    getData();
-//    super.initState();
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +53,6 @@ class _MemoMaterialState extends State<MemoMaterial> {
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           decoration: BoxDecoration(
             color: kColorGrey,
-            border: Border.all(
-                color: widget.color != null
-                    ? Color(int.parse(widget.color))
-                    : kColorGrey,
-                width: 1.0),
             borderRadius: BorderRadius.circular(kRadiusValue20),
           ),
           child: Column(
@@ -91,7 +60,11 @@ class _MemoMaterialState extends State<MemoMaterial> {
             children: <Widget>[
               Text(
                 widget.title,
-                style: kMemoTitleTextStyle,
+                style: kMemoTitleTextStyle.copyWith(
+                  color: widget.color != null
+                      ? Color(int.parse(widget.color))
+                      : Colors.white,
+                ),
               ),
               SizedBox(
                 height: 20.0,
@@ -171,9 +144,8 @@ class _MemoMaterialState extends State<MemoMaterial> {
       icon: Icons.cancel,
       onTap: () {
         final actionSheet = new CupertinoAlertDialog(
-          title: new Text("삭제"),
-          content: new Text(
-              "${widget.title} 메모를 정말로 삭제하시겠습니까?\n사용자의 모든 기기에서 삭제되면 복구 불가능합니다."),
+          title: Text("${widget.title} 삭제"),
+          content: Text('메모를 삭제하게 되면 사용자의 모든 기기에서 삭제되며 복구 불가능합니다.'),
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,

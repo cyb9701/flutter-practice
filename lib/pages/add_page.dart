@@ -6,6 +6,7 @@ import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/utils/admob_service.dart';
+import 'package:flutteridmemo/utils/site_color.dart';
 import 'package:intl/intl.dart';
 
 class AddPage extends StatefulWidget {
@@ -106,6 +107,7 @@ class _AddPageState extends State<AddPage> {
         onChanged: (String newTitle) async {
           final encryptTitle = await e2ee.encryptE2EE(newTitle);
           _title = encryptTitle;
+          _color = SiteColor().findSiteColor(newTitle);
         });
   }
 
