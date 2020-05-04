@@ -22,14 +22,6 @@ class _LogInPageState extends State<LogInPage> {
   String _id;
   String _pw;
 
-  Future<void> autoLogIn() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if (user != null) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MemoPage()));
-    }
-  }
-
   initPlatformState() async {
     final crypt = new PlatformStringCryptor();
     final key = await crypt.generateRandomKey();
@@ -42,7 +34,6 @@ class _LogInPageState extends State<LogInPage> {
   @override
   void initState() {
     super.initState();
-    autoLogIn();
     initPlatformState();
   }
 
@@ -59,7 +50,7 @@ class _LogInPageState extends State<LogInPage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          TextField(
+          TextFormField(
             controller: _idController,
             onChanged: (inPutID) {
               _id = inPutID;
@@ -68,7 +59,7 @@ class _LogInPageState extends State<LogInPage> {
           SizedBox(
             height: 100,
           ),
-          TextField(
+          TextFormField(
             controller: _pwController,
             obscureText: true,
             onChanged: (inPutPW) {
@@ -87,16 +78,14 @@ class _LogInPageState extends State<LogInPage> {
                 final logInUsr = await _auth.signInWithEmailAndPassword(
                     email: _id, password: _pw);
 
-//                if (key == null) {
-//                  HiveDB().saveKey(_randomKey);
-//                } else
-                if (usrEmail != _id) {
+                if (key == null) {
+                  HiveDB().saveKey(_randomKey);
+                } else if (usrEmail != _id) {
                   HiveDB().saveUsrEmail(_id);
                 } else if (logInUsr != null) {
                   print('@@@@@@ Key: $key @@@@@@');
                   print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MemoPage()));
+                  Navigator.pushNamed(context, '/memoPage');
                   _pwController.clear();
                 }
               } on PlatformException catch (e) {
@@ -109,8 +98,7 @@ class _LogInPageState extends State<LogInPage> {
           ),
           InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()));
+                Navigator.pushNamed(context, '/signUpPage');
               },
               child: Text('singup')),
         ],

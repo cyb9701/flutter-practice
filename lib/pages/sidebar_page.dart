@@ -35,6 +35,9 @@ class _SideBarPageState extends State<SideBarPage>
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
+    isOpenedSink.add(false);
+    _animationController.reverse();
+    Navigator.popAndPushNamed(context, '/logInPage');
   }
 
   @override
@@ -142,7 +145,6 @@ class _SideBarPageState extends State<SideBarPage>
     return InkWell(
       onTap: () {
         signOut();
-        Navigator.pop(context);
       },
       child: ListTile(
         leading: Icon(
