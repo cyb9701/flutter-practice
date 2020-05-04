@@ -87,10 +87,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 final newUsr = await _auth.createUserWithEmailAndPassword(
                     email: _id, password: _pw);
 
-                if (newUsr != null) {
+                if (newUsr.user != null) {
                   hiveDB.saveKey(_randomKey);
                   hiveDB.saveUsrEmail(_id);
+
+                  newUsr.user.sendEmailVerification();
                   Navigator.pop(context);
+
                   _idController.clear();
                   _pwController.clear();
                 }

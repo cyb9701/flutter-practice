@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/pages/log_in_page.dart';
 import 'package:flutteridmemo/pages/memo_page.dart';
-import 'package:flutteridmemo/pages/sign_up_page.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -22,11 +21,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        '/logInPage': (context) => LogInPage(),
-        '/signUpPage': (context) => SignUpPage(),
-        '/memoPage': (context) => MemoPage(),
-      },
       theme: ThemeData.dark().copyWith(
         canvasColor: Colors.transparent,
       ),

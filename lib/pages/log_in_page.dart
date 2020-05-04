@@ -85,7 +85,9 @@ class _LogInPageState extends State<LogInPage> {
                 } else if (logInUsr != null) {
                   print('@@@@@@ Key: $key @@@@@@');
                   print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
-                  Navigator.pushNamed(context, '/memoPage');
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemoPage()));
                   _pwController.clear();
                 }
               } on PlatformException catch (e) {
@@ -98,7 +100,8 @@ class _LogInPageState extends State<LogInPage> {
           ),
           InkWell(
               onTap: () {
-                Navigator.pushNamed(context, '/signUpPage');
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUpPage()));
               },
               child: Text('singup')),
         ],

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/menu_clipper.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
+import 'package:flutteridmemo/pages/log_in_page.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SideBarPage extends StatefulWidget {
@@ -37,7 +38,8 @@ class _SideBarPageState extends State<SideBarPage>
     await FirebaseAuth.instance.signOut();
     isOpenedSink.add(false);
     _animationController.reverse();
-    Navigator.popAndPushNamed(context, '/logInPage');
+    final route = MaterialPageRoute(builder: (context) => LogInPage());
+    Navigator.pushReplacement(context, route);
   }
 
   @override
