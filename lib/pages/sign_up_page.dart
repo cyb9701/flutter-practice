@@ -4,6 +4,7 @@ import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:flutteridmemo/components/round_button.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
+import 'package:flutteridmemo/pages/log_in_page.dart';
 import 'package:hive/hive.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -92,7 +93,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   hiveDB.saveUsrEmail(_id);
 
                   newUsr.user.sendEmailVerification();
-                  Navigator.pop(context);
+//                  Navigator.pop(context);
+                  final route =
+                      MaterialPageRoute(builder: (context) => LogInPage());
+                  Navigator.pushReplacement(context, route);
 
                   _idController.clear();
                   _pwController.clear();

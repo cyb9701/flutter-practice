@@ -74,18 +74,18 @@ class _LogInPageState extends State<LogInPage> {
             color: Colors.red,
             icon: Icons.arrow_forward,
             onPressed: () async {
+              final logInUsr = await _auth.signInWithEmailAndPassword(
+                  email: _id, password: _pw);
               try {
-                final logInUsr = await _auth.signInWithEmailAndPassword(
-                    email: _id, password: _pw);
-
-                if (key == null) {
-                  HiveDB().saveKey(_randomKey);
-                } else if (usrEmail != _id) {
-                  HiveDB().saveUsrEmail(_id);
-                } else if (logInUsr != null) {
-                  print('@@@@@@ Key: $key @@@@@@');
-                  print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
-
+                if (logInUsr.user.isEmailVerified == true) {
+                  if (logInUsr != null) {
+                    print('@@@@@@ Key: $key @@@@@@');
+                    print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
+                  } else if (key == null) {
+                    HiveDB().saveKey(_randomKey);
+                  } else if (usrEmail != _id) {
+                    HiveDB().saveUsrEmail(_id);
+                  }
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MemoPage()));
                   _pwController.clear();
