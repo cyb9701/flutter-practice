@@ -124,12 +124,13 @@ class _MemoMaterialState extends State<MemoMaterial> {
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
               child: ModifyPage(
-                  logInUsr: widget.logInUsrEmail,
-                  doc: widget.doc,
-                  title: widget.title,
-                  usrID: widget.usrID,
-                  usrPW: widget.usrPW,
-                  text: widget.text == null ? null : widget.text),
+                logInUsr: widget.logInUsrEmail,
+                doc: widget.doc,
+                title: widget.title,
+                usrID: widget.usrID,
+                usrPW: widget.usrPW,
+                text: widget.text == null ? null : widget.text,
+              ),
             ),
           ),
         );

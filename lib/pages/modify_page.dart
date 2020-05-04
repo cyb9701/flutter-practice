@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/round_button.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
+import 'package:flutteridmemo/utils/site_color.dart';
 
 class ModifyPage extends StatefulWidget {
   ModifyPage(
@@ -35,6 +36,7 @@ class _ModifyPageState extends State<ModifyPage> {
   String _modifyUsrID;
   String _modifyUsrPW;
   String _modifyText;
+  String _modifyColor;
 
   void getData() {
     _modifyTitle = widget.title;
@@ -44,7 +46,7 @@ class _ModifyPageState extends State<ModifyPage> {
   }
 
   Future<void> updateMemoFirebaseDoc(String modifyTitle, String modifyUsrID,
-      String modifyUsrPW, String modifyText) async {
+      String modifyUsrPW, String modifyText, String modifyColor) async {
     final title = modifyTitle == ''
         ? await e2ee.encryptE2EE(widget.title)
         : modifyTitle == ' '
@@ -70,6 +72,7 @@ class _ModifyPageState extends State<ModifyPage> {
       'usrID': usrID,
       'usrPW': usrPW,
       'text': text,
+      'color': modifyColor,
     });
   }
 
@@ -161,6 +164,7 @@ class _ModifyPageState extends State<ModifyPage> {
       ),
       onChanged: (String newUsrTitle) {
         _modifyTitle = newUsrTitle;
+        _modifyColor = SiteColor().findSiteColor(newUsrTitle);
       },
     );
   }
@@ -256,8 +260,8 @@ class _ModifyPageState extends State<ModifyPage> {
           print('@@@@@@ ModifyID: $_modifyUsrID @@@@@@');
           print('@@@@@@ ModifyPW: $_modifyUsrPW @@@@@@');
           print('@@@@@@ ModifyText: $_modifyText @@@@@@');
-          updateMemoFirebaseDoc(
-              _modifyTitle, _modifyUsrID, _modifyUsrPW, _modifyText);
+          updateMemoFirebaseDoc(_modifyTitle, _modifyUsrID, _modifyUsrPW,
+              _modifyText, _modifyColor);
           Navigator.pop(context);
         },
       ),
