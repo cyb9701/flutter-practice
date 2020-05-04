@@ -87,9 +87,10 @@ class _LogInPageState extends State<LogInPage> {
                 final logInUsr = await _auth.signInWithEmailAndPassword(
                     email: _id, password: _pw);
 
-                if (key == null) {
-                  HiveDB().saveKey(_randomKey);
-                } else if (usrEmail != _id) {
+//                if (key == null) {
+//                  HiveDB().saveKey(_randomKey);
+//                } else
+                if (usrEmail != _id) {
                   HiveDB().saveUsrEmail(_id);
                 } else if (logInUsr != null) {
                   print('@@@@@@ Key: $key @@@@@@');
