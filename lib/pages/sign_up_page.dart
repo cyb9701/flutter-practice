@@ -52,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          TextField(
+          TextFormField(
             controller: _idController,
             onChanged: (inPutID) {
               _id = inPutID;
@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
           SizedBox(
             height: 100,
           ),
-          TextField(
+          TextFormField(
             controller: _pwController,
             onChanged: (inPutPW) {
               _pw = inPutPW;

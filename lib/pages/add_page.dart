@@ -43,39 +43,34 @@ class _AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     kSize = MediaQuery.of(context).size;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
-      },
-      child: Container(
-        padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
-        decoration: BoxDecoration(
-          color: kColorGrey,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(kRadiusValue40),
-            topRight: Radius.circular(kRadiusValue40),
-          ),
+    return Container(
+      padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
+      decoration: BoxDecoration(
+        color: kColorGrey,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(kRadiusValue40),
+          topRight: Radius.circular(kRadiusValue40),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            buildContainerBar(),
-            buildSizedBoxH20(),
-            buildTitle(),
-            buildSizedBoxH50(),
-            buildTitleTextField(),
-            buildSizedBoxH10(),
-            buildIDTextField(),
-            buildSizedBoxH10(),
-            buildPWTextField(),
-            buildWarningText(),
-            buildSizedBoxH20(),
-            buildMemoTextField(),
-            buildSizedBoxH20(),
-            buildAddBtn(context),
-          ],
-        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          buildContainerBar(),
+          buildSizedBoxH20(),
+          buildTitle(),
+          buildSizedBoxH50(),
+          buildTitleTextField(),
+          buildSizedBoxH10(),
+          buildIDTextField(),
+          buildSizedBoxH10(),
+          buildPWTextField(),
+          buildWarningText(),
+          buildSizedBoxH20(),
+          buildMemoTextField(),
+          buildSizedBoxH20(),
+          buildAddBtn(context),
+        ],
       ),
     );
   }
@@ -99,8 +94,8 @@ class _AddPageState extends State<AddPage> {
     );
   }
 
-  TextField buildTitleTextField() {
-    return TextField(
+  TextFormField buildTitleTextField() {
+    return TextFormField(
         focusNode: nodeOne,
         controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
@@ -111,8 +106,8 @@ class _AddPageState extends State<AddPage> {
         });
   }
 
-  TextField buildIDTextField() {
-    return TextField(
+  TextFormField buildIDTextField() {
+    return TextFormField(
         focusNode: nodeTwo,
         controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(
@@ -123,8 +118,8 @@ class _AddPageState extends State<AddPage> {
         });
   }
 
-  TextField buildPWTextField() {
-    return TextField(
+  TextFormField buildPWTextField() {
+    return TextFormField(
         focusNode: nodeThree,
         controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
@@ -142,8 +137,8 @@ class _AddPageState extends State<AddPage> {
     );
   }
 
-  TextField buildMemoTextField() {
-    return TextField(
+  TextFormField buildMemoTextField() {
+    return TextFormField(
         focusNode: nodeFour,
         keyboardType: TextInputType.multiline,
         maxLines: 3,

@@ -92,39 +92,34 @@ class _ModifyPageState extends State<ModifyPage> {
   Widget build(BuildContext context) {
     kSize = MediaQuery.of(context).size;
 
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
-      },
-      child: Container(
-        padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
-        decoration: BoxDecoration(
-          color: kColorGrey,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(kRadiusValue40),
-            topRight: Radius.circular(kRadiusValue40),
-          ),
+    return Container(
+      padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
+      decoration: BoxDecoration(
+        color: kColorGrey,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(kRadiusValue40),
+          topRight: Radius.circular(kRadiusValue40),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            buildContainerBar(),
-            buildSizedBoxH20(),
-            buildTitle(),
-            buildSizedBoxH50(),
-            buildTitleTextField(),
-            buildSizedBoxH10(),
-            buildIDTextField(),
-            buildSizedBoxH10(),
-            buildPWTextField(),
-            buildSizedBoxH20(),
-            buildMemoTextField(),
-            buildWarningText(),
-            buildSizedBoxH20(),
-            buildModifyBtn(context),
-          ],
-        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          buildContainerBar(),
+          buildSizedBoxH20(),
+          buildTitle(),
+          buildSizedBoxH50(),
+          buildTitleTextField(),
+          buildSizedBoxH10(),
+          buildIDTextField(),
+          buildSizedBoxH10(),
+          buildPWTextField(),
+          buildSizedBoxH20(),
+          buildMemoTextField(),
+          buildWarningText(),
+          buildSizedBoxH20(),
+          buildModifyBtn(context),
+        ],
       ),
     );
   }
@@ -148,8 +143,8 @@ class _ModifyPageState extends State<ModifyPage> {
     );
   }
 
-  TextField buildTitleTextField() {
-    return TextField(
+  TextFormField buildTitleTextField() {
+    return TextFormField(
       focusNode: nodeOne,
       controller: _titleController..text = widget.title,
       decoration: kTextFieldDecoration.copyWith(
@@ -170,8 +165,8 @@ class _ModifyPageState extends State<ModifyPage> {
     );
   }
 
-  TextField buildIDTextField() {
-    return TextField(
+  TextFormField buildIDTextField() {
+    return TextFormField(
       focusNode: nodeTwo,
       controller: _usrIDController..text = widget.usrID,
       decoration: kTextFieldDecoration.copyWith(
@@ -192,8 +187,8 @@ class _ModifyPageState extends State<ModifyPage> {
     );
   }
 
-  TextField buildPWTextField() {
-    return TextField(
+  TextFormField buildPWTextField() {
+    return TextFormField(
       focusNode: nodeThree,
       controller: _usrPWController..text = widget.usrPW,
       decoration: kTextFieldDecoration.copyWith(
@@ -215,8 +210,8 @@ class _ModifyPageState extends State<ModifyPage> {
     );
   }
 
-  TextField buildMemoTextField() {
-    return TextField(
+  TextFormField buildMemoTextField() {
+    return TextFormField(
       focusNode: nodeFour,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
