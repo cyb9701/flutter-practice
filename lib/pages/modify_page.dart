@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutteridmemo/components/round_button.dart';
+import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/utils/site_color.dart';
@@ -251,7 +251,7 @@ class _ModifyPageState extends State<ModifyPage> {
   Widget buildModifyBtn(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
-      child: RoundButton(
+      child: RoundBtnFrame(
         title: '메모 수정',
         color: kColorGreen,
         icon: Icons.refresh,

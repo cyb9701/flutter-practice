@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
-import 'package:flutteridmemo/components/round_button.dart';
+import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/log_in_page.dart';
@@ -79,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
           SizedBox(
             height: 100,
           ),
-          RoundButton(
+          RoundBtnFrame(
             title: 'gogo',
             color: Colors.blue,
             icon: Icons.person_add,
@@ -93,7 +93,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   hiveDB.saveUsrEmail(_id);
 
                   newUsr.user.sendEmailVerification();
-//                  Navigator.pop(context);
                   final route =
                       MaterialPageRoute(builder: (context) => LogInPage());
                   Navigator.pushReplacement(context, route);

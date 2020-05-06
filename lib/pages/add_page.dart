@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
-import 'package:flutteridmemo/components/round_button.dart';
+import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
@@ -161,7 +161,7 @@ class _AddPageState extends State<AddPage> {
   Widget buildAddBtn(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
-      child: RoundButton(
+      child: RoundBtnFrame(
         title: '메모 추가',
         color: kColorGreen,
         icon: Icons.add,

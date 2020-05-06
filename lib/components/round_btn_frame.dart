@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 
-class RoundButton extends StatelessWidget {
-  RoundButton({
+class RoundBtnFrame extends StatelessWidget {
+  RoundBtnFrame({
     @required this.title,
     @required this.onPressed,
     @required this.color,

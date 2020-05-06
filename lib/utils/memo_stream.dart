@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
-import 'package:flutteridmemo/components/memo_material.dart';
+import 'package:flutteridmemo/components/memo_frame.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 
@@ -21,9 +21,9 @@ class _MemoStreamState extends State<MemoStream> {
   E2EE e2ee = E2EE();
   final usrEmail = HiveDB().getUsrEmail();
 
-  Stream<List<MemoMaterial>> memosStream;
+  Stream<List<MemoFrame>> memosStream;
 
-  Future<MemoMaterial> generateMemoMaterial(DocumentSnapshot memo) async {
+  Future<MemoFrame> generateMemoMaterial(DocumentSnapshot memo) async {
 //    final memoTitle = await crypt.decrypt(memo.data['title'], key);
 //    final memoUsrID = await crypt.decrypt(memo.data['usrID'], key);
 //    final memoUsrPW = await crypt.decrypt(memo.data['usrPW'], key);
@@ -35,7 +35,7 @@ class _MemoStreamState extends State<MemoStream> {
         ? null
         : await e2ee.decryptE22EE(memo.data['text']);
 
-    return MemoMaterial(
+    return MemoFrame(
       logInUsrEmail: usrEmail,
       doc: memo.documentID,
       title: memoTitle,
@@ -55,7 +55,7 @@ class _MemoStreamState extends State<MemoStream> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<MemoMaterial>>(
+    return StreamBuilder<List<MemoFrame>>(
       stream: memosStream = _fireStore
           .collection(usrEmail.toString())
           .orderBy('id', descending: false)

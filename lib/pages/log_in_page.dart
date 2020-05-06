@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
-import 'package:flutteridmemo/components/round_button.dart';
+import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/memo_page.dart';
 import 'package:flutteridmemo/pages/sign_up_page.dart';
+import 'package:flutteridmemo/components/dialog_frame.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LogInPage extends StatefulWidget {
   @override
@@ -69,7 +71,7 @@ class _LogInPageState extends State<LogInPage> {
           SizedBox(
             height: 100,
           ),
-          RoundButton(
+          RoundBtnFrame(
             title: 'gogo',
             color: Colors.red,
             icon: Icons.arrow_forward,
@@ -77,7 +79,7 @@ class _LogInPageState extends State<LogInPage> {
               final logInUsr = await _auth.signInWithEmailAndPassword(
                   email: _id, password: _pw);
               try {
-                if (logInUsr.user.isEmailVerified == true) {
+                if (logInUsr.user.isEmailVerified) {
                   if (logInUsr != null) {
                     print('@@@@@@ Key: $key @@@@@@');
                     print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
@@ -89,7 +91,7 @@ class _LogInPageState extends State<LogInPage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MemoPage()));
                   _pwController.clear();
-                }
+                } else {}
               } on PlatformException catch (e) {
                 print(e);
               }

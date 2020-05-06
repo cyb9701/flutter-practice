@@ -5,8 +5,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/pages/modify_page.dart';
 
-class MemoMaterial extends StatefulWidget {
-  MemoMaterial({
+class MemoFrame extends StatefulWidget {
+  MemoFrame({
     this.logInUsrEmail,
     this.doc,
     this.title,
@@ -27,10 +27,10 @@ class MemoMaterial extends StatefulWidget {
   final String color;
 
   @override
-  _MemoMaterialState createState() => _MemoMaterialState();
+  _MemoFrameState createState() => _MemoFrameState();
 }
 
-class _MemoMaterialState extends State<MemoMaterial> {
+class _MemoFrameState extends State<MemoFrame> {
   void deleteDataFirebaseDoc() {
     Firestore.instance
         .collection(widget.logInUsrEmail)
