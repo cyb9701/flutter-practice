@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/pages/modify_page.dart';
 
@@ -31,6 +32,8 @@ class MemoFrame extends StatefulWidget {
 }
 
 class _MemoFrameState extends State<MemoFrame> {
+  DialogFrame _dialog = DialogFrame();
+
   void deleteDataFirebaseDoc() {
     Firestore.instance
         .collection(widget.logInUsrEmail)
@@ -144,29 +147,13 @@ class _MemoFrameState extends State<MemoFrame> {
       color: Colors.redAccent,
       icon: Icons.cancel,
       onTap: () {
-        final actionSheet = new CupertinoAlertDialog(
-          title: Text("${widget.title} 삭제"),
-          content: Text('메모를 삭제하게 되면 사용자의 모든 기기에서 삭제되며 복구 불가능합니다.'),
-          actions: <Widget>[
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              onPressed: () {
-                deleteDataFirebaseDoc();
-                Navigator.pop(context);
-              },
-              child: Text("삭제"),
-            ),
-            CupertinoDialogAction(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("취소"),
-            )
-          ],
-        );
-
-        showCupertinoModalPopup(
-            context: context, builder: (BuildContext context) => actionSheet);
+        _dialog.getDeleteDialog(context, '${widget.title} 삭제',
+            '메모를 삭제하게 되면 사용자의 모든\n기기에서 삭제되며 복구 불가능합니다.', '삭제', '취소', () {
+          deleteDataFirebaseDoc();
+          Navigator.pop(context);
+        }, () {
+          Navigator.pop(context);
+        }, _dialog.kDeleteAlertStyle).show();
       },
     );
   }

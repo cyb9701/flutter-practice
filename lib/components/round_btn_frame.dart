@@ -44,7 +44,7 @@ class RoundBtnFrame extends StatelessWidget {
                 ),
                 Text(
                   title,
-                  style: kButtonTextStyle,
+                  style: kButtonTextStyle.copyWith(color: kColorGrey),
                 ),
               ],
             ),

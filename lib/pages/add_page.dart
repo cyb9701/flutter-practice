@@ -163,7 +163,7 @@ class _AddPageState extends State<AddPage> {
       padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
       child: RoundBtnFrame(
         title: '메모 추가',
-        color: kColorGreen,
+        color: kColorBlue,
         icon: Icons.add,
         onPressed: () {
           if (_title == null || _usrID == null || _usrPW == null) {

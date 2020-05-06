@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
+import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
@@ -18,6 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _auth = FirebaseAuth.instance;
   E2EE e2ee = E2EE();
   HiveDB hiveDB = HiveDB();
+  DialogFrame _dialog = DialogFrame();
   String _randomKey = '';
   Box<String> databaseBox;
   String _id;
@@ -93,9 +95,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   hiveDB.saveUsrEmail(_id);
 
                   newUsr.user.sendEmailVerification();
+
                   final route =
                       MaterialPageRoute(builder: (context) => LogInPage());
-                  Navigator.pushReplacement(context, route);
+
+                  _dialog
+                      .getCompleteDialog(
+                          context,
+                          '회원가입 성공',
+                          '회원가입 인증 메일 확인을 부탁드립니다.',
+                          '확인',
+                          _dialog.kBlueAlertStyle)
+                      .show()
+                      .then((onValue) {
+                    Navigator.pushReplacement(context, route);
+                  });
 
                   _idController.clear();
                   _pwController.clear();

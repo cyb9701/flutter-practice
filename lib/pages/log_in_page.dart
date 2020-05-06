@@ -2,12 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_string_encryption/flutter_string_encryption.dart';
+import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/memo_page.dart';
 import 'package:flutteridmemo/pages/sign_up_page.dart';
-import 'package:flutteridmemo/components/dialog_frame.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LogInPage extends StatefulWidget {
   @override
@@ -18,6 +17,7 @@ class _LogInPageState extends State<LogInPage> {
   TextEditingController _idController = TextEditingController();
   TextEditingController _pwController = TextEditingController();
   final _auth = FirebaseAuth.instance;
+  DialogFrame _dialog = DialogFrame();
   String _randomKey = '';
   final key = HiveDB().getKey();
   final usrEmail = HiveDB().getUsrEmail();
@@ -91,7 +91,16 @@ class _LogInPageState extends State<LogInPage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MemoPage()));
                   _pwController.clear();
-                } else {}
+                } else {
+                  _dialog
+                      .getCompleteDialog(
+                          context,
+                          '오류',
+                          '이메일 인증이 완료되지 않았습니다.\n이메일 인증 후 로그인 가능합니다.',
+                          '확인',
+                          _dialog.kRedAlertStyle)
+                      .show();
+                }
               } on PlatformException catch (e) {
                 print(e);
               }

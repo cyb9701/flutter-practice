@@ -29,7 +29,6 @@ const kMemoTitleTextStyle =
 const kMemoIDPWTextStyle = TextStyle(fontSize: 20.0);
 const kMemoTextTextStyle = TextStyle(fontSize: 15.0);
 const kButtonTextStyle = TextStyle(
-  color: Colors.white,
   fontWeight: FontWeight.bold,
   fontSize: 20,
 );
@@ -51,16 +50,3 @@ const kTextFieldDecoration = InputDecoration(
   labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
   filled: false,
 );
-
-//const kMessageTextFieldDecoration = InputDecoration(
-//  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-//  hintText: 'Type your message here...',
-//  border: InputBorder.none,
-//);
-//
-//const kMessageContainerDecoration = BoxDecoration(
-//  border: Border(
-//    top: BorderSide(color: Colors.greenAccent, width: 2.0),
-//    bottom: BorderSide(color: Colors.greenAccent, width: 2.0),
-//  ),
-//);

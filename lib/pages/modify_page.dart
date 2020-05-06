@@ -253,7 +253,7 @@ class _ModifyPageState extends State<ModifyPage> {
       padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
       child: RoundBtnFrame(
         title: '메모 수정',
-        color: kColorGreen,
+        color: kColorBlue,
         icon: Icons.refresh,
         onPressed: () {
           print('@@@@@@ ModifyTitle: $_modifyTitle @@@@@@');
