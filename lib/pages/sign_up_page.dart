@@ -103,7 +103,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       .getCompleteDialog(
                           context,
                           '회원가입 성공',
-                          '회원가입 인증 메일 확인을 부탁드립니다.',
+                          '회원가입 인증 메일 확인시 로그인 가능합니다.',
                           '확인',
                           _dialog.kBlueAlertStyle)
                       .show()

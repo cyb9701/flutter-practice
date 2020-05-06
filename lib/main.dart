@@ -36,8 +36,9 @@ class MyApp extends StatelessWidget {
           } else {
             if (snapshot.hasData) {
               return MemoPage();
+            } else {
+              return LogInPage();
             }
-            return LogInPage();
           }
         },
       ),

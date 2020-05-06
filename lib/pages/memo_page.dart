@@ -14,21 +14,21 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-//  final _auth = FirebaseAuth.instance;
-//  String logInUsrEmail = 'Loading';
-//  void getCurrentUsr() async {
-//    try {
-//      final currentUsr = await _auth.currentUser();
-//      if (currentUsr != null) {
-//        setState(() {
-//          logInUsr = currentUsr;
-//          logInUsrEmail = logInUsr.email;
-//        });
-//      }
-//    } catch (e) {
-//      print(e);
-//    }
-//  }
+  final _auth = FirebaseAuth.instance;
+  String logInUsrEmail = 'Loading';
+  void getCurrentUsr() async {
+    try {
+      final currentUsr = await _auth.currentUser();
+      if (currentUsr != null) {
+        setState(() {
+          logInUsr = currentUsr;
+          logInUsrEmail = logInUsr.email;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   FirebaseUser logInUsr;
   TextEditingController searchController = TextEditingController();

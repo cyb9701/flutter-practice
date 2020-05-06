@@ -88,6 +88,7 @@ class _LogInPageState extends State<LogInPage> {
                   } else if (usrEmail != _id) {
                     HiveDB().saveUsrEmail(_id);
                   }
+
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MemoPage()));
                   _pwController.clear();

@@ -261,8 +261,10 @@ class _ModifyPageState extends State<ModifyPage> {
           print('@@@@@@ ModifyPW: $_modifyUsrPW @@@@@@');
           print('@@@@@@ ModifyText: $_modifyText @@@@@@');
           updateMemoFirebaseDoc(_modifyTitle, _modifyUsrID, _modifyUsrPW,
-              _modifyText, _modifyColor);
-          Navigator.pop(context);
+                  _modifyText, _modifyColor)
+              .then((onValue) {
+            Navigator.pop(context);
+          });
         },
       ),
     );
