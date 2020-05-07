@@ -16,7 +16,7 @@ class LogInPage extends StatefulWidget {
 class _LogInPageState extends State<LogInPage> {
   TextEditingController _idController = TextEditingController();
   TextEditingController _pwController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
+  final _firebaseAuth = FirebaseAuth.instance;
   DialogFrame _dialog = DialogFrame();
   String _randomKey = '';
   final key = HiveDB().getKey();
@@ -76,10 +76,10 @@ class _LogInPageState extends State<LogInPage> {
             color: Colors.red,
             icon: Icons.arrow_forward,
             onPressed: () async {
-              final logInUsr = await _auth.signInWithEmailAndPassword(
+              final logInUsr = await _firebaseAuth.signInWithEmailAndPassword(
                   email: _id, password: _pw);
               try {
-                if (logInUsr.user.isEmailVerified) {
+                if (logInUsr.user.isEmailVerified == true) {
                   if (logInUsr != null) {
                     print('@@@@@@ Key: $key @@@@@@');
                     print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
@@ -93,6 +93,7 @@ class _LogInPageState extends State<LogInPage> {
                       MaterialPageRoute(builder: (context) => MemoPage()));
                   _pwController.clear();
                 } else {
+                  _firebaseAuth.signOut();
                   _dialog
                       .getCompleteDialog(
                           context,

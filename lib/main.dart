@@ -23,8 +23,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseUser _firebaseUser;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,7 +39,7 @@ class _MyAppState extends State<MyApp> {
               child: CircularProgressIndicator(),
             );
           } else {
-            if (snapshot.hasData && _firebaseUser.isEmailVerified == true) {
+            if (snapshot.hasData) {
               return MemoPage();
             } else {
               return LogInPage();
@@ -52,3 +50,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+//        .where((user) => user.isEmailVerified)

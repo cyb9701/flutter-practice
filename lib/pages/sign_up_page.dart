@@ -5,7 +5,6 @@ import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
-import 'package:flutteridmemo/pages/log_in_page.dart';
 import 'package:hive/hive.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -94,10 +93,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   hiveDB.saveKey(_randomKey);
                   hiveDB.saveUsrEmail(_id);
 
-                  newUsr.user.sendEmailVerification();
-
-                  final route =
-                      MaterialPageRoute(builder: (context) => LogInPage());
+                  newUsr.user.sendEmailVerification().then((onValue) {
+                    _firebaseAuth.signOut();
+                  });
 
                   _dialog
                       .getCompleteDialog(
@@ -108,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           _dialog.kBlueAlertStyle)
                       .show()
                       .then((onValue) {
-                    Navigator.pushReplacement(context, route);
+                    Navigator.pop(context);
                   });
 
                   _idController.clear();
