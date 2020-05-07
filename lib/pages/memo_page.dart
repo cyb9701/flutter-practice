@@ -14,21 +14,22 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-  final _auth = FirebaseAuth.instance;
+  final _firebaseAuth = FirebaseAuth.instance;
   String logInUsrEmail = 'Loading';
-  void getCurrentUsr() async {
-    try {
-      final currentUsr = await _auth.currentUser();
-      if (currentUsr != null) {
-        setState(() {
-          logInUsr = currentUsr;
-          logInUsrEmail = logInUsr.email;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+
+//  void getCurrentUsr() async {
+//    try {
+//      final currentUsr = await _firebaseAuth.currentUser();
+//      if (currentUsr != null) {
+//        setState(() {
+//          logInUsr = currentUsr;
+//          logInUsrEmail = logInUsr.email;
+//        });
+//      }
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
 
   FirebaseUser logInUsr;
   TextEditingController searchController = TextEditingController();
@@ -46,7 +47,6 @@ class _MemoPageState extends State<MemoPage> {
 
   @override
   void initState() {
-//    getCurrentUsr();
     FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
     searchMemo();
     super.initState();
@@ -54,9 +54,7 @@ class _MemoPageState extends State<MemoPage> {
 
   @override
   void dispose() {
-//    getCurrentUsr();
-    FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
-    searchMemo();
+    searchController.dispose();
     super.dispose();
   }
 

@@ -16,7 +16,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _idController = TextEditingController();
   TextEditingController _pwController = TextEditingController();
-  final _auth = FirebaseAuth.instance;
+  final _firebaseAuth = FirebaseAuth.instance;
   E2EE e2ee = E2EE();
   HiveDB hiveDB = HiveDB();
   DialogFrame _dialog = DialogFrame();
@@ -87,8 +87,8 @@ class _SignUpPageState extends State<SignUpPage> {
             icon: Icons.person_add,
             onPressed: () async {
               try {
-                final newUsr = await _auth.createUserWithEmailAndPassword(
-                    email: _id, password: _pw);
+                final newUsr = await _firebaseAuth
+                    .createUserWithEmailAndPassword(email: _id, password: _pw);
 
                 if (newUsr.user != null) {
                   hiveDB.saveKey(_randomKey);

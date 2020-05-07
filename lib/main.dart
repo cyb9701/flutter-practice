@@ -17,7 +17,14 @@ void main() async {
 
 bool isFirstData = true;
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  FirebaseUser _firebaseUser;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +41,7 @@ class MyApp extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && _firebaseUser.isEmailVerified == true) {
               return MemoPage();
             } else {
               return LogInPage();

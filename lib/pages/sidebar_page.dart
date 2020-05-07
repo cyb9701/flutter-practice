@@ -36,6 +36,7 @@ class _SideBarPageState extends State<SideBarPage>
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
+    HiveDB().saveUsrEmail(null);
     isOpenedSink.add(false);
     _animationController.reverse();
     final route = MaterialPageRoute(builder: (context) => LogInPage());
