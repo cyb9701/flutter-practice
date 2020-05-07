@@ -14,22 +14,7 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-  final _firebaseAuth = FirebaseAuth.instance;
   String logInUsrEmail = 'Loading';
-
-//  void getCurrentUsr() async {
-//    try {
-//      final currentUsr = await _firebaseAuth.currentUser();
-//      if (currentUsr != null) {
-//        setState(() {
-//          logInUsr = currentUsr;
-//          logInUsrEmail = logInUsr.email;
-//        });
-//      }
-//    } catch (e) {
-//      print(e);
-//    }
-//  }
 
   FirebaseUser logInUsr;
   TextEditingController searchController = TextEditingController();

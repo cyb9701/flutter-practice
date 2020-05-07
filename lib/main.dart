@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
               child: CircularProgressIndicator(),
             );
           } else {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && snapshot.data.isEmailVerified == true) {
               return MemoPage();
             } else {
               return LogInPage();
