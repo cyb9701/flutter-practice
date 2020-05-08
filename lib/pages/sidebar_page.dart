@@ -114,7 +114,7 @@ class _SideBarPageState extends State<SideBarPage>
                 bottomRight: Radius.circular(kRadiusValue10),
               ),
             ),
-            margin: EdgeInsets.all(5.0),
+            margin: EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 5.0),
             padding: EdgeInsets.fromLTRB(30.0, 100.0, 50.0, 100.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

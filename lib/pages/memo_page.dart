@@ -88,21 +88,21 @@ class _MemoPageState extends State<MemoPage> {
             TextSpan(
                 text: 'i ',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.0,
-                    color: kColorBlue)),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30.0,
+                )),
             TextSpan(
                 text: 'D__M',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 45.0,
-                )),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 45.0,
+                    color: kColorGreen)),
             TextSpan(
                 text: ' emo',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.0,
-                    color: kColorBlue)),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30.0,
+                )),
           ])),
           SizedBox(
             width: 20.0,
