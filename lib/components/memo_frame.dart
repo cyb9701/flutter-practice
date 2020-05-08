@@ -56,7 +56,15 @@ class _MemoFrameState extends State<MemoFrame> {
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
           decoration: BoxDecoration(
             color: kColorGrey,
-            borderRadius: BorderRadius.circular(kRadiusValue20),
+            borderRadius: BorderRadius.circular(kRadiusValue10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.115),
+                spreadRadius: 0,
+                blurRadius: 1,
+                offset: Offset(-3, 4), // changes position of shadow
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -70,7 +78,7 @@ class _MemoFrameState extends State<MemoFrame> {
                 ),
               ),
               SizedBox(
-                height: 20.0,
+                height: 25.0,
               ),
               Text(
                 widget.usrID,
@@ -95,7 +103,9 @@ class _MemoFrameState extends State<MemoFrame> {
                       padding: EdgeInsets.only(right: 20.0),
                       child: Text(
                         widget.text == null ? '' : widget.text,
-                        style: kMemoTextTextStyle,
+                        style: kMemoTextTextStyle.copyWith(
+                          color: Colors.white60,
+                        ),
                         softWrap: true,
                       ),
                     ),
