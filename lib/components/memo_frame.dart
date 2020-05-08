@@ -53,7 +53,8 @@ class _MemoFrameState extends State<MemoFrame> {
           buildDeleteBtn(context),
         ],
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+          padding: EdgeInsets.fromLTRB(
+              20.0, 20.0, 20.0, widget.text == null ? 6.0 : 20.0),
           decoration: BoxDecoration(
             color: kColorGrey,
             borderRadius: BorderRadius.circular(kRadiusValue10),
@@ -87,9 +88,19 @@ class _MemoFrameState extends State<MemoFrame> {
               SizedBox(
                 height: 7.0,
               ),
-              Text(
-                widget.usrPW,
-                style: kMemoIDPWTextStyle,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    widget.usrPW,
+                    style: kMemoIDPWTextStyle,
+                  ),
+                  Text(
+                    widget.text == null ? widget.createTime : '',
+                    style: TextStyle(color: kColorBlue),
+                  ),
+                ],
               ),
               SizedBox(
                 height: widget.text == null ? 0.0 : 7.0,
@@ -111,7 +122,7 @@ class _MemoFrameState extends State<MemoFrame> {
                     ),
                   ),
                   Text(
-                    widget.createTime,
+                    widget.text == null ? '' : widget.createTime,
                     style: TextStyle(color: kColorBlue),
                   ),
                 ],
@@ -157,7 +168,7 @@ class _MemoFrameState extends State<MemoFrame> {
       color: Colors.redAccent,
       icon: Icons.cancel,
       onTap: () {
-        _dialog.getDeleteDialog(context, '${widget.title} 삭제',
+        _dialog.getDeleteDialog(context, '${widget.title}  삭제',
             '메모를 삭제하게 되면 사용자의 모든\n기기에서 삭제되며 복구 불가능합니다.', '삭제', '취소', () {
           deleteDataFirebaseDoc();
           Navigator.pop(context);
