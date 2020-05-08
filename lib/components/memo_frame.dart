@@ -132,7 +132,7 @@ class _MemoFrameState extends State<MemoFrame> {
                 title: widget.title,
                 usrID: widget.usrID,
                 usrPW: widget.usrPW,
-                text: widget.text == null ? null : widget.text,
+                text: widget.text,
               ),
             ),
           ),

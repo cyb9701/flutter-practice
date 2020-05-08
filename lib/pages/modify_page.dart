@@ -32,53 +32,41 @@ class _ModifyPageState extends State<ModifyPage> {
   FocusNode nodeThree = FocusNode();
   FocusNode nodeFour = FocusNode();
 
-  String _modifyTitle;
-  String _modifyUsrID;
-  String _modifyUsrPW;
-  String _modifyText;
-  String _modifyColor;
-
-  void getData() {
-    _modifyTitle = widget.title;
-    _modifyUsrID = widget.usrID;
-    _modifyUsrPW = widget.usrPW;
-    _modifyText = widget.text;
-  }
-
-  Future<void> updateMemoFirebaseDoc(String modifyTitle, String modifyUsrID,
-      String modifyUsrPW, String modifyText, String modifyColor) async {
-    final title = modifyTitle == ''
-        ? await e2ee.encryptE2EE(widget.title)
-        : modifyTitle == ' '
-            ? await e2ee.encryptE2EE(widget.title)
-            : await e2ee.encryptE2EE(modifyTitle);
-
-    final usrID = modifyUsrID == ''
-        ? await e2ee.encryptE2EE(widget.usrID)
-        : modifyUsrID == ' '
-            ? await e2ee.encryptE2EE(widget.usrID)
-            : await e2ee.encryptE2EE(modifyUsrID);
-
-    final usrPW = modifyUsrPW == ''
-        ? await e2ee.encryptE2EE(widget.usrPW)
-        : modifyUsrPW == ' '
-            ? await e2ee.encryptE2EE(widget.usrPW)
-            : await e2ee.encryptE2EE(modifyUsrPW);
-
-    final text = modifyText == '' ? null : await e2ee.encryptE2EE(modifyText);
+  Future<void> updateMemoFirebaseDoc() async {
+    final title = _titleController.text == ''
+        ? await e2ee.encryptE2EE(widget.title.toString())
+        : _titleController.text == ' '
+            ? await e2ee.encryptE2EE(widget.title.toString())
+            : await e2ee.encryptE2EE(_titleController.text.toString());
+    final usrID = _usrIDController.text == ''
+        ? await e2ee.encryptE2EE(widget.usrID.toString())
+        : _usrIDController.text == ' '
+            ? await e2ee.encryptE2EE(widget.usrID.toString())
+            : await e2ee.encryptE2EE(_usrIDController.text.toString());
+    final usrPW = _usrPWController.text == ''
+        ? await e2ee.encryptE2EE(widget.usrPW.toString())
+        : _usrPWController.text == ' '
+            ? await e2ee.encryptE2EE(widget.usrPW.toString())
+            : await e2ee.encryptE2EE(_usrPWController.text.toString());
+    final text = _textController.text == ''
+        ? null
+        : _textController.text == ' '
+            ? null
+            : await e2ee.encryptE2EE(_textController.text.toString());
 
     _fireStore.collection(widget.logInUsr).document(widget.doc).updateData({
       'title': title,
       'usrID': usrID,
       'usrPW': usrPW,
       'text': text,
-      'color': modifyColor,
+      'color': SiteColor().findSiteColor(_titleController.text == ''
+          ? widget.title
+          : _titleController.text.toString()),
     });
   }
 
   @override
   void initState() {
-    getData();
     super.initState();
   }
 
@@ -149,7 +137,7 @@ class _ModifyPageState extends State<ModifyPage> {
   TextFormField buildTitleTextField() {
     return TextFormField(
       focusNode: nodeOne,
-      controller: _titleController..text = widget.title,
+      initialValue: widget.title,
       decoration: kTextFieldDecoration.copyWith(
         suffixIcon: InkWell(
           onTap: () {
@@ -163,8 +151,8 @@ class _ModifyPageState extends State<ModifyPage> {
         ),
       ),
       onChanged: (String newUsrTitle) {
-        _modifyTitle = newUsrTitle;
-        _modifyColor = SiteColor().findSiteColor(newUsrTitle);
+        _titleController.text = newUsrTitle;
+//        _modifyColor = SiteColor().findSiteColor(newUsrTitle);
       },
     );
   }
@@ -172,7 +160,7 @@ class _ModifyPageState extends State<ModifyPage> {
   TextFormField buildIDTextField() {
     return TextFormField(
       focusNode: nodeTwo,
-      controller: _usrIDController..text = widget.usrID,
+      initialValue: widget.usrID,
       decoration: kTextFieldDecoration.copyWith(
         suffixIcon: InkWell(
           onTap: () {
@@ -186,7 +174,7 @@ class _ModifyPageState extends State<ModifyPage> {
         ),
       ),
       onChanged: (String newUsrID) {
-        _modifyUsrID = newUsrID;
+        _usrIDController.text = newUsrID;
       },
     );
   }
@@ -194,7 +182,7 @@ class _ModifyPageState extends State<ModifyPage> {
   TextFormField buildPWTextField() {
     return TextFormField(
       focusNode: nodeThree,
-      controller: _usrPWController..text = widget.usrPW,
+      initialValue: widget.usrPW,
       decoration: kTextFieldDecoration.copyWith(
         suffixIcon: InkWell(
           onTap: () {
@@ -208,8 +196,7 @@ class _ModifyPageState extends State<ModifyPage> {
         ),
       ),
       onChanged: (String newUsrPW) {
-//        final encryptUsrPW = await e2ee.encryptE2EE(newUsrPW, _key);
-        _modifyUsrPW = newUsrPW;
+        _usrPWController.text = newUsrPW;
       },
     );
   }
@@ -219,13 +206,12 @@ class _ModifyPageState extends State<ModifyPage> {
       focusNode: nodeFour,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
-      controller: _textController..text = widget.text,
+      initialValue: widget.text,
       decoration: kTextFieldDecoration.copyWith(
         suffixIcon: InkWell(
           onTap: () {
             WidgetsBinding.instance
                 .addPostFrameCallback((_) => _textController.clear());
-            _modifyText = '';
           },
           child: Icon(
             Icons.cancel,
@@ -234,8 +220,7 @@ class _ModifyPageState extends State<ModifyPage> {
         ),
       ),
       onChanged: (String newText) {
-//        final encryptText = await e2ee.encryptE2EE(newText, _key);
-        _modifyText = newText;
+        _textController.text = newText;
       },
     );
   }
@@ -256,13 +241,11 @@ class _ModifyPageState extends State<ModifyPage> {
         color: kColorBlue,
         icon: Icons.refresh,
         onPressed: () {
-          print('@@@@@@ ModifyTitle: $_modifyTitle @@@@@@');
-          print('@@@@@@ ModifyID: $_modifyUsrID @@@@@@');
-          print('@@@@@@ ModifyPW: $_modifyUsrPW @@@@@@');
-          print('@@@@@@ ModifyText: $_modifyText @@@@@@');
-          updateMemoFirebaseDoc(_modifyTitle, _modifyUsrID, _modifyUsrPW,
-                  _modifyText, _modifyColor)
-              .then((onValue) {
+          print('@@@@@@ ModifyTitle: [${_titleController.text}] @@@@@@');
+          print('@@@@@@ ModifyUsrID: [${_usrIDController.text}] @@@@@@');
+          print('@@@@@@ ModifyUsrPW: [${_usrPWController.text}] @@@@@@');
+          print('@@@@@@ ModifyText: [${_textController.text}] @@@@@@');
+          updateMemoFirebaseDoc().then((onValue) {
             Navigator.pop(context);
           });
         },
