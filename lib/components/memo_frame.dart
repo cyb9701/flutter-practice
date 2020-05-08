@@ -59,10 +59,10 @@ class _MemoFrameState extends State<MemoFrame> {
             borderRadius: BorderRadius.circular(kRadiusValue10),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.115),
+                color: Colors.grey.withOpacity(0.11115),
                 spreadRadius: 0,
-                blurRadius: 1,
-                offset: Offset(-3, 4), // changes position of shadow
+                blurRadius: 3,
+                offset: Offset(-3, 3.5), // changes position of shadow
               ),
             ],
           ),
