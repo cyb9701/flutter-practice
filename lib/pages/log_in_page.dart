@@ -83,15 +83,15 @@ class _LogInPageState extends State<LogInPage> {
                   if (logInUsr != null) {
                     print('@@@@@@ Key: $key @@@@@@');
                     print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
-                  } else if (key == null) {
-                    HiveDB().saveKey(_randomKey);
-                  } else if (usrEmail != _id) {
-                    HiveDB().saveUsrEmail(_id);
+                    if (key == null) {
+                      HiveDB().saveKey(_randomKey);
+                    } else if (usrEmail != _id) {
+                      HiveDB().saveUsrEmail(_id);
+                    }
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MemoPage()));
+                    _pwController.clear();
                   }
-
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MemoPage()));
-                  _pwController.clear();
                 } else {
                   _firebaseAuth.signOut();
                   _dialog
