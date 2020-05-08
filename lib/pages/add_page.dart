@@ -20,6 +20,10 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   final Firestore _fireStore = Firestore.instance;
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _usrIDController = TextEditingController();
+  TextEditingController _usrPWController = TextEditingController();
+  TextEditingController _textController = TextEditingController();
   FocusNode nodeOne = FocusNode();
   FocusNode nodeTwo = FocusNode();
   FocusNode nodeThree = FocusNode();
@@ -37,6 +41,19 @@ class _AddPageState extends State<AddPage> {
     // TODO: implement initState
     super.initState();
     print('@@@@@@ Key:${HiveDB().getKey()} @@@@@@');
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _usrIDController.dispose();
+    _usrPWController.dispose();
+    _textController.dispose();
+    nodeOne.dispose();
+    nodeTwo.dispose();
+    nodeThree.dispose();
+    nodeFour.dispose();
+    super.dispose();
   }
 
   @override

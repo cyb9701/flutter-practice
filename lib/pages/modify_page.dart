@@ -66,16 +66,15 @@ class _ModifyPageState extends State<ModifyPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _titleController.dispose();
     _usrIDController.dispose();
     _usrPWController.dispose();
     _textController.dispose();
+    nodeOne.dispose();
+    nodeTwo.dispose();
+    nodeThree.dispose();
+    nodeFour.dispose();
     super.dispose();
   }
 
@@ -152,7 +151,6 @@ class _ModifyPageState extends State<ModifyPage> {
       ),
       onChanged: (String newUsrTitle) {
         _titleController.text = newUsrTitle;
-//        _modifyColor = SiteColor().findSiteColor(newUsrTitle);
       },
     );
   }
