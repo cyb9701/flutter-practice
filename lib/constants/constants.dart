@@ -20,6 +20,7 @@ const kColorNetflix = '0xFFa12423';
 const kDuration = Duration(milliseconds: 500);
 
 const double kRadiusValue10 = 10.0;
+const double kRadiusValue15 = 15.0;
 const double kRadiusValue20 = 20.0;
 const double kRadiusValue40 = 40.0;
 

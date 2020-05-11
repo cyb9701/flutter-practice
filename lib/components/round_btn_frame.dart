@@ -21,11 +21,11 @@ class RoundBtnFrame extends StatelessWidget {
       child: Material(
         elevation: 5.0,
         color: color,
-        borderRadius: BorderRadius.circular(kRadiusValue20),
+        borderRadius: BorderRadius.circular(kRadiusValue15),
         child: MaterialButton(
           onPressed: onPressed,
           minWidth: 200.0,
-          height: 42.0,
+          height: 50.0,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             child: Row(
