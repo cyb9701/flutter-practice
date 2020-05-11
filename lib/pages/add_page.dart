@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
-import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/utils/admob_service.dart';
 import 'package:flutteridmemo/utils/site_color.dart';
 import 'package:intl/intl.dart';
@@ -23,24 +22,47 @@ class _AddPageState extends State<AddPage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
-  TextEditingController _textController = TextEditingController();
+  TextEditingController _textController = TextEditingController(text: '');
   FocusNode nodeOne = FocusNode();
   FocusNode nodeTwo = FocusNode();
   FocusNode nodeThree = FocusNode();
   FocusNode nodeFour = FocusNode();
   E2EE e2ee = E2EE();
-  String _title;
-  String _usrID;
-  String _usrPW;
-  String _text;
   DateTime _createTime;
   String _color;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('@@@@@@ Key:${HiveDB().getKey()} @@@@@@');
+  Future<void> addMemoFirebaseDoc() async {
+    final encryptTitle = await e2ee.encryptE2EE(_titleController.text);
+    final encryptUsrID = await e2ee.encryptE2EE(_usrIDController.text);
+    final encryptUsrPW = await e2ee.encryptE2EE(_usrPWController.text);
+    final encryptText = (_textController.text == '')
+        ? null
+        : (_textController.text == ' ')
+            ? null
+            : await e2ee.encryptE2EE(_textController.text);
+
+    _createTime = DateTime.now();
+    String dateFormat = DateFormat('MM.dd').format(_createTime);
+
+    _fireStore.collection(widget.logInUsr).add({
+      'id': _createTime.toString(),
+      'title': encryptTitle,
+      'usrID': encryptUsrID,
+      'usrPW': encryptUsrPW,
+      'text': encryptText,
+      'createTime': dateFormat,
+      'color': _color,
+    });
+  }
+
+  void showAdMob() {
+    AdMobService().myInterstitialAd
+      ..load()
+      ..show(
+        anchorType: AnchorType.bottom,
+        anchorOffset: 0.0,
+        horizontalCenterOffset: 0.0,
+      );
   }
 
   @override
@@ -114,11 +136,9 @@ class _AddPageState extends State<AddPage> {
   TextFormField buildTitleTextField() {
     return TextFormField(
         focusNode: nodeOne,
-        controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
-        onChanged: (String newTitle) async {
-          final encryptTitle = await e2ee.encryptE2EE(newTitle);
-          _title = encryptTitle;
+        onChanged: (String newTitle) {
+          _titleController.text = newTitle;
           _color = SiteColor().findSiteColor(newTitle);
         });
   }
@@ -126,23 +146,19 @@ class _AddPageState extends State<AddPage> {
   TextFormField buildIDTextField() {
     return TextFormField(
         focusNode: nodeTwo,
-        controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(
             labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
-        onChanged: (String newUsrID) async {
-          final encryptUsrID = await e2ee.encryptE2EE(newUsrID);
-          _usrID = encryptUsrID;
+        onChanged: (String newUsrID) {
+          _usrIDController.text = newUsrID;
         });
   }
 
   TextFormField buildPWTextField() {
     return TextFormField(
         focusNode: nodeThree,
-        controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
-        onChanged: (String newUsrPW) async {
-          final encryptUsrPW = await e2ee.encryptE2EE(newUsrPW);
-          _usrPW = encryptUsrPW;
+        onChanged: (String newUsrPW) {
+          _usrPWController.text = newUsrPW;
         });
   }
 
@@ -159,19 +175,13 @@ class _AddPageState extends State<AddPage> {
         focusNode: nodeFour,
         keyboardType: TextInputType.multiline,
         maxLines: 3,
-        controller: TextEditingController(),
         decoration: kTextFieldDecoration.copyWith(
           labelText: '메모',
           contentPadding:
               EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
         ),
         onChanged: (String newText) async {
-          if (newText.isEmpty) {
-            _text = null;
-          } else {
-            final encryptText = await e2ee.encryptE2EE(newText);
-            _text = encryptText;
-          }
+          _textController.text = newText;
         });
   }
 
@@ -183,32 +193,18 @@ class _AddPageState extends State<AddPage> {
         color: kColorBlue,
         icon: Icons.add,
         onPressed: () {
-          if (_title == null || _usrID == null || _usrPW == null) {
+          if (_titleController.text == null ||
+              _usrIDController.text == null ||
+              _usrPWController.text == null) {
             print('@@@@@@ Title or UsrID is empty @@@@@@');
             Navigator.pop(context);
           } else {
-            _createTime = DateTime.now();
-            String dateFormat = DateFormat('MM.dd').format(_createTime);
-
-            _fireStore.collection(widget.logInUsr).add({
-              'id': _createTime.toString(),
-              'title': _title,
-              'usrID': _usrID,
-              'usrPW': _usrPW,
-              'text': _text,
-              'createTime': dateFormat,
-              'color': _color,
+            addMemoFirebaseDoc().then((onValue) {
+              Navigator.pop(context);
+            }).then((onValue) {
+              showAdMob();
             });
-
             print('@@@@@@ Add New Memo @@@@@@');
-            Navigator.pop(context);
-            AdMobService().myInterstitialAd
-              ..load()
-              ..show(
-                anchorType: AnchorType.bottom,
-                anchorOffset: 0.0,
-                horizontalCenterOffset: 0.0,
-              );
           }
         },
       ),
