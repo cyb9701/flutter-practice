@@ -61,9 +61,9 @@ class _AddPageState extends State<AddPage> {
     kSize = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
+      padding: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 30.0),
       decoration: BoxDecoration(
-        color: kColorGrey,
+        color: kColorBlack,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(kRadiusValue40),
           topRight: Radius.circular(kRadiusValue40),
@@ -97,7 +97,7 @@ class _AddPageState extends State<AddPage> {
       margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.35),
       height: 4.0,
       decoration: BoxDecoration(
-        color: kColorGreen,
+        color: Colors.white10,
         borderRadius: BorderRadius.circular(kRadiusValue40),
       ),
     );

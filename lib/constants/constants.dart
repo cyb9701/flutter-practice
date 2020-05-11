@@ -47,6 +47,6 @@ const kTextFieldDecoration = InputDecoration(
     borderRadius: BorderRadius.all(Radius.circular(kRadiusValue10)),
   ),
   labelText: '',
-  labelStyle: TextStyle(fontSize: 20.0, color: Colors.white),
+  labelStyle: TextStyle(fontSize: 18.0, color: Colors.white54),
   filled: false,
 );

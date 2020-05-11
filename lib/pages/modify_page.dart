@@ -49,9 +49,9 @@ class _ModifyPageState extends State<ModifyPage> {
             ? await e2ee.encryptE2EE(widget.usrPW.toString())
             : await e2ee.encryptE2EE(_usrPWController.text.toString());
     final text = _textController.text == ''
-        ? null
+        ? await e2ee.encryptE2EE(widget.text.toString())
         : _textController.text == ' '
-            ? null
+            ? await e2ee.encryptE2EE(widget.text.toString())
             : await e2ee.encryptE2EE(_textController.text.toString());
 
     _fireStore.collection(widget.logInUsr).document(widget.doc).updateData({
@@ -83,9 +83,9 @@ class _ModifyPageState extends State<ModifyPage> {
     kSize = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(50.0, 20.0, 50.0, 30.0),
+      padding: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 30.0),
       decoration: BoxDecoration(
-        color: kColorGrey,
+        color: kColorBlack,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(kRadiusValue40),
           topRight: Radius.circular(kRadiusValue40),
@@ -117,9 +117,9 @@ class _ModifyPageState extends State<ModifyPage> {
   Container buildContainerBar() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.35),
-      height: 4.0,
+      height: 5.0,
       decoration: BoxDecoration(
-        color: kColorGreen,
+        color: Colors.white10,
         borderRadius: BorderRadius.circular(kRadiusValue40),
       ),
     );
@@ -136,19 +136,7 @@ class _ModifyPageState extends State<ModifyPage> {
   TextFormField buildTitleTextField() {
     return TextFormField(
       focusNode: nodeOne,
-      initialValue: widget.title,
-      decoration: kTextFieldDecoration.copyWith(
-        suffixIcon: InkWell(
-          onTap: () {
-            WidgetsBinding.instance
-                .addPostFrameCallback((_) => _titleController.clear());
-          },
-          child: Icon(
-            Icons.cancel,
-            color: kColorGreen,
-          ),
-        ),
-      ),
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.title),
       onChanged: (String newUsrTitle) {
         _titleController.text = newUsrTitle;
       },
@@ -158,19 +146,7 @@ class _ModifyPageState extends State<ModifyPage> {
   TextFormField buildIDTextField() {
     return TextFormField(
       focusNode: nodeTwo,
-      initialValue: widget.usrID,
-      decoration: kTextFieldDecoration.copyWith(
-        suffixIcon: InkWell(
-          onTap: () {
-            WidgetsBinding.instance
-                .addPostFrameCallback((_) => _usrIDController.clear());
-          },
-          child: Icon(
-            Icons.cancel,
-            color: kColorGreen,
-          ),
-        ),
-      ),
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrID),
       onChanged: (String newUsrID) {
         _usrIDController.text = newUsrID;
       },
@@ -180,19 +156,7 @@ class _ModifyPageState extends State<ModifyPage> {
   TextFormField buildPWTextField() {
     return TextFormField(
       focusNode: nodeThree,
-      initialValue: widget.usrPW,
-      decoration: kTextFieldDecoration.copyWith(
-        suffixIcon: InkWell(
-          onTap: () {
-            WidgetsBinding.instance
-                .addPostFrameCallback((_) => _usrPWController.clear());
-          },
-          child: Icon(
-            Icons.cancel,
-            color: kColorGreen,
-          ),
-        ),
-      ),
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrPW),
       onChanged: (String newUsrPW) {
         _usrPWController.text = newUsrPW;
       },
@@ -204,19 +168,7 @@ class _ModifyPageState extends State<ModifyPage> {
       focusNode: nodeFour,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
-      initialValue: widget.text,
-      decoration: kTextFieldDecoration.copyWith(
-        suffixIcon: InkWell(
-          onTap: () {
-            WidgetsBinding.instance
-                .addPostFrameCallback((_) => _textController.clear());
-          },
-          child: Icon(
-            Icons.cancel,
-            color: kColorGreen,
-          ),
-        ),
-      ),
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.text),
       onChanged: (String newText) {
         _textController.text = newText;
       },
