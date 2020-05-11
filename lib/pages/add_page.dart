@@ -22,7 +22,7 @@ class _AddPageState extends State<AddPage> {
   TextEditingController _titleController = TextEditingController();
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
-  TextEditingController _textController = TextEditingController(text: '');
+  TextEditingController _textController = TextEditingController();
   FocusNode nodeOne = FocusNode();
   FocusNode nodeTwo = FocusNode();
   FocusNode nodeThree = FocusNode();
