@@ -19,6 +19,11 @@ class AddPage extends StatefulWidget {
 
 class _AddPageState extends State<AddPage> {
   final Firestore _fireStore = Firestore.instance;
+  E2EE e2ee = E2EE();
+  DateTime _createTime;
+  String _color;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
@@ -27,9 +32,6 @@ class _AddPageState extends State<AddPage> {
   FocusNode nodeTwo = FocusNode();
   FocusNode nodeThree = FocusNode();
   FocusNode nodeFour = FocusNode();
-  E2EE e2ee = E2EE();
-  DateTime _createTime;
-  String _color;
 
   Future<void> addMemoFirebaseDoc() async {
     final encryptTitle = await e2ee.encryptE2EE(_titleController.text);
@@ -99,14 +101,7 @@ class _AddPageState extends State<AddPage> {
           buildSizedBoxH20(),
           buildTitle(),
           buildSizedBoxH50(),
-          buildTitleTextField(),
-          buildSizedBoxH10(),
-          buildIDTextField(),
-          buildSizedBoxH10(),
-          buildPWTextField(),
-          buildWarningText(),
-          buildSizedBoxH20(),
-          buildMemoTextField(),
+          buildInputForm(),
           buildSizedBoxH20(),
           buildAddBtn(context),
         ],
@@ -116,7 +111,7 @@ class _AddPageState extends State<AddPage> {
 
   Container buildContainerBar() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.35),
+      margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.30),
       height: 4.0,
       decoration: BoxDecoration(
         color: Colors.white10,
@@ -133,46 +128,82 @@ class _AddPageState extends State<AddPage> {
     );
   }
 
-  TextFormField buildTitleTextField() {
-    return TextFormField(
-        focusNode: nodeOne,
-        decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
-        onChanged: (String newTitle) {
-          _titleController.text = newTitle;
-          _color = SiteColor().findSiteColor(newTitle);
-        });
-  }
-
-  TextFormField buildIDTextField() {
-    return TextFormField(
-        focusNode: nodeTwo,
-        decoration: kTextFieldDecoration.copyWith(
-            labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
-        onChanged: (String newUsrID) {
-          _usrIDController.text = newUsrID;
-        });
-  }
-
-  TextFormField buildPWTextField() {
-    return TextFormField(
-        focusNode: nodeThree,
-        decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
-        onChanged: (String newUsrPW) {
-          _usrPWController.text = newUsrPW;
-        });
-  }
-
-  Text buildWarningText() {
-    return Text(
-      '* 사이트 이름, 아이디, 비밀번호는 필수 입력입니다.',
-      style: TextStyle(color: Colors.redAccent),
-      textAlign: TextAlign.end,
+  Widget buildInputForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          buildTitleTextFormField(),
+          buildSizedBoxH10(),
+          buildIDTextFormField(),
+          buildSizedBoxH10(),
+          buildPWTextFormField(),
+          buildSizedBoxH20(),
+          buildMemoTextFormField(),
+          buildWarningText(),
+        ],
+      ),
     );
   }
 
-  TextFormField buildMemoTextField() {
+  TextFormField buildTitleTextFormField() {
+    return TextFormField(
+      focusNode: nodeOne,
+      controller: _titleController,
+      decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
+      onChanged: (String newTitle) {
+        _titleController.text = newTitle;
+        _color = SiteColor().findSiteColor(newTitle);
+      },
+      validator: (String title) {
+        if (title.isEmpty) {
+          return '사이트 이름을 입력해주세요.';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField buildIDTextFormField() {
+    return TextFormField(
+      focusNode: nodeTwo,
+      controller: _usrIDController,
+      decoration: kTextFieldDecoration.copyWith(
+          labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
+      onChanged: (String newUsrID) {
+        _usrIDController.text = newUsrID;
+      },
+      validator: (String title) {
+        if (title.isEmpty) {
+          return '아이디를 입력해주세요.';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField buildPWTextFormField() {
+    return TextFormField(
+      focusNode: nodeThree,
+      controller: _usrPWController,
+      decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
+      onChanged: (String newUsrPW) {
+        _usrPWController.text = newUsrPW;
+      },
+      validator: (String title) {
+        if (title.isEmpty) {
+          return '비밀번호를 입력해주세요.';
+        }
+        return null;
+      },
+    );
+  }
+
+  TextFormField buildMemoTextFormField() {
     return TextFormField(
         focusNode: nodeFour,
+        controller: _textController,
         keyboardType: TextInputType.multiline,
         maxLines: 3,
         decoration: kTextFieldDecoration.copyWith(
@@ -185,6 +216,14 @@ class _AddPageState extends State<AddPage> {
         });
   }
 
+  Text buildWarningText() {
+    return Text(
+      '* 메모는 필수 입력이 아닙니다.',
+      style: TextStyle(color: Colors.redAccent),
+      textAlign: TextAlign.end,
+    );
+  }
+
   Widget buildAddBtn(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
@@ -193,12 +232,7 @@ class _AddPageState extends State<AddPage> {
         color: kColorBlue,
         icon: Icons.add,
         onPressed: () {
-          if (_titleController.text == null ||
-              _usrIDController.text == null ||
-              _usrPWController.text == null) {
-            print('@@@@@@ Title or UsrID is empty @@@@@@');
-            Navigator.pop(context);
-          } else {
+          if (_formKey.currentState.validate()) {
             addMemoFirebaseDoc().then((onValue) {
               Navigator.pop(context);
             }).then((onValue) {

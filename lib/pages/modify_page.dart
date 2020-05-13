@@ -21,12 +21,13 @@ class ModifyPage extends StatefulWidget {
 }
 
 class _ModifyPageState extends State<ModifyPage> {
+  final Firestore _fireStore = Firestore.instance;
+  E2EE e2ee = E2EE();
+
   TextEditingController _titleController = TextEditingController();
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
   TextEditingController _textController = TextEditingController();
-  final Firestore _fireStore = Firestore.instance;
-  E2EE e2ee = E2EE();
   FocusNode nodeOne = FocusNode();
   FocusNode nodeTwo = FocusNode();
   FocusNode nodeThree = FocusNode();
@@ -116,7 +117,7 @@ class _ModifyPageState extends State<ModifyPage> {
 
   Container buildContainerBar() {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.35),
+      margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.30),
       height: 5.0,
       decoration: BoxDecoration(
         color: Colors.white10,
