@@ -27,10 +27,10 @@ class _AddPageState extends State<AddPage> {
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
   TextEditingController _textController = TextEditingController();
-  FocusNode titleNode;
-  FocusNode idNode;
-  FocusNode pwNode;
-  FocusNode textNode;
+  FocusNode titleFocusNode;
+  FocusNode idFocusNode;
+  FocusNode pwFocusNode;
+  FocusNode textFocusNode;
 
   void _buildFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
@@ -74,10 +74,10 @@ class _AddPageState extends State<AddPage> {
 
   @override
   void initState() {
-    titleNode = FocusNode();
-    idNode = FocusNode();
-    pwNode = FocusNode();
-    textNode = FocusNode();
+    titleFocusNode = FocusNode();
+    idFocusNode = FocusNode();
+    pwFocusNode = FocusNode();
+    textFocusNode = FocusNode();
     super.initState();
   }
 
@@ -87,10 +87,10 @@ class _AddPageState extends State<AddPage> {
     _usrIDController.dispose();
     _usrPWController.dispose();
     _textController.dispose();
-    titleNode.dispose();
-    idNode.dispose();
-    pwNode.dispose();
-    textNode.dispose();
+    titleFocusNode.dispose();
+    idFocusNode.dispose();
+    pwFocusNode.dispose();
+    textFocusNode.dispose();
     super.dispose();
   }
 
@@ -163,12 +163,12 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildTitleTextFormField() {
     return TextFormField(
-      focusNode: titleNode,
+      focusNode: titleFocusNode,
       controller: _titleController,
       textInputAction: TextInputAction.next,
       decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
       onFieldSubmitted: (value) {
-        _buildFocusChange(_formKey.currentContext, titleNode, idNode);
+        _buildFocusChange(_formKey.currentContext, titleFocusNode, idFocusNode);
       },
       validator: (String title) {
         if (title.isEmpty) {
@@ -181,13 +181,13 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildIDTextFormField() {
     return TextFormField(
-      focusNode: idNode,
+      focusNode: idFocusNode,
       controller: _usrIDController,
       textInputAction: TextInputAction.next,
       decoration: kTextFieldDecoration.copyWith(
           labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
       onFieldSubmitted: (value) {
-        _buildFocusChange(_formKey.currentContext, idNode, pwNode);
+        _buildFocusChange(_formKey.currentContext, idFocusNode, pwFocusNode);
       },
       validator: (String title) {
         if (title.isEmpty) {
@@ -200,12 +200,12 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildPWTextFormField() {
     return TextFormField(
-      focusNode: pwNode,
+      focusNode: pwFocusNode,
       controller: _usrPWController,
       textInputAction: TextInputAction.next,
       decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
       onFieldSubmitted: (value) {
-        _buildFocusChange(_formKey.currentContext, pwNode, textNode);
+        _buildFocusChange(_formKey.currentContext, pwFocusNode, textFocusNode);
       },
       validator: (String title) {
         if (title.isEmpty) {
@@ -218,7 +218,7 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildMemoTextFormField() {
     return TextFormField(
-      focusNode: textNode,
+      focusNode: textFocusNode,
       controller: _textController,
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.multiline,
@@ -228,7 +228,7 @@ class _AddPageState extends State<AddPage> {
         contentPadding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
       ),
       onFieldSubmitted: (value) {
-        textNode.unfocus();
+        textFocusNode.unfocus();
       },
     );
   }
