@@ -20,7 +20,6 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   final Firestore _fireStore = Firestore.instance;
   E2EE e2ee = E2EE();
-  DateTime _createTime;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
@@ -52,7 +51,7 @@ class _AddPageState extends State<AddPage> {
     String dateFormat = DateFormat('MM.dd').format(createTime);
 
     _fireStore.collection(widget.logInUsr).add({
-      'id': _createTime.toString(),
+      'id': createTime.toString(),
       'title': encryptTitle,
       'usrID': encryptUsrID,
       'usrPW': encryptUsrPW,
@@ -116,6 +115,7 @@ class _AddPageState extends State<AddPage> {
           buildTitle(),
           buildSizedBoxH50(),
           buildInputForm(),
+          buildWarningText(),
           buildSizedBoxH20(),
           buildAddBtn(context),
         ],
@@ -155,7 +155,6 @@ class _AddPageState extends State<AddPage> {
           buildPWTextFormField(),
           buildSizedBoxH20(),
           buildMemoTextFormField(),
-          buildWarningText(),
         ],
       ),
     );
