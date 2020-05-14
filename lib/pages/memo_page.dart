@@ -113,32 +113,33 @@ class _MemoPageState extends State<MemoPage> {
           CircleAvatar(
             radius: 20.0,
             backgroundColor: kColorGreen,
-            child: buildAddBtn(context),
+            child: buildAddBtn(),
           ),
         ],
       ),
     );
   }
 
-  InkWell buildAddBtn(BuildContext context) {
+  InkWell buildAddBtn() {
     return InkWell(
-        child: Icon(
-          Icons.add,
-          size: 30.0,
-        ),
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) => SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddPage(logInUsr: usrEmail),
-              ),
+      child: Icon(
+        Icons.add,
+        size: 30.0,
+      ),
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (BuildContext context) => SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: AddPage(logInUsr: usrEmail),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Widget buildSearchBar() {
