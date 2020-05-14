@@ -21,17 +21,22 @@ class _AddPageState extends State<AddPage> {
   final Firestore _fireStore = Firestore.instance;
   E2EE e2ee = E2EE();
   DateTime _createTime;
-  String _color;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
   TextEditingController _textController = TextEditingController();
-  FocusNode nodeOne = FocusNode();
-  FocusNode nodeTwo = FocusNode();
-  FocusNode nodeThree = FocusNode();
-  FocusNode nodeFour = FocusNode();
+  FocusNode titleNode;
+  FocusNode idNode;
+  FocusNode pwNode;
+  FocusNode textNode;
+
+  void _buildFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
 
   Future<void> addMemoFirebaseDoc() async {
     final encryptTitle = await e2ee.encryptE2EE(_titleController.text);
@@ -42,9 +47,9 @@ class _AddPageState extends State<AddPage> {
         : (_textController.text == ' ')
             ? null
             : await e2ee.encryptE2EE(_textController.text);
-
-    _createTime = DateTime.now();
-    String dateFormat = DateFormat('MM.dd').format(_createTime);
+    final color = SiteColor().findSiteColor(_titleController.text);
+    final createTime = DateTime.now();
+    String dateFormat = DateFormat('MM.dd').format(createTime);
 
     _fireStore.collection(widget.logInUsr).add({
       'id': _createTime.toString(),
@@ -53,7 +58,7 @@ class _AddPageState extends State<AddPage> {
       'usrPW': encryptUsrPW,
       'text': encryptText,
       'createTime': dateFormat,
-      'color': _color,
+      'color': color,
     });
   }
 
@@ -68,15 +73,24 @@ class _AddPageState extends State<AddPage> {
   }
 
   @override
+  void initState() {
+    titleNode = FocusNode();
+    idNode = FocusNode();
+    pwNode = FocusNode();
+    textNode = FocusNode();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _usrIDController.dispose();
     _usrPWController.dispose();
     _textController.dispose();
-    nodeOne.dispose();
-    nodeTwo.dispose();
-    nodeThree.dispose();
-    nodeFour.dispose();
+    titleNode.dispose();
+    idNode.dispose();
+    pwNode.dispose();
+    textNode.dispose();
     super.dispose();
   }
 
@@ -149,12 +163,12 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildTitleTextFormField() {
     return TextFormField(
-      focusNode: nodeOne,
+      focusNode: titleNode,
       controller: _titleController,
+      textInputAction: TextInputAction.next,
       decoration: kTextFieldDecoration.copyWith(labelText: '사이트 이름'),
-      onChanged: (String newTitle) {
-        _titleController.text = newTitle;
-        _color = SiteColor().findSiteColor(newTitle);
+      onFieldSubmitted: (value) {
+        _buildFocusChange(_formKey.currentContext, titleNode, idNode);
       },
       validator: (String title) {
         if (title.isEmpty) {
@@ -167,12 +181,13 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildIDTextFormField() {
     return TextFormField(
-      focusNode: nodeTwo,
+      focusNode: idNode,
       controller: _usrIDController,
+      textInputAction: TextInputAction.next,
       decoration: kTextFieldDecoration.copyWith(
           labelText: '아이디', hintText: '예) ****@naver.com / 페이스북 로그인'),
-      onChanged: (String newUsrID) {
-        _usrIDController.text = newUsrID;
+      onFieldSubmitted: (value) {
+        _buildFocusChange(_formKey.currentContext, idNode, pwNode);
       },
       validator: (String title) {
         if (title.isEmpty) {
@@ -185,11 +200,12 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildPWTextFormField() {
     return TextFormField(
-      focusNode: nodeThree,
+      focusNode: pwNode,
       controller: _usrPWController,
+      textInputAction: TextInputAction.next,
       decoration: kTextFieldDecoration.copyWith(labelText: '비밀번호'),
-      onChanged: (String newUsrPW) {
-        _usrPWController.text = newUsrPW;
+      onFieldSubmitted: (value) {
+        _buildFocusChange(_formKey.currentContext, pwNode, textNode);
       },
       validator: (String title) {
         if (title.isEmpty) {
@@ -202,18 +218,19 @@ class _AddPageState extends State<AddPage> {
 
   TextFormField buildMemoTextFormField() {
     return TextFormField(
-        focusNode: nodeFour,
-        controller: _textController,
-        keyboardType: TextInputType.multiline,
-        maxLines: 3,
-        decoration: kTextFieldDecoration.copyWith(
-          labelText: '메모',
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
-        ),
-        onChanged: (String newText) async {
-          _textController.text = newText;
-        });
+      focusNode: textNode,
+      controller: _textController,
+      textInputAction: TextInputAction.done,
+      keyboardType: TextInputType.multiline,
+      maxLines: 3,
+      decoration: kTextFieldDecoration.copyWith(
+        labelText: '메모',
+        contentPadding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 20.0),
+      ),
+      onFieldSubmitted: (value) {
+        textNode.unfocus();
+      },
+    );
   }
 
   Text buildWarningText() {
