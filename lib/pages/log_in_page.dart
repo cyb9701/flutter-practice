@@ -85,7 +85,8 @@ class _LogInPageState extends State<LogInPage> {
                     print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
                     if (key == null) {
                       HiveDB().saveKey(_randomKey);
-                    } else if (usrEmail != _id) {
+                    }
+                    if (usrEmail.toString() != _id) {
                       HiveDB().saveUsrEmail(_id);
                     }
                     Navigator.push(context,
