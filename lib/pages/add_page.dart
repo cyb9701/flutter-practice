@@ -126,7 +126,7 @@ class _AddPageState extends State<AddPage> {
   Container buildContainerBar() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: kSize.width * 0.30),
-      height: 4.0,
+      height: 5.0,
       decoration: BoxDecoration(
         color: Colors.white10,
         borderRadius: BorderRadius.circular(kRadiusValue40),

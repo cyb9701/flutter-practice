@@ -84,40 +84,43 @@ class _MemoPageState extends State<MemoPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           RichText(
-              text: TextSpan(children: <TextSpan>[
-            TextSpan(
-                text: 'i ',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30.0,
-                )),
-            TextSpan(
-                text: 'D__M',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 45.0,
-                    color: kColorGreen)),
-            TextSpan(
-                text: ' emo',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30.0,
-                )),
-          ])),
+            text: TextSpan(
+              children: <TextSpan>[
+                TextSpan(
+                    text: 'i ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30.0,
+                    )),
+                TextSpan(
+                    text: 'D__M',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 45.0,
+                        color: kColorGreen)),
+                TextSpan(
+                    text: ' emo',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30.0,
+                    )),
+              ],
+            ),
+          ),
           SizedBox(
             width: 20.0,
           ),
           CircleAvatar(
             radius: 20.0,
             backgroundColor: kColorGreen,
-            child: buildAddBtn(),
+            child: buildAddBtn(context),
           ),
         ],
       ),
     );
   }
 
-  InkWell buildAddBtn() {
+  InkWell buildAddBtn(BuildContext context) {
     return InkWell(
         child: Icon(
           Icons.add,
