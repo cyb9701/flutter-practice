@@ -24,14 +24,21 @@ class _ModifyPageState extends State<ModifyPage> {
   final Firestore _fireStore = Firestore.instance;
   E2EE e2ee = E2EE();
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _usrIDController = TextEditingController();
   TextEditingController _usrPWController = TextEditingController();
   TextEditingController _textController = TextEditingController();
-  FocusNode nodeOne = FocusNode();
-  FocusNode nodeTwo = FocusNode();
-  FocusNode nodeThree = FocusNode();
-  FocusNode nodeFour = FocusNode();
+  FocusNode titleFocusNode;
+  FocusNode idFocusNode;
+  FocusNode pwFocusNode;
+  FocusNode textFocusNode;
+
+  void _buildFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
+  }
 
   Future<void> updateMemoFirebaseDoc() async {
     final title = _titleController.text == ''
@@ -67,15 +74,24 @@ class _ModifyPageState extends State<ModifyPage> {
   }
 
   @override
+  void initState() {
+    titleFocusNode = FocusNode();
+    idFocusNode = FocusNode();
+    pwFocusNode = FocusNode();
+    textFocusNode = FocusNode();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _titleController.dispose();
     _usrIDController.dispose();
     _usrPWController.dispose();
     _textController.dispose();
-    nodeOne.dispose();
-    nodeTwo.dispose();
-    nodeThree.dispose();
-    nodeFour.dispose();
+    titleFocusNode.dispose();
+    idFocusNode.dispose();
+    pwFocusNode.dispose();
+    textFocusNode.dispose();
     super.dispose();
   }
 
@@ -100,13 +116,7 @@ class _ModifyPageState extends State<ModifyPage> {
           buildSizedBoxH20(),
           buildTitle(),
           buildSizedBoxH50(),
-          buildTitleTextField(),
-          buildSizedBoxH10(),
-          buildIDTextField(),
-          buildSizedBoxH10(),
-          buildPWTextField(),
-          buildSizedBoxH20(),
-          buildMemoTextField(),
+          buildInputForm(),
           buildWarningText(),
           buildSizedBoxH20(),
           buildModifyBtn(context),
@@ -134,45 +144,70 @@ class _ModifyPageState extends State<ModifyPage> {
     );
   }
 
+  Widget buildInputForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          buildTitleTextField(),
+          buildSizedBoxH10(),
+          buildIDTextField(),
+          buildSizedBoxH10(),
+          buildPWTextField(),
+          buildSizedBoxH20(),
+          buildMemoTextField(),
+        ],
+      ),
+    );
+  }
+
   TextFormField buildTitleTextField() {
     return TextFormField(
-      focusNode: nodeOne,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.title),
-      onChanged: (String newUsrTitle) {
-        _titleController.text = newUsrTitle;
+      focusNode: titleFocusNode,
+      controller: _titleController,
+      onFieldSubmitted: (value) {
+        _buildFocusChange(_formKey.currentContext, titleFocusNode, idFocusNode);
       },
+      textInputAction: TextInputAction.next,
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.title),
     );
   }
 
   TextFormField buildIDTextField() {
     return TextFormField(
-      focusNode: nodeTwo,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrID),
-      onChanged: (String newUsrID) {
-        _usrIDController.text = newUsrID;
+      focusNode: idFocusNode,
+      controller: _usrIDController,
+      onFieldSubmitted: (value) {
+        _buildFocusChange(_formKey.currentContext, idFocusNode, pwFocusNode);
       },
+      textInputAction: TextInputAction.next,
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrID),
     );
   }
 
   TextFormField buildPWTextField() {
     return TextFormField(
-      focusNode: nodeThree,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrPW),
-      onChanged: (String newUsrPW) {
-        _usrPWController.text = newUsrPW;
+      focusNode: pwFocusNode,
+      controller: _usrPWController,
+      onFieldSubmitted: (value) {
+        _buildFocusChange(_formKey.currentContext, pwFocusNode, textFocusNode);
       },
+      textInputAction: TextInputAction.next,
+      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrPW),
     );
   }
 
   TextFormField buildMemoTextField() {
     return TextFormField(
-      focusNode: nodeFour,
+      focusNode: textFocusNode,
+      controller: _textController,
+      onFieldSubmitted: (value) {
+        textFocusNode.unfocus();
+      },
+      textInputAction: TextInputAction.done,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
       decoration: kTextFieldDecoration.copyWith(labelText: widget.text),
-      onChanged: (String newText) {
-        _textController.text = newText;
-      },
     );
   }
 
@@ -192,10 +227,6 @@ class _ModifyPageState extends State<ModifyPage> {
         color: kColorBlue,
         icon: Icons.refresh,
         onPressed: () {
-          print('@@@@@@ ModifyTitle: [${_titleController.text}] @@@@@@');
-          print('@@@@@@ ModifyUsrID: [${_usrIDController.text}] @@@@@@');
-          print('@@@@@@ ModifyUsrPW: [${_usrPWController.text}] @@@@@@');
-          print('@@@@@@ ModifyText: [${_textController.text}] @@@@@@');
           updateMemoFirebaseDoc().then((onValue) {
             Navigator.pop(context);
           });
