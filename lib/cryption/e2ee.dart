@@ -6,8 +6,12 @@ class E2EE {
   final key = HiveDB().getKey();
 
   Future<String> encryptE2EE(String value) async {
-    final encrypted = await crypt.encrypt(value, key);
-    return encrypted;
+    if (value != 'null') {
+      final encrypted = await crypt.encrypt(value, key);
+      return encrypted;
+    } else {
+      return null;
+    }
   }
 
   Future<String> decryptE22EE(String encrypted) async {
