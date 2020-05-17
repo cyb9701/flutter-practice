@@ -5,7 +5,7 @@ import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/memo_page.dart';
-import 'package:flutteridmemo/pages/sign_up_page.dart';
+import 'package:flutteridmemo/pages/sing_up_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LogInPage extends StatefulWidget {
@@ -28,6 +28,10 @@ class _LogInPageState extends State<LogInPage> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 
   @override
@@ -54,23 +58,22 @@ class _LogInPageState extends State<LogInPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      buildTitleIcon(),
-                      SizedBox(width: 10.0),
-                      buildTitle(),
-                    ],
-                  ),
-                  buildForm(),
-                  buildFindPWBtn(),
-                  buildLogInBtn(),
-                ],
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.1),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    buildIconTitle(),
+                    SizedBox(height: kSize.height * 0.15),
+                    buildForm(),
+                    buildFindPWBtn(),
+                    SizedBox(height: kSize.height * 0.03),
+                    buildLogInBtn(),
+                  ],
+                ),
               ),
             ),
             buildSingUpBtn(),
@@ -80,20 +83,31 @@ class _LogInPageState extends State<LogInPage> {
     );
   }
 
-  Icon buildTitleIcon() {
-    return Icon(
-      Icons.lock,
-      size: 30.0,
+  Row buildIconTitle() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        buildTitleIcon(),
+        SizedBox(width: 20.0),
+        buildTitle(),
+      ],
     );
   }
 
-  Text buildTitle() {
+  Widget buildTitleIcon() {
+    return Icon(
+      Icons.lock,
+      size: 40.0,
+    );
+  }
+
+  Widget buildTitle() {
     return Text(
       'ID MEMO',
       style: GoogleFonts.jua(
         textStyle: TextStyle(
           color: kColorGreen,
-          fontSize: 50.0,
+          fontSize: 60.0,
         ),
       ),
     );
@@ -216,12 +230,16 @@ class _LogInPageState extends State<LogInPage> {
         children: <Widget>[
           Text('계정이 없으신가요?'),
           InkWell(
-            child: Text('  회원가입하기'),
+            child: Text(
+              '  회원가입하기',
+              style: TextStyle(
+                  color: Colors.blueAccent, fontWeight: FontWeight.bold),
+            ),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SignUpPage(),
+                  builder: (context) => SingUpPage(),
                 ),
               );
             },
