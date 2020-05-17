@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/constants/constants.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RoundBtnFrame extends StatelessWidget {
   RoundBtnFrame({
     @required this.title,
     @required this.onPressed,
     @required this.color,
-    @required this.icon,
   });
 
   final String title;
   final Function onPressed;
   final Color color;
-  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +27,10 @@ class RoundBtnFrame extends StatelessWidget {
           height: 50.0,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(kRadiusValue20),
-                      color: Colors.white),
-                  child: Icon(
-                    icon,
-                    size: 30.0,
-                    color: color,
-                  ),
-                ),
-                Text(
-                  title,
-                  style: kButtonTextStyle.copyWith(color: kColorGrey),
-                ),
-              ],
+            child: Text(
+              title,
+              style: GoogleFonts.jua(
+                  textStyle: kButtonTextStyle.copyWith(color: kColorGrey)),
             ),
           ),
         ),

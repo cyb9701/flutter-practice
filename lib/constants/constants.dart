@@ -29,10 +29,7 @@ const kMemoTitleTextStyle =
     TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold);
 const kMemoIDPWTextStyle = TextStyle(fontSize: 20.0);
 const kMemoTextTextStyle = TextStyle(fontSize: 15.0);
-const kButtonTextStyle = TextStyle(
-  fontWeight: FontWeight.bold,
-  fontSize: 20,
-);
+const kButtonTextStyle = TextStyle(fontSize: 25);
 
 const kTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 17.0, horizontal: 20.0),

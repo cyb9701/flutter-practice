@@ -246,7 +246,6 @@ class _AddPageState extends State<AddPage> {
       child: RoundBtnFrame(
         title: '메모 추가',
         color: kColorBlue,
-        icon: Icons.add,
         onPressed: () {
           if (_formKey.currentState.validate()) {
             addMemoFirebaseDoc().then((onValue) {

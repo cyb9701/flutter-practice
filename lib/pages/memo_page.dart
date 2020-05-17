@@ -7,6 +7,7 @@ import 'package:flutteridmemo/pages/add_page.dart';
 import 'package:flutteridmemo/pages/sidebar_page.dart';
 import 'package:flutteridmemo/utils/admob_service.dart';
 import 'package:flutteridmemo/utils/memo_stream.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MemoPage extends StatefulWidget {
   @override
@@ -88,22 +89,29 @@ class _MemoPageState extends State<MemoPage> {
               children: <TextSpan>[
                 TextSpan(
                     text: 'i ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30.0,
+                    style: GoogleFonts.jua(
+                      textStyle: TextStyle(
+                        fontSize: 30.0,
+                      ),
                     )),
                 TextSpan(
-                    text: 'D__M',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 45.0,
-                        color: kColorGreen)),
-                TextSpan(
-                    text: ' emo',
-                    style: TextStyle(
+                  text: 'D_M',
+                  style: GoogleFonts.jua(
+                    textStyle: TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontSize: 50.0,
+                      color: kColorGreen,
+                    ),
+                  ),
+                ),
+                TextSpan(
+                  text: ' emo',
+                  style: GoogleFonts.jua(
+                    textStyle: TextStyle(
                       fontSize: 30.0,
-                    )),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

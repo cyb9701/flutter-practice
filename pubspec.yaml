@@ -28,6 +28,7 @@ dependencies:
   rxdart: ^0.23.1
   flutter_native_splash: ^0.1.9 #Splash Screen
   rflutter_alert: ^1.0.3 #Dialog
+  google_fonts: ^1.0.0 #Google Fonts
 
   #E2EE / Hive Packages
   hive: ^1.4.1+1

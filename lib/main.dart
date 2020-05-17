@@ -50,5 +50,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
-//        .where((user) => user.isEmailVerified)

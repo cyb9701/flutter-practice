@@ -225,7 +225,6 @@ class _ModifyPageState extends State<ModifyPage> {
       child: RoundBtnFrame(
         title: '메모 수정',
         color: kColorBlue,
-        icon: Icons.refresh,
         onPressed: () {
           updateMemoFirebaseDoc().then((onValue) {
             Navigator.pop(context);

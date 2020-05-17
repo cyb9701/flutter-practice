@@ -83,7 +83,6 @@ class _SignUpPageState extends State<SignUpPage> {
           RoundBtnFrame(
             title: 'gogo',
             color: Colors.blue,
-            icon: Icons.person_add,
             onPressed: () async {
               try {
                 final newUsr = await _firebaseAuth
