@@ -248,9 +248,9 @@ class _AddPageState extends State<AddPage> {
         color: kColorBlue,
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            addMemoFirebaseDoc().then((onValue) {
+            addMemoFirebaseDoc().whenComplete(() {
               Navigator.pop(context);
-            }).then((onValue) {
+            }).whenComplete(() {
               showAdMob();
             });
             print('@@@@@@ Add New Memo @@@@@@');

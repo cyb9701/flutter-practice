@@ -226,7 +226,7 @@ class _ModifyPageState extends State<ModifyPage> {
         title: '메모 수정',
         color: kColorBlue,
         onPressed: () {
-          updateMemoFirebaseDoc().then((onValue) {
+          updateMemoFirebaseDoc().whenComplete(() {
             Navigator.pop(context);
           });
         },
