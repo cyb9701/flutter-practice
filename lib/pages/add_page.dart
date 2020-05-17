@@ -6,6 +6,7 @@ import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/utils/admob_service.dart';
 import 'package:flutteridmemo/utils/site_color.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class AddPage extends StatefulWidget {
@@ -111,12 +112,12 @@ class _AddPageState extends State<AddPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           buildContainerBar(),
-          buildSizedBoxH20(),
+          SizedBox(height: 20.0),
           buildTitle(),
-          buildSizedBoxH50(),
+          SizedBox(height: 50.0),
           buildInputForm(),
           buildWarningText(),
-          buildSizedBoxH20(),
+          SizedBox(height: 20.0),
           buildAddBtn(context),
         ],
       ),
@@ -138,7 +139,7 @@ class _AddPageState extends State<AddPage> {
     return Text(
       '메모 추가',
       textAlign: TextAlign.center,
-      style: kAddPageTitleTextStyle.copyWith(fontWeight: FontWeight.bold),
+      style: GoogleFonts.jua(textStyle: kAddPageTitleTextStyle),
     );
   }
 
@@ -149,11 +150,11 @@ class _AddPageState extends State<AddPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           buildTitleTextFormField(),
-          buildSizedBoxH10(),
+          SizedBox(height: 10.0),
           buildIDTextFormField(),
-          buildSizedBoxH10(),
+          SizedBox(height: 10.0),
           buildPWTextFormField(),
-          buildSizedBoxH20(),
+          SizedBox(height: 20.0),
           buildMemoTextFormField(),
         ],
       ),
@@ -259,12 +260,4 @@ class _AddPageState extends State<AddPage> {
       ),
     );
   }
-
-  SizedBox buildSizedBoxH10() => SizedBox(height: 10.0);
-
-  SizedBox buildSizedBoxH20() => SizedBox(height: 20.0);
-
-  SizedBox buildSizedBoxH50() => SizedBox(height: 50.0);
-
-  SizedBox buildBannerSpace() => SizedBox(height: 90.0);
 }
