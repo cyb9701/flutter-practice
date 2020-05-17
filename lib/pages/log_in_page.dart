@@ -94,7 +94,7 @@ class _LogInPageState extends State<LogInPage> {
 
   Widget buildTitleIcon() {
     return Icon(
-      Icons.lock,
+      Icons.vpn_key,
       size: 40.0,
     );
   }
