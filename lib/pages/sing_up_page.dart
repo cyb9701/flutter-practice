@@ -150,9 +150,11 @@ class _SingUpPageState extends State<SingUpPage> {
 
                                     newUsr.user
                                         .sendEmailVerification()
-                                        .then((onValue) {
-                                      _firebaseAuth.signOut();
-                                    });
+                                        .whenComplete(
+                                      () {
+                                        _firebaseAuth.signOut();
+                                      },
+                                    );
 
                                     _dialog
                                         .getCompleteDialog(
@@ -162,9 +164,11 @@ class _SingUpPageState extends State<SingUpPage> {
                                             '확인',
                                             _dialog.kBlueAlertStyle)
                                         .show()
-                                        .whenComplete(() {
-                                      Navigator.pop(context);
-                                    });
+                                        .whenComplete(
+                                      () {
+                                        Navigator.pop(context);
+                                      },
+                                    );
                                   }
                                 } catch (e) {
                                   print(e);
