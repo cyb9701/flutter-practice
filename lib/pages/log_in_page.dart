@@ -4,6 +4,7 @@ import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
+import 'package:flutteridmemo/pages/find_pw_page.dart';
 import 'package:flutteridmemo/pages/memo_page.dart';
 import 'package:flutteridmemo/pages/sing_up_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -69,6 +70,7 @@ class _LogInPageState extends State<LogInPage> {
                     buildIconTitle(),
                     SizedBox(height: kSize.height * 0.15),
                     buildForm(),
+                    SizedBox(height: 5.0),
                     buildFindPWBtn(),
                     SizedBox(height: kSize.height * 0.03),
                     buildLogInBtn(),
@@ -167,7 +169,19 @@ class _LogInPageState extends State<LogInPage> {
 
   InkWell buildFindPWBtn() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: FindPwPage(),
+            ),
+          ),
+        );
+      },
       child: Text(
         '비밀번호를 잊으셨나요?',
         textAlign: TextAlign.end,
