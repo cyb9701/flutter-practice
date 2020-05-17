@@ -28,16 +28,17 @@ class _FindPwPageState extends State<FindPwPage> {
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           buildContainerBar(),
           SizedBox(height: 20.0),
           buildTitle(),
-          SizedBox(height: 50.0),
-          buildTextField(),
           SizedBox(height: 5.0),
           buildInformation(),
+          SizedBox(height: 50.0),
+          buildTextField(),
           SizedBox(height: 20.0),
-          buildResetBtn(),
+          buildPwResetBtn(),
           SizedBox(height: 20.0),
         ],
       ),
@@ -57,7 +58,7 @@ class _FindPwPageState extends State<FindPwPage> {
 
   Text buildTitle() {
     return Text(
-      '비밀번호 초기화',
+      '비밀번호 재설정',
       textAlign: TextAlign.center,
       style: GoogleFonts.jua(
         textStyle: kAddPageTitleTextStyle,
@@ -66,10 +67,7 @@ class _FindPwPageState extends State<FindPwPage> {
   }
 
   Widget buildInformation() {
-    return Text(
-      '* 입력하신 이메일로 비밀번호 초기화 링크가 전송이 됩니다.',
-      textAlign: TextAlign.right,
-    );
+    return Text('* 입력하신 이메일로 비밀번호 재설정 링크가 전송이 됩니다.');
   }
 
   Form buildTextField() {
@@ -88,29 +86,48 @@ class _FindPwPageState extends State<FindPwPage> {
     );
   }
 
-  RoundBtnFrame buildResetBtn() {
-    return RoundBtnFrame(
-      title: '초기화',
-      onPressed: () {
-        if (_formKey.currentState.validate()) {
-          FirebaseAuth.instance
-              .sendPasswordResetEmail(email: _emailController.text)
-              .whenComplete(() {
-            _dialog
-                .getCompleteDialog(
-                    context,
-                    '초기화 성공',
-                    '입력하신 이메일로 비밀번호 초기화 링크가 전송되었습니다.',
-                    '확인',
-                    _dialog.kBlueAlertStyle)
-                .show()
-                .whenComplete(() {
+  Widget buildPwResetBtn() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Expanded(
+          child: RoundBtnFrame(
+            title: '취소',
+            onPressed: () {
               Navigator.pop(context);
-            });
-          });
-        }
-      },
-      color: kColorGreen,
+            },
+            color: kColorGrey,
+            textColor: Colors.white70,
+          ),
+        ),
+        SizedBox(width: 20.0),
+        Expanded(
+          child: RoundBtnFrame(
+            title: '재설정',
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                FirebaseAuth.instance
+                    .sendPasswordResetEmail(email: _emailController.text)
+                    .whenComplete(() {
+                  _dialog
+                      .getCompleteDialog(
+                          context,
+                          '재설정 성공',
+                          '입력하신 이메일로 비밀번호 재설정 링크가 전송되었습니다.',
+                          '확인',
+                          _dialog.kBlueAlertStyle)
+                      .show()
+                      .whenComplete(() {
+                    Navigator.pop(context);
+                  });
+                });
+              }
+            },
+            color: kColorGreen,
+            textColor: kColorGrey,
+          ),
+        )
+      ],
     );
   }
 }

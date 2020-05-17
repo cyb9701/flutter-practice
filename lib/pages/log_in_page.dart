@@ -179,7 +179,7 @@ class _LogInPageState extends State<LogInPage> {
         );
       },
       child: Text(
-        '비밀번호를 잊으셨나요?',
+        '비밀번호 재설정하기',
         textAlign: TextAlign.end,
       ),
     );
