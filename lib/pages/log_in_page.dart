@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_string_encryption/flutter_string_encryption.dart';
 import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
@@ -17,8 +16,6 @@ class LogInPage extends StatefulWidget {
 class _LogInPageState extends State<LogInPage> {
   final _firebaseAuth = FirebaseAuth.instance;
   DialogFrame _dialog = DialogFrame();
-  String _randomKey = '';
-  final key = HiveDB().getKey();
   final usrEmail = HiveDB().getUsrEmail();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -26,15 +23,6 @@ class _LogInPageState extends State<LogInPage> {
   TextEditingController _pwController = TextEditingController();
   FocusNode _emailFocusNode;
   FocusNode _pwFocusNode;
-
-  initPlatformState() async {
-    final crypt = new PlatformStringCryptor();
-    final key = await crypt.generateRandomKey();
-
-    setState(() {
-      _randomKey = key;
-    });
-  }
 
   void _buildFocusChange(
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
@@ -184,17 +172,16 @@ class _LogInPageState extends State<LogInPage> {
           try {
             if (logInUsr.user.isEmailVerified == true) {
               if (logInUsr != null) {
-                print('@@@@@@ Key: $key @@@@@@');
-                print('@@@@@@ UsrEmail: $usrEmail @@@@@@');
-                if (key == null) {
-                  HiveDB().saveKey(_randomKey);
-                }
-                if (usrEmail.toString() != _emailController.text.toString()) {
+                if (usrEmail.toString() == _emailController.text.toString()) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemoPage()));
+                  _pwController.clear();
+                } else {
                   HiveDB().saveUsrEmail(_emailController.text);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MemoPage()));
+                  _pwController.clear();
                 }
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MemoPage()));
-                _pwController.clear();
               }
             } else {
               _firebaseAuth.signOut();

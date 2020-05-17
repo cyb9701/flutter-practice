@@ -1,5 +1,4 @@
 import 'package:firebase_admob/firebase_admob.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
@@ -15,9 +14,6 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-  String logInUsrEmail = 'Loading';
-
-  FirebaseUser logInUsr;
   TextEditingController searchController = TextEditingController();
   String searchValue;
   final usrEmail = HiveDB().getUsrEmail();
