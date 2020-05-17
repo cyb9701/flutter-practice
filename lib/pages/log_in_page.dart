@@ -75,7 +75,7 @@ class _LogInPageState extends State<LogInPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       buildTitleIcon(),
-                      buildSizedBoxW10(),
+                      SizedBox(width: 10.0),
                       buildTitle(),
                     ],
                   ),
@@ -117,9 +117,7 @@ class _LogInPageState extends State<LogInPage> {
       child: Column(
         children: <Widget>[
           buildEmailTextFormField(),
-          SizedBox(
-            height: 20.0,
-          ),
+          SizedBox(height: 20.0),
           buildPwTextFormField(),
         ],
       ),
@@ -245,8 +243,6 @@ class _LogInPageState extends State<LogInPage> {
       ),
     );
   }
-
-  SizedBox buildSizedBoxW10() => SizedBox(width: 10.0);
 }
 
 //on PlatformException catch (e) {
