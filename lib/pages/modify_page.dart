@@ -4,6 +4,7 @@ import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/utils/site_color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ModifyPage extends StatefulWidget {
   ModifyPage(
@@ -113,12 +114,12 @@ class _ModifyPageState extends State<ModifyPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           buildContainerBar(),
-          buildSizedBoxH20(),
+          SizedBox(height: 20.0),
           buildTitle(),
-          buildSizedBoxH50(),
+          SizedBox(height: 50.0),
           buildInputForm(),
           buildWarningText(),
-          buildSizedBoxH20(),
+          SizedBox(height: 20.0),
           buildModifyBtn(context),
         ],
       ),
@@ -140,7 +141,7 @@ class _ModifyPageState extends State<ModifyPage> {
     return Text(
       '메모 수정',
       textAlign: TextAlign.center,
-      style: kAddPageTitleTextStyle.copyWith(fontWeight: FontWeight.bold),
+      style: GoogleFonts.jua(textStyle: kAddPageTitleTextStyle),
     );
   }
 
@@ -150,11 +151,11 @@ class _ModifyPageState extends State<ModifyPage> {
       child: Column(
         children: <Widget>[
           buildTitleTextField(),
-          buildSizedBoxH10(),
+          SizedBox(height: 10.0),
           buildIDTextField(),
-          buildSizedBoxH10(),
+          SizedBox(height: 10.0),
           buildPWTextField(),
-          buildSizedBoxH20(),
+          SizedBox(height: 20.0),
           buildMemoTextField(),
         ],
       ),
@@ -233,12 +234,4 @@ class _ModifyPageState extends State<ModifyPage> {
       ),
     );
   }
-
-  SizedBox buildSizedBoxH10() => SizedBox(height: 10.0);
-
-  SizedBox buildSizedBoxH20() => SizedBox(height: 20.0);
-
-  SizedBox buildSizedBoxH50() => SizedBox(height: 50.0);
-
-  SizedBox buildBannerSpace() => SizedBox(height: 90.0);
 }
