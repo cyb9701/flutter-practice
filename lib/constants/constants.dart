@@ -48,3 +48,21 @@ const kTextFieldDecoration = InputDecoration(
   labelStyle: TextStyle(fontSize: 18.0, color: Colors.white54),
   filled: false,
 );
+
+const kSingUpTextFieldDecoration = InputDecoration(
+  contentPadding: EdgeInsets.symmetric(vertical: 17.0, horizontal: 20.0),
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(kRadiusValue10)),
+  ),
+  enabledBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: kColorBlue, width: 1.0),
+    borderRadius: BorderRadius.all(Radius.circular(kRadiusValue10)),
+  ),
+  focusedBorder: OutlineInputBorder(
+    borderSide: BorderSide(color: kColorBlue, width: 2.0),
+    borderRadius: BorderRadius.all(Radius.circular(kRadiusValue10)),
+  ),
+  labelText: '',
+  labelStyle: TextStyle(fontSize: 18.0, color: Colors.white54),
+  filled: false,
+);

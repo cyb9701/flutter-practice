@@ -31,10 +31,6 @@ class _LogInPageState extends State<LogInPage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  Future<void> resetPassword(String email) async {
-    await _firebaseAuth.sendPasswordResetEmail(email: email);
-  }
-
   @override
   void initState() {
     _emailFocusNode = FocusNode();
@@ -193,6 +189,7 @@ class _LogInPageState extends State<LogInPage> {
     return RoundBtnFrame(
       title: '로그인',
       color: kColorGreen,
+      textColor: kColorGrey,
       onPressed: () async {
         if (_formKey.currentState.validate()) {
           final logInUsr = await _firebaseAuth.signInWithEmailAndPassword(
@@ -203,12 +200,10 @@ class _LogInPageState extends State<LogInPage> {
                 if (usrEmail.toString() == _emailController.text.toString()) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MemoPage()));
-                  _pwController.clear();
                 } else {
                   HiveDB().saveUsrEmail(_emailController.text);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MemoPage()));
-                  _pwController.clear();
                 }
               }
             } else {

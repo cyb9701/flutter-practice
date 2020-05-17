@@ -7,11 +7,13 @@ class RoundBtnFrame extends StatelessWidget {
     @required this.title,
     @required this.onPressed,
     @required this.color,
+    @required this.textColor,
   });
 
   final String title;
   final Function onPressed;
   final Color color;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +25,13 @@ class RoundBtnFrame extends StatelessWidget {
         borderRadius: BorderRadius.circular(kRadiusValue15),
         child: MaterialButton(
           onPressed: onPressed,
-          minWidth: 200.0,
           height: 50.0,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             child: Text(
               title,
               style: GoogleFonts.jua(
-                  textStyle: kButtonTextStyle.copyWith(color: kColorGrey)),
+                  textStyle: kButtonTextStyle.copyWith(color: textColor)),
             ),
           ),
         ),
