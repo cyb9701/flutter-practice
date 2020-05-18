@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/menu_clipper.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SideBarPage extends StatefulWidget {
@@ -19,6 +21,7 @@ class _SideBarPageState extends State<SideBarPage>
   Stream<bool> isOpenedStream;
   StreamSink<bool> isOpenedSink;
   final usrEmail = HiveDB().getUsrEmail();
+  DialogFrame _dialog = DialogFrame();
 
   void onIconPressed() {
     final animationStatus = _animationController.status;
@@ -39,6 +42,19 @@ class _SideBarPageState extends State<SideBarPage>
     isOpenedSink.add(false);
     _animationController.reverse();
     Navigator.pop(context);
+  }
+
+  withdrawAccount() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    _dialog.getDeleteDialog(
+        context, '회원탈퇴', '회원탈퇴를 하게 되면 사용자의 모든 정보가 삭제되며 복구 불가능합니다.', '탈퇴', '취소',
+        () {
+      user.delete().whenComplete(() {
+        signOut();
+      });
+    }, () {
+      Navigator.pop(context);
+    }, _dialog.kRedAlertStyle).show();
   }
 
   @override
@@ -120,6 +136,7 @@ class _SideBarPageState extends State<SideBarPage>
                 buildUsrEmail(),
                 buildSizedBoxH20(),
                 buildLogOutBtn(),
+                buildWithDraw(),
               ],
             ),
           ),
@@ -137,7 +154,7 @@ class _SideBarPageState extends State<SideBarPage>
       ),
       child: Text(
         usrEmail == null ? 'ERROR' : usrEmail,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
+        style: GoogleFonts.jua(textStyle: TextStyle(fontSize: 25.0)),
       ),
     );
   }
@@ -154,7 +171,29 @@ class _SideBarPageState extends State<SideBarPage>
         ),
         title: Text(
           '로그아웃',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+          style: GoogleFonts.notoSans(
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+        ),
+      ),
+    );
+  }
+
+  InkWell buildWithDraw() {
+    return InkWell(
+      onTap: () {
+        withdrawAccount();
+      },
+      child: ListTile(
+        leading: Icon(
+          Icons.delete,
+          size: 30.0,
+        ),
+        title: Text(
+          '회원탈퇴',
+          style: GoogleFonts.notoSans(
+              textStyle:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
         ),
       ),
     );
