@@ -6,6 +6,7 @@ import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SingUpPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _SingUpPageState extends State<SingUpPage> {
   DialogFrame _dialog = DialogFrame();
   HiveDB _hiveDB = HiveDB();
   String _randomKey = '';
+  bool _isCheck = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
@@ -28,6 +30,15 @@ class _SingUpPageState extends State<SingUpPage> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  _launchURL() async {
+    const url = 'https://idmemomemo.blogspot.com/2020/05/blog-post.html';
+    if (await canLaunch(url)) {
+      await launch(url, forceSafariVC: false, universalLinksOnly: true);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   initPlatformState() async {
@@ -65,10 +76,12 @@ class _SingUpPageState extends State<SingUpPage> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.1),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               buildTitle(),
               buildForm(),
+              buildTermsConditions(context),
               buildBtn(context),
             ],
           ),
@@ -116,10 +129,19 @@ class _SingUpPageState extends State<SingUpPage> {
       validator: (String value) {
         if (value.isEmpty) {
           return '이메일을 입력해주세요.';
-        } else if (!value.contains('@') || !value.contains('.com')) {
-          return '정확한 이메일을 입력해주세요.';
         }
-        return null;
+        String p = "[a-zA-Z0-9\+\.\_\%\-\+]{1,256}" +
+            "\\@" +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+            "(" +
+            "\\." +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+            ")+";
+        RegExp regExp = new RegExp(p);
+        if (regExp.hasMatch(value)) {
+          return null;
+        }
+        return '이메일을 정확하게 입력해주세요.';
       },
       decoration: kBlueTextFieldDecoration.copyWith(labelText: '이메일'),
     );
@@ -143,6 +165,36 @@ class _SingUpPageState extends State<SingUpPage> {
         return null;
       },
       decoration: kBlueTextFieldDecoration.copyWith(labelText: '비밀번호'),
+    );
+  }
+
+  ListTile buildTermsConditions(BuildContext context) {
+    return ListTile(
+      leading: buildCheckbox(),
+      title: Text('개인정보취급방침'),
+      trailing: buildContents(context),
+    );
+  }
+
+  Checkbox buildCheckbox() {
+    return Checkbox(
+      value: _isCheck,
+      activeColor: kColorBlue,
+      checkColor: kColorBlack,
+      onChanged: (bool checked) {
+        setState(
+          () {
+            _isCheck = checked;
+          },
+        );
+      },
+    );
+  }
+
+  InkWell buildContents(BuildContext context) {
+    return InkWell(
+      onTap: _launchURL,
+      child: Icon(Icons.arrow_forward_ios),
     );
   }
 
@@ -178,36 +230,45 @@ class _SingUpPageState extends State<SingUpPage> {
         textColor: kColorGrey,
         onPressed: () async {
           if (_formKey.currentState.validate()) {
-            try {
-              final newUsr = await _firebaseAuth.createUserWithEmailAndPassword(
-                  email: _emailController.text, password: _pwController.text);
+            if (_isCheck) {
+              try {
+                final newUsr =
+                    await _firebaseAuth.createUserWithEmailAndPassword(
+                        email: _emailController.text,
+                        password: _pwController.text);
 
-              if (newUsr.user != null) {
-                _hiveDB.saveKey(_randomKey);
-                _hiveDB.saveUsrEmail(_emailController.text);
+                if (newUsr.user != null) {
+                  _hiveDB.saveKey(_randomKey);
+                  _hiveDB.saveUsrEmail(_emailController.text);
 
-                newUsr.user.sendEmailVerification().whenComplete(
-                  () {
-                    _firebaseAuth.signOut();
-                  },
-                );
+                  newUsr.user.sendEmailVerification().whenComplete(
+                    () {
+                      _firebaseAuth.signOut();
+                    },
+                  );
 
-                _dialog
-                    .getCompleteDialog(
-                        context,
-                        '회원가입 성공',
-                        '회원가입 인증 메일 확인시\n 로그인 가능합니다.',
-                        '확인',
-                        _dialog.kBlueAlertStyle)
-                    .show()
-                    .whenComplete(
-                  () {
-                    Navigator.pop(context);
-                  },
-                );
+                  _dialog
+                      .getCompleteDialog(
+                          context,
+                          '회원가입 성공',
+                          '회원가입 인증 메일\n확인시로그인 가능합니다.',
+                          '확인',
+                          _dialog.kBlueAlertStyle)
+                      .show()
+                      .whenComplete(
+                    () {
+                      Navigator.pop(context);
+                    },
+                  );
+                }
+              } catch (e) {
+                print(e);
               }
-            } catch (e) {
-              print(e);
+            } else {
+              _dialog
+                  .getCompleteDialog(context, '오류', '개인정보취급방침 확인을 해주세요.', '확인',
+                      _dialog.kRedAlertStyle)
+                  .show();
             }
           }
         },
