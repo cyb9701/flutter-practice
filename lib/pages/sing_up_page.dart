@@ -84,6 +84,8 @@ class _SingUpPageState extends State<SingUpPage> {
               buildForm(),
               buildTermsConditions(context),
               SizedBox(height: kSize.height * 0.03),
+              buildInformation(),
+              SizedBox(height: kSize.height * 0.03),
               buildBtn(context),
             ],
           ),
@@ -175,6 +177,15 @@ class _SingUpPageState extends State<SingUpPage> {
       leading: buildCheckbox(),
       title: Text('개인정보취급방침'),
       trailing: buildContents(context),
+    );
+  }
+
+  Container buildInformation() {
+    return Container(
+      child: Text(
+        '* 데이터를 암호화하여 안전하게 저장하기 위해서 어플을 삭제하거나 다른 기기에서 로그인 할시 모든 정보를 확인할 수 없습니다.',
+        style: TextStyle(color: Colors.white70),
+      ),
     );
   }
 
