@@ -265,7 +265,7 @@ class _SingUpPageState extends State<SingUpPage> {
                       .getCompleteDialog(
                           context,
                           '회원가입 성공',
-                          '회원가입 인증 메일\n확인시로그인 가능합니다.',
+                          '회원가입 인증 메일 확인시로그인 가능합니다.',
                           '확인',
                           _dialog.kBlueAlertStyle)
                       .show()
