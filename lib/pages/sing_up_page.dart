@@ -80,8 +80,10 @@ class _SingUpPageState extends State<SingUpPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               buildTitle(),
+              SizedBox(height: kSize.height * 0.1),
               buildForm(),
               buildTermsConditions(context),
+              SizedBox(height: kSize.height * 0.03),
               buildBtn(context),
             ],
           ),

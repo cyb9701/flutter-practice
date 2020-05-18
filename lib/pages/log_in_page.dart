@@ -64,7 +64,7 @@ class _LogInPageState extends State<LogInPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     buildIconTitle(),
-                    SizedBox(height: kSize.height * 0.15),
+                    SizedBox(height: kSize.height * 0.1),
                     buildForm(),
                     SizedBox(height: 5.0),
                     buildFindPWBtn(),
