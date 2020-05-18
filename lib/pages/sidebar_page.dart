@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/dialog_frame.dart';
@@ -49,8 +50,14 @@ class _SideBarPageState extends State<SideBarPage>
     _dialog.getDeleteDialog(
         context, '회원탈퇴', '회원탈퇴를 하게 되면 사용자의 모든 정보가 삭제되며 복구 불가능합니다.', '탈퇴', '취소',
         () {
-      user.delete().whenComplete(() {
+      Firestore().collection(user.email).getDocuments().then((snapshots) {
+        for (DocumentSnapshot snapshot in snapshots.documents) {
+          snapshot.reference.delete();
+        }
+      }).whenComplete(() {
+        user.delete();
         signOut();
+        Navigator.pop(context);
       });
     }, () {
       Navigator.pop(context);
@@ -129,14 +136,20 @@ class _SideBarPageState extends State<SideBarPage>
               ),
             ),
             margin: EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 5.0),
-            padding: EdgeInsets.fromLTRB(30.0, 100.0, 50.0, 100.0),
+            padding: EdgeInsets.fromLTRB(30.0, 100.0, 50.0, 30.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                buildUsrEmail(),
-                buildSizedBoxH20(),
-                buildLogOutBtn(),
-                buildWithDraw(),
+                Column(
+                  children: <Widget>[
+                    buildUsrEmail(),
+                    SizedBox(height: 20.0),
+                    buildLogOutBtn(),
+                    buildWithDraw(),
+                  ],
+                ),
+                buildDeveloperEmail(),
               ],
             ),
           ),
@@ -186,14 +199,43 @@ class _SideBarPageState extends State<SideBarPage>
       },
       child: ListTile(
         leading: Icon(
-          Icons.delete,
+          Icons.cloud_off,
           size: 30.0,
         ),
         title: Text(
           '회원탈퇴',
           style: GoogleFonts.notoSans(
-              textStyle:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0)),
+            textStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ListTile buildDeveloperEmail() {
+    return ListTile(
+      leading: Icon(
+        Icons.email,
+        color: Colors.white70,
+      ),
+      title: Text(
+        'cyb9701@gmail.com',
+        style: GoogleFonts.notoSans(
+          textStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white70,
+          ),
+        ),
+      ),
+      subtitle: Text(
+        '개발자 이메일',
+        style: GoogleFonts.notoSans(
+          textStyle: TextStyle(
+            color: Colors.white70,
+          ),
         ),
       ),
     );
@@ -227,6 +269,4 @@ class _SideBarPageState extends State<SideBarPage>
       ),
     );
   }
-
-  SizedBox buildSizedBoxH20() => SizedBox(height: 20.0);
 }
