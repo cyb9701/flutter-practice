@@ -134,9 +134,11 @@ class _LogInPageState extends State<LogInPage> {
         _buildFocusChange(
             _formKey.currentContext, _emailFocusNode, _pwFocusNode);
       },
-      validator: (String title) {
-        if (title.isEmpty) {
+      validator: (String value) {
+        if (value.isEmpty) {
           return '이메일을 입력해주세요.';
+        } else if (!value.contains('@') || !value.contains('.com')) {
+          return '정확한 이메일을 입력해주세요.';
         }
         return null;
       },
@@ -153,9 +155,11 @@ class _LogInPageState extends State<LogInPage> {
       onFieldSubmitted: (value) {
         _pwFocusNode.unfocus();
       },
-      validator: (String title) {
-        if (title.isEmpty) {
+      validator: (String value) {
+        if (value.isEmpty) {
           return '비밀번호를 입력해주세요.';
+        } else if (value.length < 6) {
+          return '비밀번호는 6자리 이상으로 입력해주세요.';
         }
         return null;
       },
