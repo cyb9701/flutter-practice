@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/pages/modify_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MemoFrame extends StatefulWidget {
   MemoFrame({
@@ -72,18 +73,19 @@ class _MemoFrameState extends State<MemoFrame> {
             children: <Widget>[
               Text(
                 widget.title,
-                style: kMemoTitleTextStyle.copyWith(
+                style: GoogleFonts.notoSans(
+                    textStyle: kMemoTitleTextStyle.copyWith(
                   color: widget.color != null
                       ? Color(int.parse(widget.color))
                       : Colors.white,
-                ),
+                )),
               ),
               SizedBox(
                 height: 25.0,
               ),
               Text(
                 widget.usrID,
-                style: kMemoIDPWTextStyle,
+                style: GoogleFonts.notoSans(textStyle: kMemoIDPWTextStyle),
               ),
               SizedBox(
                 height: 7.0,
@@ -94,11 +96,12 @@ class _MemoFrameState extends State<MemoFrame> {
                 children: <Widget>[
                   Text(
                     widget.usrPW,
-                    style: kMemoIDPWTextStyle,
+                    style: GoogleFonts.notoSans(textStyle: kMemoIDPWTextStyle),
                   ),
                   Text(
                     widget.text == null ? widget.createTime : '',
-                    style: TextStyle(color: kColorBlue),
+                    style: GoogleFonts.notoSans(
+                        textStyle: TextStyle(color: kColorBlue)),
                   ),
                 ],
               ),
@@ -114,16 +117,18 @@ class _MemoFrameState extends State<MemoFrame> {
                       padding: EdgeInsets.only(right: 20.0),
                       child: Text(
                         widget.text == null ? '' : widget.text,
-                        style: kMemoTextTextStyle.copyWith(
+                        style: GoogleFonts.notoSans(
+                            textStyle: kMemoTextTextStyle.copyWith(
                           color: Colors.white60,
-                        ),
+                        )),
                         softWrap: true,
                       ),
                     ),
                   ),
                   Text(
                     widget.text == null ? '' : widget.createTime,
-                    style: TextStyle(color: kColorBlue),
+                    style: GoogleFonts.notoSans(
+                        textStyle: TextStyle(color: kColorBlue)),
                   ),
                 ],
               ),
