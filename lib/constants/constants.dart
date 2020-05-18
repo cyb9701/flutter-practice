@@ -49,7 +49,7 @@ const kTextFieldDecoration = InputDecoration(
   filled: false,
 );
 
-const kSingUpTextFieldDecoration = InputDecoration(
+const kBlueTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 17.0, horizontal: 20.0),
   border: OutlineInputBorder(
     borderRadius: BorderRadius.all(Radius.circular(kRadiusValue10)),

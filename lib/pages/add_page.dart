@@ -264,11 +264,11 @@ class _AddPageState extends State<AddPage> {
     );
   }
 
-  Expanded buildAddBtn(BuildContext context) {
+  Widget buildAddBtn(BuildContext context) {
     return Expanded(
       child: RoundBtnFrame(
         title: '메모 추가',
-        color: kColorBlue,
+        color: kColorGreen,
         textColor: kColorGrey,
         onPressed: () {
           if (_formKey.currentState.validate()) {

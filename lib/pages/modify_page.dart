@@ -120,7 +120,7 @@ class _ModifyPageState extends State<ModifyPage> {
           buildInputForm(),
           buildWarningText(),
           SizedBox(height: 20.0),
-          buildModifyBtn(context),
+          buildBtn(context),
         ],
       ),
     );
@@ -170,7 +170,7 @@ class _ModifyPageState extends State<ModifyPage> {
         _buildFocusChange(_formKey.currentContext, titleFocusNode, idFocusNode);
       },
       textInputAction: TextInputAction.next,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.title),
+      decoration: kBlueTextFieldDecoration.copyWith(labelText: widget.title),
     );
   }
 
@@ -182,7 +182,7 @@ class _ModifyPageState extends State<ModifyPage> {
         _buildFocusChange(_formKey.currentContext, idFocusNode, pwFocusNode);
       },
       textInputAction: TextInputAction.next,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrID),
+      decoration: kBlueTextFieldDecoration.copyWith(labelText: widget.usrID),
     );
   }
 
@@ -194,7 +194,7 @@ class _ModifyPageState extends State<ModifyPage> {
         _buildFocusChange(_formKey.currentContext, pwFocusNode, textFocusNode);
       },
       textInputAction: TextInputAction.next,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.usrPW),
+      decoration: kBlueTextFieldDecoration.copyWith(labelText: widget.usrPW),
     );
   }
 
@@ -208,7 +208,7 @@ class _ModifyPageState extends State<ModifyPage> {
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.multiline,
       maxLines: 3,
-      decoration: kTextFieldDecoration.copyWith(labelText: widget.text),
+      decoration: kBlueTextFieldDecoration.copyWith(labelText: widget.text),
     );
   }
 
@@ -220,18 +220,33 @@ class _ModifyPageState extends State<ModifyPage> {
     );
   }
 
-  Widget buildModifyBtn(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
-      child: RoundBtnFrame(
-        title: '메모 수정',
-        color: kColorBlue,
-        onPressed: () {
-          updateMemoFirebaseDoc().whenComplete(() {
-            Navigator.pop(context);
-          });
-        },
-      ),
+  Widget buildBtn(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: RoundBtnFrame(
+            title: '취소',
+            color: kColorGrey,
+            textColor: Colors.white70,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        SizedBox(width: 20.0),
+        Expanded(
+          child: RoundBtnFrame(
+            title: '메모 수정',
+            color: kColorBlue,
+            textColor: kColorGrey,
+            onPressed: () {
+              updateMemoFirebaseDoc().whenComplete(() {
+                Navigator.pop(context);
+              });
+            },
+          ),
+        ),
+      ],
     );
   }
 }

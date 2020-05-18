@@ -121,7 +121,7 @@ class _SingUpPageState extends State<SingUpPage> {
         }
         return null;
       },
-      decoration: kSingUpTextFieldDecoration.copyWith(labelText: '이메일'),
+      decoration: kBlueTextFieldDecoration.copyWith(labelText: '이메일'),
     );
   }
 
@@ -142,7 +142,7 @@ class _SingUpPageState extends State<SingUpPage> {
         }
         return null;
       },
-      decoration: kSingUpTextFieldDecoration.copyWith(labelText: '비밀번호'),
+      decoration: kBlueTextFieldDecoration.copyWith(labelText: '비밀번호'),
     );
   }
 
