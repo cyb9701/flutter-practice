@@ -118,7 +118,7 @@ class _AddPageState extends State<AddPage> {
           buildInputForm(),
           buildWarningText(),
           SizedBox(height: 20.0),
-          buildAddBtn(context),
+          buildBtn(context),
         ],
       ),
     );
@@ -241,12 +241,35 @@ class _AddPageState extends State<AddPage> {
     );
   }
 
-  Widget buildAddBtn(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.15),
+  Widget buildBtn(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        buildCancelBtn(context),
+        SizedBox(width: 20.0),
+        buildAddBtn(context),
+      ],
+    );
+  }
+
+  Expanded buildCancelBtn(BuildContext context) {
+    return Expanded(
+      child: RoundBtnFrame(
+        title: '취소',
+        color: kColorGrey,
+        textColor: Colors.white70,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  Expanded buildAddBtn(BuildContext context) {
+    return Expanded(
       child: RoundBtnFrame(
         title: '메모 추가',
         color: kColorBlue,
+        textColor: kColorGrey,
         onPressed: () {
           if (_formKey.currentState.validate()) {
             addMemoFirebaseDoc().whenComplete(() {
