@@ -144,8 +144,9 @@ class _SingUpPageState extends State<SingUpPage> {
         RegExp regExp = new RegExp(p);
         if (regExp.hasMatch(value)) {
           return null;
+        } else {
+          return '이메일을 정확하게 입력해주세요.';
         }
-        return '이메일을 정확하게 입력해주세요.';
       },
       decoration: kBlueTextFieldDecoration.copyWith(labelText: '이메일'),
     );
