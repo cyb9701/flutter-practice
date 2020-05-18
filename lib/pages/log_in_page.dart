@@ -137,10 +137,19 @@ class _LogInPageState extends State<LogInPage> {
       validator: (String value) {
         if (value.isEmpty) {
           return '이메일을 입력해주세요.';
-        } else if (!value.contains('@') || !value.contains('.com')) {
-          return '정확한 이메일을 입력해주세요.';
         }
-        return null;
+        String p = "[a-zA-Z0-9\+\.\_\%\-\+]{1,256}" +
+            "\\@" +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+            "(" +
+            "\\." +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+            ")+";
+        RegExp regExp = new RegExp(p);
+        if (regExp.hasMatch(value)) {
+          return null;
+        }
+        return '이메일을 정확하게 입력해주세요.';
       },
       decoration: kTextFieldDecoration.copyWith(labelText: '이메일'),
     );
