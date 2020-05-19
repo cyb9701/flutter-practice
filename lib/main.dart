@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
             );
           } else {
             if (snapshot.hasData && snapshot.data.isEmailVerified == true) {
-              return MemoPage();
+              return MemoPage(userEmail: snapshot.data.email);
             } else {
               return LogInPage();
             }
