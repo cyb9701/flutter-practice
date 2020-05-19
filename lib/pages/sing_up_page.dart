@@ -72,9 +72,10 @@ class _SingUpPageState extends State<SingUpPage> {
   Widget build(BuildContext context) {
     kSize = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.1),
+          padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.05),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,7 +101,7 @@ class _SingUpPageState extends State<SingUpPage> {
       style: GoogleFonts.jua(
         textStyle: TextStyle(
           color: kColorBlue,
-          fontSize: 60.0,
+          fontSize: 50.0,
         ),
       ),
     );
@@ -253,8 +254,6 @@ class _SingUpPageState extends State<SingUpPage> {
 
                 if (newUsr.user != null) {
                   _hiveDB.saveKey(_randomKey);
-                  _hiveDB.saveUsrEmail(_emailController.text);
-
                   newUsr.user.sendEmailVerification().whenComplete(
                     () {
                       _firebaseAuth.signOut();

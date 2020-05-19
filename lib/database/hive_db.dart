@@ -11,15 +11,6 @@ class HiveDB {
     String key = databaseBox.get('privateKey');
     return key;
   }
-
-  void saveUsrEmail(String usrEmail) {
-    databaseBox.put('usrEmail', usrEmail);
-  }
-
-  String getUsrEmail() {
-    String key = databaseBox.get('usrEmail');
-    return key;
-  }
 }
 
 //WidgetsFlutterBinding.ensureInitialized();

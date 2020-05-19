@@ -99,7 +99,7 @@ class _AddPageState extends State<AddPage> {
     kSize = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(60.0, 20.0, 60.0, 30.0),
+      padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 30.0),
       decoration: BoxDecoration(
         color: kColorBlack,
         borderRadius: BorderRadius.only(

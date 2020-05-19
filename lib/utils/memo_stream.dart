@@ -6,8 +6,9 @@ import 'package:flutteridmemo/cryption/e2ee.dart';
 import 'package:flutteridmemo/database/hive_db.dart';
 
 class MemoStream extends StatefulWidget {
-  MemoStream({this.search});
+  MemoStream({@required this.userEmail, this.search});
 
+  final String userEmail;
   final String search;
 
   @override
@@ -19,15 +20,10 @@ class _MemoStreamState extends State<MemoStream> {
   final crypt = new PlatformStringCryptor();
   final key = HiveDB().getKey();
   E2EE e2ee = E2EE();
-  final usrEmail = HiveDB().getUsrEmail();
 
   Stream<List<MemoFrame>> memosStream;
 
   Future<MemoFrame> generateMemoMaterial(DocumentSnapshot memo) async {
-//    final memoTitle = await crypt.decrypt(memo.data['title'], key);
-//    final memoUsrID = await crypt.decrypt(memo.data['usrID'], key);
-//    final memoUsrPW = await crypt.decrypt(memo.data['usrPW'], key);
-//    final memoText = await crypt.decrypt(memo.data['text'], key);
     final memoTitle = await e2ee.decryptE22EE(memo.data['title']);
     final memoUsrID = await e2ee.decryptE22EE(memo.data['usrID']);
     final memoUsrPW = await e2ee.decryptE22EE(memo.data['usrPW']);
@@ -36,7 +32,7 @@ class _MemoStreamState extends State<MemoStream> {
         : await e2ee.decryptE22EE(memo.data['text']);
 
     return MemoFrame(
-      logInUsrEmail: usrEmail,
+      logInUsrEmail: widget.userEmail,
       doc: memo.documentID,
       title: memoTitle,
       usrID: memoUsrID,
@@ -57,7 +53,7 @@ class _MemoStreamState extends State<MemoStream> {
   Widget build(BuildContext context) {
     return StreamBuilder<List<MemoFrame>>(
       stream: memosStream = _fireStore
-          .collection(usrEmail.toString())
+          .collection(widget.userEmail)
           .orderBy('id', descending: false)
           .snapshots()
           .asyncMap((data) => Future.wait(
@@ -67,7 +63,7 @@ class _MemoStreamState extends State<MemoStream> {
 
         final memoList = snapshot.data;
         print('@@@@@@ Memo Counter: ${snapshot.data.length} @@@@@@');
-        print('@@@@@@ LogInUsr: $usrEmail @@@@@@');
+        print('@@@@@@ LogInUsr: ${widget.userEmail} @@@@@@');
         return Expanded(
           child: new ListView.builder(
               itemCount: memoList.length,

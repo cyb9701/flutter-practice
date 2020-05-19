@@ -12,7 +12,12 @@ void main() async {
   Directory document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
   await Hive.openBox<String>("DB");
-  runApp(MyApp());
+  runApp(MyApp()
+//    DevicePreview(
+//      enabled: true,
+//      builder: (context) => MyApp(),
+//    ),
+      );
 }
 
 bool isFirstData = true;

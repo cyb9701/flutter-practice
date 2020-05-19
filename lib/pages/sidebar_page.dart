@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/menu_clipper.dart';
 import 'package:flutteridmemo/constants/constants.dart';
-import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 
 class SideBarPage extends StatefulWidget {
+  SideBarPage({@required this.userEmail});
+
+  final String userEmail;
+
   @override
   _SideBarPageState createState() => _SideBarPageState();
 }
@@ -21,7 +24,6 @@ class _SideBarPageState extends State<SideBarPage>
   StreamController<bool> isOpenedStreamController;
   Stream<bool> isOpenedStream;
   StreamSink<bool> isOpenedSink;
-  final usrEmail = HiveDB().getUsrEmail();
   DialogFrame _dialog = DialogFrame();
 
   void onIconPressed() {
@@ -39,7 +41,6 @@ class _SideBarPageState extends State<SideBarPage>
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
-    HiveDB().saveUsrEmail(null);
     isOpenedSink.add(false);
     _animationController.reverse();
     Navigator.pop(context);
@@ -50,7 +51,7 @@ class _SideBarPageState extends State<SideBarPage>
     _dialog.getDeleteDialog(
         context, '회원탈퇴', '회원탈퇴를 하게 되면 사용자의 모든 정보가 삭제되며 복구 불가능합니다.', '탈퇴', '취소',
         () {
-      Firestore().collection(user.email).getDocuments().then((snapshots) {
+      Firestore().collection(widget.userEmail).getDocuments().then((snapshots) {
         for (DocumentSnapshot snapshot in snapshots.documents) {
           snapshot.reference.delete();
         }
@@ -166,7 +167,7 @@ class _SideBarPageState extends State<SideBarPage>
         borderRadius: BorderRadius.circular(kRadiusValue20),
       ),
       child: Text(
-        usrEmail == null ? 'ERROR' : usrEmail,
+        widget.userEmail == null ? 'ERROR' : widget.userEmail,
         style: GoogleFonts.jua(textStyle: TextStyle(fontSize: 25.0)),
       ),
     );

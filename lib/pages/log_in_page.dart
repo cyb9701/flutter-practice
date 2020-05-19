@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
-import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/find_pw_page.dart';
 import 'package:flutteridmemo/pages/memo_page.dart';
 import 'package:flutteridmemo/pages/sing_up_page.dart';
@@ -17,7 +16,6 @@ class LogInPage extends StatefulWidget {
 class _LogInPageState extends State<LogInPage> {
   final _firebaseAuth = FirebaseAuth.instance;
   DialogFrame _dialog = DialogFrame();
-  final usrEmail = HiveDB().getUsrEmail();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
@@ -51,13 +49,14 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     kSize = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Expanded(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.1),
+                padding: EdgeInsets.symmetric(horizontal: kSize.width * 0.05),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
@@ -95,7 +94,7 @@ class _LogInPageState extends State<LogInPage> {
   Widget buildTitleIcon() {
     return Icon(
       Icons.vpn_key,
-      size: 40.0,
+      size: 30.0,
     );
   }
 
@@ -105,7 +104,7 @@ class _LogInPageState extends State<LogInPage> {
       style: GoogleFonts.jua(
         textStyle: TextStyle(
           color: kColorGreen,
-          fontSize: 60.0,
+          fontSize: 50.0,
         ),
       ),
     );
@@ -210,14 +209,11 @@ class _LogInPageState extends State<LogInPage> {
           try {
             if (logInUsr.user.isEmailVerified == true) {
               if (logInUsr != null) {
-                if (usrEmail.toString() == _emailController.text.toString()) {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MemoPage()));
-                } else {
-                  HiveDB().saveUsrEmail(_emailController.text);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MemoPage()));
-                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            MemoPage(userEmail: _emailController.text)));
               }
             } else {
               _firebaseAuth.signOut();

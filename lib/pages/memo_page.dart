@@ -1,7 +1,7 @@
 import 'package:firebase_admob/firebase_admob.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/constants/constants.dart';
-import 'package:flutteridmemo/database/hive_db.dart';
 import 'package:flutteridmemo/pages/add_page.dart';
 import 'package:flutteridmemo/pages/sidebar_page.dart';
 import 'package:flutteridmemo/utils/admob_service.dart';
@@ -9,6 +9,10 @@ import 'package:flutteridmemo/utils/memo_stream.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class MemoPage extends StatefulWidget {
+  MemoPage({@required this.userEmail});
+
+  final String userEmail;
+
   @override
   _MemoPageState createState() => _MemoPageState();
 }
@@ -16,7 +20,7 @@ class MemoPage extends StatefulWidget {
 class _MemoPageState extends State<MemoPage> {
   TextEditingController searchController = TextEditingController();
   String searchValue;
-  final usrEmail = HiveDB().getUsrEmail();
+  String _userEmail = 'Loading';
 
   void searchMemo() {
     searchController.addListener(() {
@@ -27,8 +31,16 @@ class _MemoPageState extends State<MemoPage> {
     });
   }
 
+  Future<void> userEmail() async {
+    FirebaseUser userEmail = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      _userEmail = userEmail.email;
+    });
+  }
+
   @override
   void initState() {
+    userEmail();
     FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
     searchMemo();
     super.initState();
@@ -50,7 +62,9 @@ class _MemoPageState extends State<MemoPage> {
         child: Stack(
           children: <Widget>[
             buildMainPage(context),
-            SideBarPage(),
+            SideBarPage(
+              userEmail: _userEmail,
+            ),
           ],
         ),
       ),
@@ -66,7 +80,7 @@ class _MemoPageState extends State<MemoPage> {
         children: <Widget>[
           buildContainerAppBar(),
           buildSearchBar(),
-          MemoStream(search: searchValue),
+          MemoStream(userEmail: _userEmail, search: searchValue),
         ],
       ),
     );
@@ -138,7 +152,7 @@ class _MemoPageState extends State<MemoPage> {
             child: Container(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: AddPage(logInUsr: usrEmail),
+              child: AddPage(logInUsr: _userEmail),
             ),
           ),
         );
