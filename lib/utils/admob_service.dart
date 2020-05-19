@@ -1,8 +1,8 @@
 import 'package:firebase_admob/firebase_admob.dart';
 
 class AdMobService {
-  static String _appID = 'ca-app-pub-2777113368726909~1063834613';
-  static String _interstitialID = 'ca-app-pub-2777113368726909/6124589606';
+  static String _appID = '';
+  static String _interstitialID = '';
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     keywords: <String>['id_memo', 'memo', 'security_memo', 'note', 'id_note'],

@@ -274,9 +274,10 @@ class _AddPageState extends State<AddPage> {
           if (_formKey.currentState.validate()) {
             addMemoFirebaseDoc().whenComplete(() {
               Navigator.pop(context);
-            }).whenComplete(() {
-              showAdMob();
             });
+//                    .whenComplete(() {
+//              showAdMob();
+//            });
             print('@@@@@@ Add New Memo @@@@@@');
           }
         },
