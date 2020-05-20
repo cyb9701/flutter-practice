@@ -1,10 +1,8 @@
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/pages/add_page.dart';
 import 'package:flutteridmemo/pages/sidebar_page.dart';
-import 'package:flutteridmemo/utils/admob_service.dart';
 import 'package:flutteridmemo/utils/memo_stream.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -41,7 +39,7 @@ class _MemoPageState extends State<MemoPage> {
   @override
   void initState() {
     userEmail();
-    FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
+//    FirebaseAdMob.instance.initialize(appId: AdMobService().getAppID());
     searchMemo();
     super.initState();
   }

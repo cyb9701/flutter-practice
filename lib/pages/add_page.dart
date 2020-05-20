@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/round_btn_frame.dart';
 import 'package:flutteridmemo/constants/constants.dart';
 import 'package:flutteridmemo/cryption/e2ee.dart';
-import 'package:flutteridmemo/utils/admob_service.dart';
 import 'package:flutteridmemo/utils/site_color.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -62,15 +60,15 @@ class _AddPageState extends State<AddPage> {
     });
   }
 
-  void showAdMob() {
-    AdMobService().myInterstitialAd
-      ..load()
-      ..show(
-        anchorType: AnchorType.bottom,
-        anchorOffset: 0.0,
-        horizontalCenterOffset: 0.0,
-      );
-  }
+//  void showAdMob() {
+//    AdMobService().myInterstitialAd
+//      ..load()
+//      ..show(
+//        anchorType: AnchorType.bottom,
+//        anchorOffset: 0.0,
+//        horizontalCenterOffset: 0.0,
+//      );
+//  }
 
   @override
   void initState() {

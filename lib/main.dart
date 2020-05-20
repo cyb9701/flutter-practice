@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.dark().copyWith(
         canvasColor: Colors.transparent,
       ),
-      title: 'ID_Memo_Memo',
+      title: 'ID MEMO',
       home: StreamBuilder<FirebaseUser>(
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (context, snapshot) {
