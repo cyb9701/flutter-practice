@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutteridmemo/components/dialog_frame.dart';
 import 'package:flutteridmemo/components/menu_clipper.dart';
 import 'package:flutteridmemo/constants/constants.dart';
+import 'package:flutteridmemo/pages/log_in_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -39,11 +40,12 @@ class _SideBarPageState extends State<SideBarPage>
     }
   }
 
-  signOut() async {
-    await FirebaseAuth.instance.signOut();
-    isOpenedSink.add(false);
-    _animationController.reverse();
-    Navigator.pop(context);
+  signOut() {
+    FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => LogInPage()),
+        (Route<dynamic> route) => false);
   }
 
   withdrawAccount() async {
