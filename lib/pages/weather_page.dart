@@ -16,12 +16,14 @@ class WeatherPage extends StatefulWidget {
 class _WeatherPageState extends State<WeatherPage> {
   ScrollController _scrollController;
 
+  //control blur value.
   void _onScroll() {
     widget._sigma.setSigma(_scrollController.offset / size.height * blur);
   }
 
   @override
   void initState() {
+    //listen changed blur value.
     _scrollController = ScrollController()..addListener(_onScroll);
     super.initState();
   }
@@ -34,15 +36,35 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Stack(
-        children: <Widget>[
-          ChangeNotifierProvider.value(
-            value: widget._sigma,
-            child: WeatherBackground(),
-          ),
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        ChangeNotifierProvider.value(
+          value: widget._sigma,
+          child: WeatherBackground(),
+        ),
+        ListView(
+          controller: _scrollController,
+          children: <Widget>[
+            Container(
+              width: size.width,
+              height: size.height,
+              padding: EdgeInsets.all(20.0),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  '21°',
+                  textScaleFactor: 9,
+                  style: TextStyle(fontWeight: FontWeight.w300),
+                ),
+              ),
+            ),
+            Container(
+              width: size.width,
+              height: size.height,
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
