@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertiempo/pages/main_page.dart';
 import 'package:fluttertiempo/provider/pos.dart';
@@ -24,7 +26,17 @@ class WeatherBackground extends StatelessWidget {
         ),
         Consumer<Sigma>(
           builder: (context, sigma, child) {
-            return Container();
+            return Positioned.fill(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: sigma.getSigma,
+                  sigmaY: sigma.getSigma,
+                ),
+                child: Container(
+                  color: Colors.black.withOpacity(0),
+                ),
+              ),
+            );
           },
         ),
       ],
