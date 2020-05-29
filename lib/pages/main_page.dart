@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertiempo/pages/weather_page.dart';
 import 'package:fluttertiempo/provider/pos.dart';
+import 'package:fluttertiempo/service/weather_api.dart';
 import 'package:provider/provider.dart';
 
 final List<Widget> _weatherPages = [];
@@ -21,8 +22,15 @@ class _MainPageState extends State<MainPage> {
     _posList[pagePos.truncate().toInt()].setPosition(pagePos);
   }
 
+  Future<void> getData() async {
+    dynamic a = await WeatherAPI().getWeatherData();
+    dynamic b = a['main']['temp'];
+    print('@@@@@@ Temp:$b @@@@@@');
+  }
+
   @override
   void initState() {
+    getData();
     _pageController = PageController()..addListener(_onScroll);
 
     //add position data to list and add weather pages.
