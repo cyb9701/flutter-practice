@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertiempo/pages/weather_page.dart';
 import 'package:fluttertiempo/provider/pos.dart';
-import 'package:fluttertiempo/service/weather_api.dart';
 import 'package:provider/provider.dart';
 
 final List<Widget> _weatherPages = [];
@@ -9,6 +8,13 @@ final List<Pos> _posList = [];
 Size size;
 
 class MainPage extends StatefulWidget {
+  MainPage(
+      {@required this.temp, @required this.tempMin, @required this.tempMax});
+
+  final String temp;
+  final String tempMin;
+  final String tempMax;
+
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -22,25 +28,22 @@ class _MainPageState extends State<MainPage> {
     _posList[pagePos.truncate().toInt()].setPosition(pagePos);
   }
 
-  Future<void> getData() async {
-    dynamic a = await WeatherAPI().getWeatherData();
-    dynamic b = a['main']['temp'];
-    print('@@@@@@ Temp:$b @@@@@@');
-  }
-
   @override
   void initState() {
-    getData();
     _pageController = PageController()..addListener(_onScroll);
 
     //add position data to list and add weather pages.
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 1; i++) {
       var newPos = Pos(i);
       _posList.add(newPos);
       _weatherPages.add(
         ChangeNotifierProvider.value(
           value: newPos,
-          child: WeatherPage(),
+          child: WeatherPage(
+            temp: widget.temp,
+            tempMin: widget.tempMin,
+            tempMax: widget.tempMax,
+          ),
         ),
       );
     }

@@ -17,7 +17,7 @@ class WeatherBackground extends StatelessWidget {
               child: Transform.translate(
                 offset: Offset((size.width / 2) * pos.curPos, 0),
                 child: Image.asset(
-                  'assets/city${pos.curPage}.jpg',
+                  'assets/city${pos.curPage % 4}.jpg',
                   fit: BoxFit.cover,
                 ),
               ),
