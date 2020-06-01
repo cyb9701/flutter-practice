@@ -1,68 +1,109 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertiempo/pages/weather_page.dart';
-import 'package:fluttertiempo/provider/pos.dart';
+import 'package:fluttertiempo/components/temp_min_max.dart';
+import 'package:fluttertiempo/components/weather_background.dart';
+import 'package:fluttertiempo/pages/loading_page.dart';
+import 'package:fluttertiempo/provider/sigma.dart';
 import 'package:provider/provider.dart';
 
-final List<Widget> _weatherPages = [];
-final List<Pos> _posList = [];
-Size size;
+final double blur = 8;
 
 class MainPage extends StatefulWidget {
-  MainPage(
-      {@required this.temp, @required this.tempMin, @required this.tempMax});
+  MainPage({@required this.weatherData});
 
-  final String temp;
-  final String tempMin;
-  final String tempMax;
+  final dynamic weatherData;
+  final Sigma _sigma = new Sigma();
 
   @override
   _MainPageState createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  PageController _pageController;
+  ScrollController _scrollController;
+  String temp;
+  String tempMin;
+  String tempMax;
 
-  //get position data and set position.
+  //control blur value.
   void _onScroll() {
-    double pagePos = _pageController.page;
-    _posList[pagePos.truncate().toInt()].setPosition(pagePos);
+    widget._sigma.setSigma(_scrollController.offset / size.height * blur);
+  }
+
+  void updateData(dynamic data) {
+    setState(() {
+      if (data == null) {
+        temp = 'Error';
+        tempMin = 'Error';
+        tempMax = 'Error';
+        return null;
+      }
+
+      double fahrenheit = data['main']['temp'];
+      double fahrenheitMin = data['main']['temp_min'];
+      double fahrenheitMax = data['main']['temp_max'];
+      temp = (fahrenheit - 273.15).toInt().toString();
+      tempMin = (fahrenheitMin - 273.15).toInt().toString();
+      tempMax = (fahrenheitMax - 273.15).toInt().toString();
+    });
   }
 
   @override
   void initState() {
-    _pageController = PageController()..addListener(_onScroll);
-
-    //add position data to list and add weather pages.
-    for (int i = 0; i < 1; i++) {
-      var newPos = Pos(i);
-      _posList.add(newPos);
-      _weatherPages.add(
-        ChangeNotifierProvider.value(
-          value: newPos,
-          child: WeatherPage(
-            temp: widget.temp,
-            tempMin: widget.tempMin,
-            tempMax: widget.tempMax,
-          ),
-        ),
-      );
-    }
+    //listen changed blur value.
+    _scrollController = ScrollController()..addListener(_onScroll);
+    updateData(widget.weatherData);
     super.initState();
   }
 
   @override
   void dispose() {
-    _pageController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (size == null) size = MediaQuery.of(context).size;
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: _weatherPages,
+      body: Stack(
+        children: <Widget>[
+          ChangeNotifierProvider.value(
+            value: widget._sigma,
+            child: WeatherBackground(),
+          ),
+          ListView(
+            controller: _scrollController,
+            children: <Widget>[
+              Container(
+                width: size.width,
+                height: size.height,
+                padding: EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        TempMinMax(
+                            icon: Icons.keyboard_arrow_down, temp: tempMin),
+                        SizedBox(width: 20.0),
+                        TempMinMax(
+                            icon: Icons.keyboard_arrow_up, temp: tempMax),
+                      ],
+                    ),
+                    Text(
+                      '$temp°',
+                      textScaleFactor: 9,
+                      style: TextStyle(fontWeight: FontWeight.w200),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: size.width,
+                height: size.height,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
