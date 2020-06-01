@@ -11,7 +11,7 @@ class WeatherBackground extends StatelessWidget {
       children: <Widget>[
         Positioned.fill(
           child: Image.asset(
-            'assets/city0.jpg',
+            'assets/city3.jpg',
             fit: BoxFit.cover,
           ),
         ),

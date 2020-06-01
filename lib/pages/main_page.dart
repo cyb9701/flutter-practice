@@ -22,6 +22,7 @@ class _MainPageState extends State<MainPage> {
   String temp;
   String tempMin;
   String tempMax;
+  String cityName;
 
   //control blur value.
   void _onScroll() {
@@ -34,15 +35,19 @@ class _MainPageState extends State<MainPage> {
         temp = 'Error';
         tempMin = 'Error';
         tempMax = 'Error';
+        cityName = 'Error';
         return null;
       }
 
       double fahrenheit = data['main']['temp'];
       double fahrenheitMin = data['main']['temp_min'];
       double fahrenheitMax = data['main']['temp_max'];
+
       temp = (fahrenheit - 273.15).toInt().toString();
       tempMin = (fahrenheitMin - 273.15).toInt().toString();
       tempMax = (fahrenheitMax - 273.15).toInt().toString();
+      cityName = data['name'];
+      print('@@@@@@@@@@@@@@@@ $cityName');
     });
   }
 
@@ -77,22 +82,42 @@ class _MainPageState extends State<MainPage> {
                 height: size.height,
                 padding: EdgeInsets.all(20.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        TempMinMax(
-                            icon: Icons.keyboard_arrow_down, temp: tempMin),
-                        SizedBox(width: 20.0),
-                        TempMinMax(
-                            icon: Icons.keyboard_arrow_up, temp: tempMax),
-                      ],
+                    ListTile(
+                      leading: Icon(Icons.near_me),
+                      title: Text(
+                        cityName,
+                        textScaleFactor: 2,
+                        style: TextStyle(fontWeight: FontWeight.w300),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 1.0),
                     ),
-                    Text(
-                      '$temp°',
-                      textScaleFactor: 9,
-                      style: TextStyle(fontWeight: FontWeight.w200),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            TempMinMax(
+                              icon: Icons.keyboard_arrow_down,
+                              temp: tempMin,
+                              color: Colors.blueAccent,
+                            ),
+                            SizedBox(width: 20.0),
+                            TempMinMax(
+                              icon: Icons.keyboard_arrow_up,
+                              temp: tempMax,
+                              color: Colors.redAccent,
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '$temp°',
+                          textScaleFactor: 10,
+                          style: TextStyle(fontWeight: FontWeight.w200),
+                        ),
+                      ],
                     ),
                   ],
                 ),
