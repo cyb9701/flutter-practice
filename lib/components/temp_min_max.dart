@@ -18,7 +18,7 @@ class TempMinMax extends StatelessWidget {
         SizedBox(width: 10.0),
         Text(
           '$temp°',
-          style: TextStyle(fontSize: 30.0),
+          textScaleFactor: 2,
         ),
       ],
     );

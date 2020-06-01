@@ -3,9 +3,10 @@ import 'package:fluttertiempo/components/temp_min_max.dart';
 import 'package:fluttertiempo/components/weather_background.dart';
 import 'package:fluttertiempo/pages/loading_page.dart';
 import 'package:fluttertiempo/provider/sigma.dart';
+import 'package:fluttertiempo/service/weather_data.dart';
 import 'package:provider/provider.dart';
 
-final double blur = 8;
+final double blur = 10;
 
 class MainPage extends StatefulWidget {
   MainPage({@required this.weatherData});
@@ -22,7 +23,9 @@ class _MainPageState extends State<MainPage> {
   String temp;
   String tempMin;
   String tempMax;
+  String feelTemp;
   String cityName;
+  String weather;
 
   //control blur value.
   void _onScroll() {
@@ -35,20 +38,26 @@ class _MainPageState extends State<MainPage> {
         temp = 'Error';
         tempMin = 'Error';
         tempMax = 'Error';
+        feelTemp = 'Error';
         cityName = 'Error';
+        weather = 'Error';
         return null;
       }
 
-      double fahrenheit = data['main']['temp'];
-      double fahrenheitMin = data['main']['temp_min'];
-      double fahrenheitMax = data['main']['temp_max'];
+      double kelvin = data['main']['temp'];
+      double kelvinMin = data['main']['temp_min'];
+      double kelvinMax = data['main']['temp_max'];
+      double kelvinFeel = data['main']['feels_like'];
 
-      temp = (fahrenheit - 273.15).toInt().toString();
-      tempMin = (fahrenheitMin - 273.15).toInt().toString();
-      tempMax = (fahrenheitMax - 273.15).toInt().toString();
+      temp = (kelvin - 273.15).toInt().toString();
+      tempMin = (kelvinMin - 273.15).toInt().toString();
+      tempMax = (kelvinMax - 273.15).toInt().toString();
+      feelTemp = (kelvinFeel - 273.15).toInt().toString();
       cityName = data['name'];
-      print('@@@@@@@@@@@@@@@@ $cityName');
+      weather = data['weather'][0]['main'];
     });
+
+    print('@@@@@@ UpdateData @@@@@@');
   }
 
   @override
@@ -84,14 +93,26 @@ class _MainPageState extends State<MainPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.near_me),
-                      title: Text(
-                        cityName,
-                        textScaleFactor: 2,
-                        style: TextStyle(fontWeight: FontWeight.w300),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                    Row(
+                      children: <Widget>[
+                        IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+                        Spacer(flex: 4),
+                        Icon(Icons.near_me),
+                        Spacer(flex: 1),
+                        Text(
+                          cityName,
+                          textScaleFactor: 2,
+                          style: TextStyle(fontWeight: FontWeight.w300),
+                        ),
+                        Spacer(flex: 4),
+                        IconButton(
+                            icon: Icon(Icons.refresh),
+                            onPressed: () async {
+                              var getData =
+                                  await WeatherData().curWeatherData();
+                              updateData(getData);
+                            }),
+                      ],
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -112,10 +133,24 @@ class _MainPageState extends State<MainPage> {
                             ),
                           ],
                         ),
-                        Text(
-                          '$temp°',
-                          textScaleFactor: 10,
-                          style: TextStyle(fontWeight: FontWeight.w200),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              '$temp°',
+                              textScaleFactor: 10,
+                              style: TextStyle(fontWeight: FontWeight.w200),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Text(
+                                weather,
+                                textScaleFactor: 3,
+                                style: TextStyle(fontWeight: FontWeight.w300),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -125,6 +160,8 @@ class _MainPageState extends State<MainPage> {
               Container(
                 width: size.width,
                 height: size.height,
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
+                child: Text(feelTemp),
               ),
             ],
           ),
