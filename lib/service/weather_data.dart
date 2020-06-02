@@ -12,9 +12,16 @@ class WeatherData {
         url:
             'http://api.openweathermap.org/data/2.5/weather?lat=${_location.lat}&lon=${_location.lon}&appid=$_api');
     var weatherData = await _weatherAPI.getWeatherData();
-    print('@@@@@@ WeatherDataBody: $weatherData @@@@@@');
+    print('@@@@@@ WeatherData: $weatherData @@@@@@');
     return weatherData;
   }
 
-  void cityWeatherData() {}
+  Future<dynamic> cityWeatherData(String city) async {
+    WeatherAPI _weatherAPI = WeatherAPI(
+        url:
+            'http://api.openweathermap.org/data/2.5/weather?q=$city&appid=$_api');
+    var cityWeatherData = await _weatherAPI.getWeatherData();
+    print('@@@@@@ CityWeatherData: $cityWeatherData @@@@@@');
+    return cityWeatherData;
+  }
 }
