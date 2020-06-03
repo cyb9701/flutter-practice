@@ -99,6 +99,15 @@ class _WeatherPageState extends State<WeatherPage> {
                       icon: Icon(Icons.refresh),
                       onPressed: () {
                         updateData(_data);
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.black,
+                            content: Text(
+                              'Update Completed',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        );
                       }),
                   Spacer(flex: 4),
                   IconButton(
