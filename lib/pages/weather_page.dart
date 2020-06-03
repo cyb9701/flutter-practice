@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertiempo/components/details_weather.dart';
-import 'package:fluttertiempo/components/temp_min_max.dart';
-import 'package:fluttertiempo/constants/constants.dart';
 import 'package:fluttertiempo/pages/loading_page.dart';
-import 'package:fluttertiempo/pages/search_page.dart';
-import 'package:fluttertiempo/service/weather_data.dart';
+import 'package:fluttertiempo/widget/details_widget.dart';
+import 'package:fluttertiempo/widget/main_weather_widget.dart';
+import 'package:fluttertiempo/widget/top_bar_widget.dart';
 
 class WeatherPage extends StatefulWidget {
   WeatherPage({@required this.weatherData, @required this.controller});
@@ -17,7 +15,6 @@ class WeatherPage extends StatefulWidget {
 }
 
 class _WeatherPageState extends State<WeatherPage> {
-  dynamic _data;
   String temp;
   String tempMin;
   String tempMax;
@@ -70,14 +67,6 @@ class _WeatherPageState extends State<WeatherPage> {
   @override
   void initState() {
     updateData(widget.weatherData);
-    setState(() {
-      _data = widget.weatherData;
-    });
-    print('@@@@@@ 1:$description @@@@@@');
-    print('@@@@@@ 2:$feelTemp @@@@@@');
-    print('@@@@@@ 3:$humidity @@@@@@');
-    print('@@@@@@ 4:$windSpeed @@@@@@');
-    print('@@@@@@ 5:$visibility @@@@@@');
     super.initState();
   }
 
@@ -86,143 +75,50 @@ class _WeatherPageState extends State<WeatherPage> {
     return ListView(
       controller: widget.controller,
       children: <Widget>[
-        Container(
-          width: size.width,
-          height: size.height,
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 40.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  IconButton(
-                      icon: Icon(Icons.refresh),
-                      onPressed: () {
-                        updateData(_data);
-                        Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.black,
-                            content: Text(
-                              'Update Completed',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        );
-                      }),
-                  Spacer(flex: 4),
-                  IconButton(
-                      icon: Icon(Icons.near_me),
-                      onPressed: () {
-                        _data = widget.weatherData;
-                        updateData(_data);
-                      }),
-                  Spacer(flex: 1),
-                  Text(
-                    cityName,
-                    textScaleFactor: 2,
-                    style: TextStyle(fontWeight: FontWeight.w300),
-                  ),
-                  Spacer(flex: 4),
-                  IconButton(
-                    icon: Icon(Icons.location_city),
-                    onPressed: () async {
-                      var city = await showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        builder: (context) => SingleChildScrollView(
-                          child: Container(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom),
-                            child: SearchPage(),
-                          ),
-                        ),
-                      );
-
-                      print('@@@@@@ CityName:$city @@@@@@');
-
-                      if (city != null && city != '') {
-                        _data = await WeatherData().cityWeatherData(city);
-                        updateData(_data);
-                      } else {
-                        updateData(widget.weatherData);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    weather,
-                    textScaleFactor: 2,
-                    style: TextStyle(fontWeight: FontWeight.w200),
-                  ),
-                  SizedBox(height: 20.0),
-                  Row(
-                    children: <Widget>[
-                      TempMinMax(
-                        icon: Icons.keyboard_arrow_down,
-                        temp: tempMin,
-                        color: Colors.blueAccent,
-                      ),
-                      SizedBox(width: 20.0),
-                      TempMinMax(
-                        icon: Icons.keyboard_arrow_up,
-                        temp: tempMax,
-                        color: Colors.redAccent,
-                      ),
-                    ],
-                  ),
-                  Text(
-                    '$temp°',
-                    textScaleFactor: 8,
-                    style: TextStyle(fontWeight: FontWeight.w200),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: size.width,
-          height: size.height,
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 70.0),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(20.0),
-                color: Colors.black45,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Details',
-                      style: kDetailStyle,
-                    ),
-                    Divider(
-                      color: Colors.white,
-                      thickness: 0.5,
-                      height: 30.0,
-                    ),
-                    DetailsWeather(
-                        name: 'Description', weather: '$description'),
-                    DetailsWeather(
-                        name: 'sensible temperature', weather: '$feelTemp°'),
-                    DetailsWeather(name: 'Humidity', weather: '$humidity%'),
-                    DetailsWeather(
-                        name: 'Wind Speed', weather: '${windSpeed}km/s'),
-                    DetailsWeather(
-                        name: 'Visibility', weather: '${visibility}km'),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        buildMainZone(),
+        buildDetailsZone(),
       ],
+    );
+  }
+
+  Container buildMainZone() {
+    return Container(
+      width: size.width,
+      height: size.height,
+      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 40.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          TopBarWidget(
+            updateFunction: (dynamic data) {
+              updateData(data);
+            },
+            weatherData: widget.weatherData,
+            cityName: cityName,
+          ),
+          MainWeatherWidget(
+              weather: weather, tempMin: tempMin, tempMax: tempMax, temp: temp),
+        ],
+      ),
+    );
+  }
+
+  Container buildDetailsZone() {
+    return Container(
+      width: size.width,
+      height: size.height,
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 70.0),
+      child: Column(
+        children: <Widget>[
+          DetailsWidget(
+            description: description,
+            feelTemp: feelTemp,
+            humidity: humidity,
+            windSpeed: windSpeed,
+            visibility: visibility,
+          ),
+        ],
+      ),
     );
   }
 }

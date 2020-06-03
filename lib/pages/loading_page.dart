@@ -11,12 +11,13 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage> {
   void getWeatherData() async {
-    dynamic dataBody = await WeatherData().curWeatherData();
+    dynamic weatherData = await WeatherData().curWeatherData();
 
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (context) => MainPage(weatherData: dataBody)));
+            builder: (context) => MainPage(weatherData: weatherData)),
+        (Route<dynamic> route) => false);
   }
 
   @override

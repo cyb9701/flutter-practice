@@ -22,14 +22,13 @@ class _MainPageState extends State<MainPage> {
 
   //control blur value.
   void _onScroll() {
-    widget._sigma.setSigma(_scrollController.offset / size.height * blur);
+    widget._sigma.setSigma((_scrollController.offset / size.height) * blur);
   }
 
   @override
   void initState() {
     //listen changed blur value.
     _scrollController = ScrollController()..addListener(_onScroll);
-
     super.initState();
   }
 
