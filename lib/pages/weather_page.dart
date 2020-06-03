@@ -146,6 +146,12 @@ class _WeatherPageState extends State<WeatherPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  Text(
+                    weather,
+                    textScaleFactor: 2,
+                    style: TextStyle(fontWeight: FontWeight.w200),
+                  ),
+                  SizedBox(height: 20.0),
                   Row(
                     children: <Widget>[
                       TempMinMax(
@@ -161,24 +167,10 @@ class _WeatherPageState extends State<WeatherPage> {
                       ),
                     ],
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        '$temp°',
-                        textScaleFactor: 10,
-                        style: TextStyle(fontWeight: FontWeight.w200),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Text(
-                          weather,
-                          textScaleFactor: 3,
-                          style: TextStyle(fontWeight: FontWeight.w300),
-                        ),
-                      ),
-                    ],
+                  Text(
+                    '$temp°',
+                    textScaleFactor: 8,
+                    style: TextStyle(fontWeight: FontWeight.w200),
                   ),
                 ],
               ),

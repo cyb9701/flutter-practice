@@ -29,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
     return Container(
       color: Colors.transparent,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 50.0, horizontal: 70.0),
+        padding: EdgeInsets.fromLTRB(40.0, 30.0, 40.0, 50.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -49,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
             SizedBox(height: 30.0),
             Text(
-              'Search City',
+              'City',
               textScaleFactor: 4,
               style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
             ),
