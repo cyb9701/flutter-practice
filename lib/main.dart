@@ -5,7 +5,7 @@ import 'package:flutterinstagramclone/pages/main_page.dart';
 
 void main() => runApp(MyApp());
 
-bool isItFirstData = false;
+bool isItFirstData = true;
 
 class MyApp extends StatelessWidget {
   @override
