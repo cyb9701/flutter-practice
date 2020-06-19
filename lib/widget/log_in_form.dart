@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/service/facebook.dart';
 import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,6 +16,7 @@ class _LogInFormState extends State<LogInForm> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _idController;
   TextEditingController _pwController;
+  Facebook _facebook = Facebook();
 
   get _logIn async {
     try {
@@ -69,7 +71,7 @@ class _LogInFormState extends State<LogInForm> {
               Spacer(flex: 1),
               textDivider(),
               Spacer(flex: 1),
-              facebookBtn(),
+              facebookBtn(context),
               Spacer(flex: 9),
             ],
           ),
@@ -178,11 +180,13 @@ class _LogInFormState extends State<LogInForm> {
     );
   }
 
-  SignInButton facebookBtn() {
+  SignInButton facebookBtn(BuildContext context) {
     return SignInButton(
       Buttons.Facebook,
       text: "Facebook으로 로그인",
-      onPressed: () {},
+      onPressed: () {
+        _facebook.facebookLogIn(context);
+      },
     );
   }
 }
