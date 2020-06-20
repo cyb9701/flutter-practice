@@ -11,6 +11,7 @@ class Facebook {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         handleToken(context, result.accessToken.token);
+        simpleSnackBar(context, '로그인이 성공되었습니다. 잠시만 기달려주세요.');
         break;
       case FacebookLoginStatus.cancelledByUser:
         simpleSnackBar(context, '로그인이 취소되었습니다.');
