@@ -51,7 +51,7 @@ class _LogInFormState extends State<LogInForm> {
       backgroundColor: kBackgroundColor,
       resizeToAvoidBottomInset: true,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kCommon_gap),
+        padding: const EdgeInsets.symmetric(horizontal: kCommon_l_gap),
         child: Form(
           key: _formKey,
           child: Column(
