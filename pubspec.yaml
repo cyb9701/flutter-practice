@@ -27,7 +27,7 @@ dependencies:
   intl: #DateFormat
   flutter_signin_button: #SingIn Btn
   google_fonts:
-  flutter_facebook_login: ^3.0.0 #Facebook Login
+  flutter_facebook_login: ^2.0.1 #Facebook Login
 
   #Firebase Packages
   firebase_auth: ^0.16.1

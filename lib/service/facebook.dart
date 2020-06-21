@@ -6,7 +6,7 @@ import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
 class Facebook {
   void facebookLogIn(BuildContext context) async {
     final facebook = FacebookLogin();
-    final result = await facebook.logIn(['email']);
+    final result = await facebook.logInWithReadPermissions(['email']);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
