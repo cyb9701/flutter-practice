@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutterinstagramclone/constants/firebase_paths.dart';
 import 'package:flutterinstagramclone/data/user.dart';
+import 'package:flutterinstagramclone/firebase/transformer.dart';
 
 FirestoreProvider firestoreProvider = FirestoreProvider();
 Firestore _firestore = Firestore.instance;
 
-class FirestoreProvider {
+class FirestoreProvider with Transformer {
   Future<void> attemptCreateUser({String userKey, String email}) {
     final DocumentReference documentRef =
         _firestore.collection(COLLECTION_USERS).document(userKey);
@@ -18,6 +19,15 @@ class FirestoreProvider {
       }
     });
   }
+
+  Stream<User> connectMyUserData(String userKey) {
+    return _firestore
+        .collection(COLLECTION_USERS)
+        .document(userKey)
+        .snapshots()
+        .transform(toUser);
+  }
+}
 
 //  Future<void> sendData() {
 //    return Firestore.instance
@@ -33,4 +43,3 @@ class FirestoreProvider {
 //      },
 //    );
 //  }
-}
