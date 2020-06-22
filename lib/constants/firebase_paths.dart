@@ -7,4 +7,4 @@ const KEY_LIKE_POSTS = 'liked_posts';
 const KEY_FOLLOWERS = 'followers';
 const KEY_FOLLOWINGS = 'followings';
 const KEY_MY_POSTS = 'my_posts';
-const KEY_USER_NAME = 'username';
+const KEY_USER_NAME = 'user_name';
