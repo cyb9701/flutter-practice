@@ -1,4 +1,5 @@
 const COLLECTION_USERS = 'Users';
+
 const KEY_USER_KEY = 'user_key';
 const KEY_PROFILE_IMG = 'profile_img';
 const KEY_EMAIL = 'email';
