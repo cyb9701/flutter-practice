@@ -28,6 +28,7 @@ dependencies:
   flutter_signin_button: #SingIn Btn
   google_fonts:
   flutter_facebook_login: ^2.0.1 #Facebook Login
+  provider:
 
   #Firebase Packages
   firebase_auth: ^0.16.1

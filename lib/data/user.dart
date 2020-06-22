@@ -12,6 +12,7 @@ class User {
   final List<dynamic> likePosts;
   final DocumentReference reference;
 
+  // User makes Map.
   User.fromMap(Map<String, dynamic> map, this.userKey, {this.reference})
       : userName = map[KEY_USER_NAME],
         profileImg = map[KEY_PROFILE_IMG],
@@ -28,6 +29,7 @@ class User {
           reference: snapshot.reference,
         );
 
+  // Get Map for First Create User.
   static Map<String, dynamic> getMapForCreateUser(String email) {
     Map<String, dynamic> map = Map();
     map[KEY_USER_NAME] = email.split('@')[0];

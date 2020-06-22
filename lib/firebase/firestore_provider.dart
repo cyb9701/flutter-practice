@@ -20,12 +20,28 @@ class FirestoreProvider with Transformer {
     });
   }
 
+  // Connecting Firestore to My Application.
   Stream<User> connectMyUserData(String userKey) {
     return _firestore
         .collection(COLLECTION_USERS)
         .document(userKey)
         .snapshots()
         .transform(toUser);
+  }
+
+  // Get All Users.
+  Stream<List<User>> fetchAllUsers() {
+    return _firestore
+        .collection(COLLECTION_USERS)
+        .snapshots()
+        .transform(toAllUsers);
+  }
+
+  Stream<List<User>> fetchAllUsersExceptMe() {
+    return _firestore
+        .collection(COLLECTION_USERS)
+        .snapshots()
+        .transform(toAllUsersExceptMe);
   }
 }
 
