@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
 import 'package:flutterinstagramclone/data/user.dart';
+import 'package:flutterinstagramclone/pages/share_post_page.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -34,7 +37,7 @@ class _AddPageState extends State<AddPage> {
         duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
   }
 
-  void attemptTakePhoto() async {
+  void attemptTakePhoto(BuildContext context) async {
     try {
       await _initializeControllerFuture;
       final path = join(
@@ -42,6 +45,10 @@ class _AddPageState extends State<AddPage> {
         '${DateTime.now()}_${widget.user.userName}.png',
       );
       await _cameraController.takePicture(path);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SharePostPage(imgFile: File(path))));
     } catch (e) {
       print(e);
     }
@@ -136,7 +143,9 @@ class _AddPageState extends State<AddPage> {
                 ),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      attemptTakePhoto(context);
+                    },
                     child: Center(
                       child: Container(
                         width: kSize.width / 4.5,

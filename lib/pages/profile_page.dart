@@ -118,7 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
       padding: const EdgeInsets.fromLTRB(kCommon_gap, kCommon_gap, 0, 0),
       child: Consumer<MyUserData>(
         builder: (context, value, child) =>
-            Text(value.getData.userName, style: kProfileText),
+            Text(value.getUserData.userName, style: kProfileText),
       ),
     );
   }

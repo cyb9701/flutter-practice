@@ -13,8 +13,6 @@ void main() => runApp(
       ),
     );
 
-bool isItFirstData = true;
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,27 +22,33 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           canvasColor: Colors.transparent,
         ),
-        home: StreamBuilder<FirebaseUser>(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (context, snapshot) {
-            if (isItFirstData) {
-              isItFirstData = false;
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              if (snapshot.hasData) {
-                firestoreProvider.attemptCreateUser(
-                    userKey: snapshot.data.uid, email: snapshot.data.email);
-                var myUserData = Provider.of<MyUserData>(context);
-                firestoreProvider.connectMyUserData(snapshot.data.uid).listen(
-                  (data) {
-                    myUserData.setUserData(data);
+        home: Consumer<MyUserData>(
+          builder: (context, myUserData, child) {
+            switch (myUserData.getUserDataStatus) {
+              case MyUserDataStatus.progress:
+                // check current user.
+                FirebaseAuth.instance.currentUser().then(
+                  (firebaseUser) {
+                    if (firebaseUser == null) {
+                      // Make Status none.
+                      myUserData.setNewUserDataStatus(MyUserDataStatus.none);
+                    } else {
+                      // if current user exist, connect firebase to app, and save user data.
+                      firestoreProvider
+                          .connectMyUserData(firebaseUser.uid)
+                          .listen(
+                        (userData) {
+                          myUserData.setUserData(userData);
+                        },
+                      );
+                    }
                   },
                 );
+                return CircularProgressIndicator();
+              case MyUserDataStatus.exist:
                 return MainPage();
-              }
-              return LogInPage();
+              default:
+                return LogInPage();
             }
           },
         ),

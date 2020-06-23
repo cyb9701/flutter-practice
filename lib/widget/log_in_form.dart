@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/service/facebook.dart';
 import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LogInForm extends StatefulWidget {
   @override
@@ -18,10 +20,12 @@ class _LogInFormState extends State<LogInForm> {
   TextEditingController _pwController;
   Facebook _facebook = Facebook();
 
-  get _logIn async {
+  void _logIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _idController.text, password: _pwController.text);
+      Provider.of<MyUserData>(context)
+          .setNewUserDataStatus(MyUserDataStatus.progress);
       print('@@@@@@ Email : ${_idController.text} @@@@@@');
       print('@@@@@@ EmailPW : ${_pwController.text} @@@@@@');
       print('@@@@@@ Succeed Log In @@@@@@');
@@ -144,7 +148,7 @@ class _LogInFormState extends State<LogInForm> {
     return GestureDetector(
       onTap: () {
         if (_formKey.currentState.validate()) {
-          _logIn;
+          _logIn();
         }
       },
       child: Container(

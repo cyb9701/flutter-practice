@@ -37,9 +37,9 @@ class _MainPageState extends State<MainPage> {
   ];
 
   //bottom icons tap change index.
-  void _bottomOnTap(int index) {
+  void onTapBottom(int index) {
     if (index == 2) {
-      _onTapAddBtn();
+      _onTapAddPageBtn(context);
     } else {
       setState(() {
         _currentBottomIndex = index;
@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  void _onTapAddBtn() async {
+  void _onTapAddPageBtn(BuildContext context) async {
     final camera = await availableCameras();
     final firstCamera = camera.first;
     Navigator.push(
@@ -55,7 +55,7 @@ class _MainPageState extends State<MainPage> {
       MaterialPageRoute(
         builder: (context) => AddPage(
           camera: firstCamera,
-          user: Provider.of<MyUserData>(context, listen: false).getData,
+          user: Provider.of<MyUserData>(context, listen: false).getUserData,
         ),
       ),
     );
@@ -66,7 +66,7 @@ class _MainPageState extends State<MainPage> {
     if (kSize == null) kSize = MediaQuery.of(context).size;
     return Scaffold(
       body: buildIndexPage(),
-      bottomNavigationBar: buildBottomNavigationBar(),
+      bottomNavigationBar: buildBottomNavigationBar(context),
     );
   }
 
@@ -77,7 +77,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget buildBottomNavigationBar() {
+  Widget buildBottomNavigationBar(BuildContext context) {
     return BottomNavigationBar(
       showSelectedLabels: false,
       showUnselectedLabels: false,
@@ -86,7 +86,7 @@ class _MainPageState extends State<MainPage> {
       backgroundColor: kAppBarColor,
       items: _bottomIconList,
       type: BottomNavigationBarType.fixed,
-      onTap: _bottomOnTap,
+      onTap: onTapBottom,
       currentIndex: _currentBottomIndex,
     );
   }

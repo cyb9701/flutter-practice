@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
+import 'package:flutterinstagramclone/firebase/firestore_provider.dart';
 import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
+import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -39,9 +42,17 @@ class _SignUpFormState extends State<SignUpForm> {
 
   get _emailRegister async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text, password: _emailPwController.text);
+      final AuthResult result = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text, password: _emailPwController.text);
+      final FirebaseUser user = result.user;
+
+      await firestoreProvider.attemptCreateUser(
+          userKey: user.uid, email: user.email);
+      Provider.of<MyUserData>(context)
+          .setNewUserDataStatus(MyUserDataStatus.progress);
       Navigator.pop(context);
+
       print('@@@@@@ Email : ${_emailController.text} @@@@@@');
       print('@@@@@@ EmailPW : ${_emailPwController.text} @@@@@@');
       print('@@@@@@ Succeed Sing Up @@@@@@');
