@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
-import 'package:flutterinstagramclone/pages/log_in_page.dart';
+import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/widget/profile_menu_list.dart';
+import 'package:provider/provider.dart';
 
 class ProfileMenuPage extends StatelessWidget {
   @override
@@ -31,6 +32,7 @@ class ProfileMenuPage extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 FirebaseAuth.instance.signOut();
+                Provider.of<MyUserData>(context, listen: false).cleanUserData();
               }),
           ProfileMenuList(icon: Icons.settings, title: '설정', onTap: () {}),
           ProfileMenuList(icon: Icons.save_alt, title: '보관', onTap: () {}),

@@ -29,6 +29,9 @@ dependencies:
   google_fonts:
   flutter_facebook_login: ^2.0.1 #Facebook Login
   provider:
+  camera: ^0.5.8+2
+  path:
+  path_provider: #Make a path Directory.
 
   #Firebase Packages
   firebase_auth: ^0.16.1

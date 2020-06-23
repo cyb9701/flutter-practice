@@ -1,11 +1,14 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/pages/add_page.dart';
 import 'package:flutterinstagramclone/pages/feed_page.dart';
 import 'package:flutterinstagramclone/pages/heart_page.dart';
 import 'package:flutterinstagramclone/pages/profile_page.dart';
 import 'package:flutterinstagramclone/pages/search_page.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -44,8 +47,18 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-  void _onTapAddBtn() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => AddPage()));
+  void _onTapAddBtn() async {
+    final camera = await availableCameras();
+    final firstCamera = camera.first;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddPage(
+          camera: firstCamera,
+          user: Provider.of<MyUserData>(context, listen: false).getData,
+        ),
+      ),
+    );
   }
 
   @override

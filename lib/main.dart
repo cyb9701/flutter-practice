@@ -37,11 +37,11 @@ class MyApp extends StatelessWidget {
                 firestoreProvider.attemptCreateUser(
                     userKey: snapshot.data.uid, email: snapshot.data.email);
                 var myUserData = Provider.of<MyUserData>(context);
-                firestoreProvider
-                    .connectMyUserData(snapshot.data.uid)
-                    .listen((data) {
-                  myUserData.setUserData(data);
-                });
+                firestoreProvider.connectMyUserData(snapshot.data.uid).listen(
+                  (data) {
+                    myUserData.setUserData(data);
+                  },
+                );
                 return MainPage();
               }
               return LogInPage();

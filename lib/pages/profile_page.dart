@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/pages/profile_menu_page.dart';
 import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:flutterinstagramclone/widget/loading_widget.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -114,7 +116,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Padding buildUsrName() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(kCommon_gap, kCommon_gap, 0, 0),
-      child: Text('최유빈', style: kProfileText),
+      child: Consumer<MyUserData>(
+        builder: (context, value, child) =>
+            Text(value.getData.userName, style: kProfileText),
+      ),
     );
   }
 

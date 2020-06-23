@@ -16,12 +16,6 @@ class FeedPage extends StatelessWidget {
   AppBar buildAppBar() {
     return AppBar(
       backgroundColor: kAppBarColor,
-      leading: IconButton(
-        icon: Icon(
-          Icons.camera_alt,
-        ),
-        onPressed: () {},
-      ),
       title: Text(
         'Instagram',
         style: GoogleFonts.bilboSwashCaps(fontSize: 35.0),
