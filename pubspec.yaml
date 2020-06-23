@@ -32,6 +32,7 @@ dependencies:
   camera: ^0.5.8+2
   path:
   path_provider: #Make a path Directory.
+  flutter_tags:
 
   #Firebase Packages
   firebase_auth: ^0.16.1

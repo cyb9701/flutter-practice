@@ -24,7 +24,7 @@ class _LogInFormState extends State<LogInForm> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _idController.text, password: _pwController.text);
-      Provider.of<MyUserData>(context)
+      Provider.of<MyUserData>(context, listen: false)
           .setNewUserDataStatus(MyUserDataStatus.progress);
       print('@@@@@@ Email : ${_idController.text} @@@@@@');
       print('@@@@@@ EmailPW : ${_pwController.text} @@@@@@');

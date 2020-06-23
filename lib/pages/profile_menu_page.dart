@@ -32,7 +32,7 @@ class ProfileMenuPage extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 FirebaseAuth.instance.signOut();
-                Provider.of<MyUserData>(context).cleanUserData();
+                Provider.of<MyUserData>(context, listen: false).cleanUserData();
               }),
           ProfileMenuList(icon: Icons.settings, title: '설정', onTap: () {}),
           ProfileMenuList(icon: Icons.save_alt, title: '보관', onTap: () {}),

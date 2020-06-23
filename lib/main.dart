@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/firebase/firestore_provider.dart';
 import 'package:flutterinstagramclone/pages/log_in_page.dart';
@@ -44,7 +45,11 @@ class MyApp extends StatelessWidget {
                     }
                   },
                 );
-                return CircularProgressIndicator();
+                return Expanded(
+                  child: Container(
+                    color: kBackgroundColor,
+                  ),
+                );
               case MyUserDataStatus.exist:
                 return MainPage();
               default:
