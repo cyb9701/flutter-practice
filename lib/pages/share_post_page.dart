@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/isolates/resize_img.dart';
 import 'package:flutterinstagramclone/widget/share_add_inform.dart';
 import 'package:flutterinstagramclone/widget/share_switch.dart';
 
@@ -20,6 +22,23 @@ class SharePostPage extends StatefulWidget {
 
 class _SharePostPageState extends State<SharePostPage> {
   TextEditingController _captionController;
+  bool _isImgProgressing = false;
+
+  void _uploadImgNCreatePost() async {
+    setState(() {
+      _isImgProgressing = true;
+    });
+
+    try {
+      final File resized = await compute(getResizedImg, widget.imgFile);
+
+      setState(() {
+        _isImgProgressing = false;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   void initState() {
@@ -35,24 +54,40 @@ class _SharePostPageState extends State<SharePostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      appBar: sharePageAppBar(),
-      body: Column(
-        children: <Widget>[
-          thumbnailCaption(),
-          divider,
-          ShareAddInform(title: '사람 태그하기', onTap: () {}),
-          divider,
-          ShareAddInform(title: '위치 추가', onTap: () {}),
-          _addLocationTags(),
-          divider,
-          ShareSwitch(title: 'Facebook'),
-          ShareSwitch(title: 'Twitter'),
-          ShareSwitch(title: 'Tumblr'),
-          divider,
-        ],
-      ),
+    return Stack(
+      children: <Widget>[
+        IgnorePointer(
+          ignoring: _isImgProgressing,
+          child: Scaffold(
+            backgroundColor: kBackgroundColor,
+            appBar: sharePageAppBar(),
+            body: Column(
+              children: <Widget>[
+                thumbnailCaption(),
+                divider,
+                ShareAddInform(title: '사람 태그하기', onTap: () {}),
+                divider,
+                ShareAddInform(title: '위치 추가', onTap: () {}),
+                _addLocationTags(),
+                divider,
+                ShareSwitch(title: 'Facebook'),
+                ShareSwitch(title: 'Twitter'),
+                ShareSwitch(title: 'Tumblr'),
+                divider,
+              ],
+            ),
+          ),
+        ),
+        Visibility(
+          visible: _isImgProgressing,
+          child: Container(
+            color: kBackgroundColor,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -62,7 +97,9 @@ class _SharePostPageState extends State<SharePostPage> {
       title: Text('게시물'),
       actions: <Widget>[
         FlatButton(
-          onPressed: () {},
+          onPressed: () {
+            _uploadImgNCreatePost();
+          },
           child: Text(
             '공유',
             textScaleFactor: 1.5,
