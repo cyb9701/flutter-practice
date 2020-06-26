@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
-import 'package:flutterinstagramclone/firebase/firestore_provider.dart';
+import 'package:flutterinstagramclone/firebase/cloud_firestore.dart';
 import 'package:flutterinstagramclone/pages/log_in_page.dart';
 import 'package:flutterinstagramclone/pages/main_page.dart';
 import 'package:provider/provider.dart';
@@ -35,9 +35,7 @@ class MyApp extends StatelessWidget {
                       myUserData.setNewUserDataStatus(MyUserDataStatus.none);
                     } else {
                       // if current user exist, connect firebase to app, and save user data.
-                      firestoreProvider
-                          .connectMyUserData(firebaseUser.uid)
-                          .listen(
+                      cloudFirestore.connectMyUserData(firebaseUser.uid).listen(
                         (userData) {
                           myUserData.setUserData(userData);
                         },

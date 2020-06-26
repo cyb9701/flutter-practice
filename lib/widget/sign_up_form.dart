@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
-import 'package:flutterinstagramclone/firebase/firestore_provider.dart';
+import 'package:flutterinstagramclone/firebase/cloud_firestore.dart';
 import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +47,7 @@ class _SignUpFormState extends State<SignUpForm> {
               email: _emailController.text, password: _emailPwController.text);
       final FirebaseUser user = result.user;
 
-      await firestoreProvider.attemptCreateUser(
+      await cloudFirestore.attemptCreateUser(
           userKey: user.uid, email: user.email);
       Provider.of<MyUserData>(context, listen: false)
           .setNewUserDataStatus(MyUserDataStatus.progress);
