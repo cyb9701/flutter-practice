@@ -6,7 +6,6 @@ import 'package:flutterinstagramclone/constants/size.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/service/facebook.dart';
 import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class LogInForm extends StatefulWidget {
@@ -88,7 +87,7 @@ class _LogInFormState extends State<LogInForm> {
     return Text(
       'Instagram',
       textAlign: TextAlign.center,
-      style: GoogleFonts.bilboSwashCaps(
+      style: TextStyle(
         fontSize: 60.0,
         fontWeight: FontWeight.bold,
       ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
-import 'package:flutterinstagramclone/firebase/cloud_firestore.dart';
+import 'package:flutterinstagramclone/firebase/database.dart';
 import 'package:flutterinstagramclone/utils/simple_snack_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -47,10 +47,10 @@ class _SignUpFormState extends State<SignUpForm> {
               email: _emailController.text, password: _emailPwController.text);
       final FirebaseUser user = result.user;
 
-      await cloudFirestore.attemptCreateUser(
-          userKey: user.uid, email: user.email);
+      await database.attemptCreateUser(userKey: user.uid, email: user.email);
       Provider.of<MyUserData>(context, listen: false)
           .setNewUserDataStatus(MyUserDataStatus.progress);
+      print(Provider.of<MyUserData>(context).getUserDataStatus);
       Navigator.pop(context);
 
       print('@@@@@@ Email : ${_emailController.text} @@@@@@');
@@ -169,9 +169,12 @@ class _SignUpFormState extends State<SignUpForm> {
       children: <Widget>[
         textFieldFrom(
           _phoneFormKey,
-          _phone, //container location.
-          '전화번호', //phone text field hint.
-          '비밀번호', //password text field hint.
+          _phone,
+          //container location.
+          '전화번호',
+          //phone text field hint.
+          '비밀번호',
+          //password text field hint.
           _phoneController,
           _phonePwController,
           (String phone) {
@@ -191,9 +194,12 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
         textFieldFrom(
           _emailFormKey,
-          _email, //container location.
-          '이메일', //text field hint.
-          '비밀번호', //text field hint.
+          _email,
+          //container location.
+          '이메일',
+          //text field hint.
+          '비밀번호',
+          //text field hint.
           _emailController,
           _emailPwController,
           (String email) {

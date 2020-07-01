@@ -26,7 +26,6 @@ dependencies:
   cached_network_image: #Network Image Loading
   intl: #DateFormat
   flutter_signin_button: #SingIn Btn
-  google_fonts:
   flutter_facebook_login: ^2.0.1 #Facebook Login
   provider:
   camera: ^0.5.8+2

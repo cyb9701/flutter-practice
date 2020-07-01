@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/widget/post_form.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class FeedPage extends StatelessWidget {
   @override
@@ -18,7 +17,7 @@ class FeedPage extends StatelessWidget {
       backgroundColor: kAppBarColor,
       title: Text(
         'Instagram',
-        style: GoogleFonts.bilboSwashCaps(fontSize: 35.0),
+        style: TextStyle(fontSize: 35.0),
       ),
       actions: <Widget>[
         IconButton(

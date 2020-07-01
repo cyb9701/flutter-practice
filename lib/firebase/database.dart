@@ -3,10 +3,10 @@ import 'package:flutterinstagramclone/constants/firebase_paths.dart';
 import 'package:flutterinstagramclone/data/user.dart';
 import 'package:flutterinstagramclone/firebase/transformer.dart';
 
-CloudFirestore cloudFirestore = CloudFirestore();
+Database database = Database();
 Firestore _firestore = Firestore.instance;
 
-class CloudFirestore with Transformer {
+class Database with Transformer {
   Future<void> attemptCreateUser({String userKey, String email}) async {
     final DocumentReference documentRef =
         _firestore.collection(COLLECTION_USERS).document(userKey);

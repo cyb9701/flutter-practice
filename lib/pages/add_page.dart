@@ -10,7 +10,10 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AddPage extends StatefulWidget {
-  AddPage({@required this.camera, @required this.user});
+  AddPage({
+    @required this.camera,
+    @required this.user,
+  });
 
   CameraDescription camera;
   User user;
@@ -38,6 +41,9 @@ class _AddPageState extends State<AddPage> {
   }
 
   void attemptTakePhoto(BuildContext context) async {
+    final String postKey =
+        '${DateTime.now().millisecondsSinceEpoch}_${widget.user.userKey}';
+
     try {
       await _initializeControllerFuture;
       final path = join(
@@ -46,9 +52,14 @@ class _AddPageState extends State<AddPage> {
       );
       await _cameraController.takePicture(path);
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => SharePostPage(imgFile: File(path))));
+        context,
+        MaterialPageRoute(
+          builder: (context) => SharePostPage(
+            imgFile: File(path),
+            postKey: postKey,
+          ),
+        ),
+      );
     } catch (e) {
       print(e);
     }

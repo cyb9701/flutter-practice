@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/firebase/storage.dart';
 import 'package:flutterinstagramclone/isolates/resize_img.dart';
+import 'package:flutterinstagramclone/utils/post_path.dart';
 import 'package:flutterinstagramclone/widget/share_add_inform.dart';
 import 'package:flutterinstagramclone/widget/share_switch.dart';
 
@@ -13,8 +15,11 @@ class SharePostPage extends StatefulWidget {
   final File imgFile;
   final String postKey;
 
-  const SharePostPage({Key key, @required this.imgFile, this.postKey})
-      : super(key: key);
+  const SharePostPage({
+    Key key,
+    @required this.imgFile,
+    @required this.postKey,
+  }) : super(key: key);
 
   @override
   _SharePostPageState createState() => _SharePostPageState();
@@ -31,7 +36,7 @@ class _SharePostPageState extends State<SharePostPage> {
 
     try {
       final File resized = await compute(getResizedImg, widget.imgFile);
-
+      await storage.uploadImg(resized, getPostPath(widget.postKey));
       setState(() {
         _isImgProgressing = false;
       });

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/firebase/storage.dart';
 import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:flutterinstagramclone/widget/comment_form.dart';
 import 'package:flutterinstagramclone/widget/loading_widget.dart';
@@ -43,14 +44,26 @@ class PostForm extends StatelessWidget {
   }
 
   // cached network image package is empty space during img loading.
-  CachedNetworkImage buildPostImg() {
-    return CachedNetworkImage(
-      imageUrl: getProfileImgPath('userName $index'),
-      placeholder: (context, url) {
-        return LoadingWidget(
-          width: kSize.width,
-          height: kSize.width,
-        );
+  Widget buildPostImg() {
+    return FutureBuilder<dynamic>(
+      future:
+          storage.getPostImgUrl('1593609005013_r4av1fVdHVfzMFSCsmVyJf3KCf52'),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return CachedNetworkImage(
+            width: kSize.width,
+            height: kSize.width,
+            fit: BoxFit.cover,
+            imageUrl: snapshot.data,
+            placeholder: (context, url) {
+              return LoadingWidget(
+                width: kSize.width,
+                height: kSize.width,
+              );
+            },
+          );
+        }
+        return CircularProgressIndicator();
       },
     );
   }
