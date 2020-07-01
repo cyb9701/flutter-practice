@@ -52,10 +52,12 @@ class Database with Transformer {
     final DocumentReference userRef = _firestore
         .collection(COLLECTION_USERS)
         .document(postData[KEY_USER_KEY]);
+
     return _firestore.runTransaction((Transaction tx) async {
       tx.update(userRef, {
         KEY_MY_POSTS: FieldValue.arrayUnion([postKey])
       });
+
       if (!postSnapshot.exists) {
         await tx.set(postRef, postData);
       }
