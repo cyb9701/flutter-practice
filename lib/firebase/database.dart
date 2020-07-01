@@ -42,4 +42,23 @@ class Database with Transformer {
         .snapshots()
         .transform(toAllUsersExceptMe);
   }
+
+  // Create A New Post. And Confirm Post Data Exists.
+  Future<Map<String, dynamic>> createNewPost(
+      String postKey, Map<String, dynamic> postData) async {
+    final DocumentReference postRef =
+        _firestore.collection(COLLECTION_POSTS).document(postKey);
+    final DocumentSnapshot postSnapshot = await postRef.get();
+    final DocumentReference userRef = _firestore
+        .collection(COLLECTION_USERS)
+        .document(postData[KEY_USER_KEY]);
+    return _firestore.runTransaction((Transaction tx) async {
+      tx.update(userRef, {
+        KEY_MY_POSTS: FieldValue.arrayUnion([postData])
+      });
+      if (!postSnapshot.exists) {
+        await tx.set(postRef, postData);
+      }
+    });
+  }
 }
