@@ -20,7 +20,7 @@ class User {
         followers = map[KEY_FOLLOWERS],
         followings = map[KEY_FOLLOWINGS],
         myPosts = map[KEY_MY_POSTS],
-        likePosts = map[KEY_LIKE_POSTS];
+        likePosts = map[KEY_LIKED_POSTS];
 
   User.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(
@@ -38,7 +38,7 @@ class User {
     map[KEY_FOLLOWERS] = 0;
     map[KEY_FOLLOWINGS] = [];
     map[KEY_MY_POSTS] = [];
-    map[KEY_LIKE_POSTS] = [];
+    map[KEY_LIKED_POSTS] = [];
     return map;
   }
 }
