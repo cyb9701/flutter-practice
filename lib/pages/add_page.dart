@@ -57,6 +57,7 @@ class _AddPageState extends State<AddPage> {
           builder: (context) => SharePostPage(
             imgFile: File(path),
             postKey: postKey,
+            user: widget.user,
           ),
         ),
       );

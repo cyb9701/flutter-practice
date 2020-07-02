@@ -15,7 +15,7 @@ const KEY_COMMENT = 'comment';
 const KEY_COMMENT_TIME = 'comment_time';
 
 const KEY_POST_IMG = 'post_img';
-const KEY_POST_URI = 'post_uri';
+const KEY_POST_URL = 'post_url';
 const KEY_CAPTION = 'caption';
 const KEY_LAST_COMMENT = 'last_comment';
 const KEY_LAST_COMMENT_USER = 'last_comment_user';

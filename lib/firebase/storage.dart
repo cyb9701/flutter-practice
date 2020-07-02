@@ -8,15 +8,16 @@ Storage storage = Storage();
 class Storage {
   final FirebaseStorage _firebaseStorage = FirebaseStorage();
 
-  Future<StorageTaskSnapshot> uploadImg(File img, String path) {
+  Future<dynamic> uploadImg(File img, String path) async {
     final StorageReference storageReference =
         _firebaseStorage.ref().child(path);
     final StorageUploadTask storageUploadTask = storageReference.putFile(img);
+    await storageUploadTask.onComplete;
     print('@@@@@@ Img Upload Complete @@@@@@');
-    return storageUploadTask.onComplete;
+    return storageReference.getDownloadURL();
   }
 
-  Future<dynamic> getPostImgUrl(String postPath) {
+  Future<dynamic> getOnlyOnePostImgUrl(String postPath) {
     return _firebaseStorage.ref().child(getPostPath(postPath)).getDownloadURL();
   }
 }

@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/data/post.dart';
+import 'package:flutterinstagramclone/data/user.dart';
+import 'package:flutterinstagramclone/firebase/database.dart';
 import 'package:flutterinstagramclone/firebase/storage.dart';
 import 'package:flutterinstagramclone/isolates/resize_img.dart';
+import 'package:flutterinstagramclone/pages/main_page.dart';
 import 'package:flutterinstagramclone/utils/post_path.dart';
 import 'package:flutterinstagramclone/widget/share_add_inform.dart';
 import 'package:flutterinstagramclone/widget/share_switch.dart';
@@ -14,11 +18,13 @@ import 'package:flutterinstagramclone/widget/share_switch.dart';
 class SharePostPage extends StatefulWidget {
   final File imgFile;
   final String postKey;
+  final User user;
 
   const SharePostPage({
     Key key,
     @required this.imgFile,
     @required this.postKey,
+    @required this.user,
   }) : super(key: key);
 
   @override
@@ -35,11 +41,28 @@ class _SharePostPageState extends State<SharePostPage> {
     });
 
     try {
+      // Decrease Img Size. And Upload Img to Firebase Storage.
       final File resized = await compute(getResizedImg, widget.imgFile);
-      await storage.uploadImg(resized, getPostPath(widget.postKey));
+      final dynamic downloadUrl =
+          await storage.uploadImg(resized, getPostPath(widget.postKey));
+
+      // Make Post Data. And Create Post Data to Firebase Cloud Database.
+      final Map<String, dynamic> postData = Post.getMapForNewPost(
+          widget.user.userKey,
+          widget.user.userName,
+          widget.postKey,
+          downloadUrl,
+          _captionController.text);
+      await database.createNewPost(widget.postKey, postData);
+
       setState(() {
         _isImgProgressing = false;
       });
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => MainPage()),
+        (Route<dynamic> route) => false,
+      );
     } catch (e) {
       print(e);
     }
@@ -103,6 +126,13 @@ class _SharePostPageState extends State<SharePostPage> {
       actions: <Widget>[
         FlatButton(
           onPressed: () {
+            // Hide Keyboard.
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+
+            // Upload Img.
             _uploadImgNCreatePost();
           },
           child: Text(

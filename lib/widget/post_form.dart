@@ -46,8 +46,8 @@ class PostForm extends StatelessWidget {
   // cached network image package is empty space during img loading.
   Widget buildPostImg() {
     return FutureBuilder<dynamic>(
-      future:
-          storage.getPostImgUrl('1593609005013_r4av1fVdHVfzMFSCsmVyJf3KCf52'),
+      future: storage
+          .getOnlyOnePostImgUrl('1593722085254_y9HhMd2DCqN4Af8vjawYkR4IqrU2'),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return CachedNetworkImage(
