@@ -20,7 +20,7 @@ class SearchPage extends StatelessWidget {
             return Divider(
               thickness: 0.5,
               height: 10.0,
-              color: Colors.grey[700],
+              color: Colors.grey[800],
             );
           },
         ),
@@ -28,17 +28,31 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  ListTile _items(String users) {
-    return ListTile(
-      leading: CircleAvatar(
-        radius: kSearchUsrImgRadius,
-        backgroundImage: NetworkImage(getProfileImgPath(users)),
-      ),
-      title: Text(users),
-      subtitle: Text('This is $users bio.'),
-      trailing: Text(
-        'following',
-        style: TextStyle(color: Colors.blueAccent),
+  Widget _items(String users) {
+    bool isFollowing = false;
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: kCommon_s_gap, vertical: kCommon_xxxs_gap),
+      child: ListTile(
+        leading: CircleAvatar(
+          radius: kSearchUsrImgRadius,
+          backgroundImage: NetworkImage(getProfileImgPath(users)),
+        ),
+        title: Text(users),
+        subtitle: Text('This is $users bio.'),
+        trailing: FlatButton(
+          onPressed: () {
+            isFollowing = true;
+          },
+          child: Text(
+            isFollowing ? '팔로우 취소' : '팔로우',
+            textScaleFactor: 1.1,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isFollowing ? Colors.redAccent : Colors.blueAccent,
+            ),
+          ),
+        ),
       ),
     );
   }
