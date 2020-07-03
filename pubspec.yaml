@@ -33,6 +33,7 @@ dependencies:
   path_provider: #Make a path Directory.
   flutter_tags:
   image:
+  rxdart: ^0.24.1
 
   #Firebase Packages
   firebase_auth: ^0.16.1

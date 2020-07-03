@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterinstagramclone/constants/color.dart';
 
 class LoadingWidget extends StatelessWidget {
   LoadingWidget({
@@ -14,7 +15,7 @@ class LoadingWidget extends StatelessWidget {
     return Container(
       width: width,
       height: width,
-      color: Colors.grey.withOpacity(0.3),
+      color: kMenuColor,
       child: Center(
         child: CircularProgressIndicator(),
       ),
