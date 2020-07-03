@@ -50,7 +50,8 @@ class _SignUpFormState extends State<SignUpForm> {
       await database.attemptCreateUser(userKey: user.uid, email: user.email);
       Provider.of<MyUserData>(context, listen: false)
           .setNewUserDataStatus(MyUserDataStatus.progress);
-      print(Provider.of<MyUserData>(context).getUserDataStatus);
+      print(
+          '@@@@@@ ${Provider.of<MyUserData>(context, listen: false).getUserDataStatus} @@@@@@');
       Navigator.pop(context);
 
       print('@@@@@@ Email : ${_emailController.text} @@@@@@');

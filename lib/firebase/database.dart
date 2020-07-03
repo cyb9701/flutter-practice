@@ -7,6 +7,7 @@ Database database = Database();
 Firestore _firestore = Firestore.instance;
 
 class Database with Transformer {
+  //Create User Data That First Sign Up User.
   Future<void> attemptCreateUser({String userKey, String email}) async {
     final DocumentReference documentRef =
         _firestore.collection(COLLECTION_USERS).document(userKey);
@@ -19,7 +20,7 @@ class Database with Transformer {
     });
   }
 
-  // Connecting Firestore to My Application.
+  //Connecting Firestore to My Application.
   Stream<User> connectMyUserData(String userKey) {
     return _firestore
         .collection(COLLECTION_USERS)
@@ -28,7 +29,7 @@ class Database with Transformer {
         .transform(toUser);
   }
 
-  // Get All Users.
+  //Get All Users.
   Stream<List<User>> fetchAllUsers() {
     return _firestore
         .collection(COLLECTION_USERS)
@@ -36,11 +37,76 @@ class Database with Transformer {
         .transform(toAllUsers);
   }
 
+  //Get All Users Except Me.
   Stream<List<User>> fetchAllUsersExceptMe() {
     return _firestore
         .collection(COLLECTION_USERS)
         .snapshots()
         .transform(toAllUsersExceptMe);
+  }
+
+  //Follow User.
+  Future<Map<String, dynamic>> followUser(
+      String myUserKey, String otherUserKey) async {
+    //my doc ref&snapshot
+    final DocumentReference myUserRef =
+        _firestore.collection(COLLECTION_USERS).document(myUserKey);
+    DocumentSnapshot myUserSnapshot = await myUserRef.get();
+
+    //other doc ref&snapshot
+    final DocumentReference otherUserRef =
+        _firestore.collection(COLLECTION_USERS).document(otherUserKey);
+    DocumentSnapshot otherUserSnapshot = await otherUserRef.get();
+
+    //run transaction
+    return _firestore.runTransaction(
+      (Transaction tx) async {
+        if (myUserSnapshot.exists && otherUserSnapshot.exists) {
+          await tx.update(myUserRef, <String, dynamic>{
+            KEY_FOLLOWINGS: FieldValue.arrayUnion([otherUserKey])
+          });
+
+          int currentFollowers = otherUserSnapshot.data[KEY_FOLLOWERS];
+          await tx.update(otherUserRef,
+              <String, dynamic>{KEY_FOLLOWERS: currentFollowers + 1});
+
+          print(
+              '@@@@@@ Complete ${otherUserSnapshot.data[KEY_USER_NAME]} Follow @@@@@@');
+        }
+      },
+    );
+  }
+
+  // UnFollow User.
+  Future<Map<String, dynamic>> unFollowUser(
+      String myUserKey, String otherUserKey) async {
+    //my doc ref&snapshot
+    final DocumentReference myUserRef =
+        _firestore.collection(COLLECTION_USERS).document(myUserKey);
+    DocumentSnapshot myUserSnapshot = await myUserRef.get();
+
+    //other doc ref&snapshot
+    final DocumentReference otherUserRef =
+        _firestore.collection(COLLECTION_USERS).document(otherUserKey);
+    DocumentSnapshot otherUserSnapshot = await otherUserRef.get();
+
+    //run transaction
+    return _firestore.runTransaction(
+      (Transaction tx) async {
+        if (myUserSnapshot.exists && otherUserSnapshot.exists) {
+          await tx.update(myUserRef, <String, dynamic>{
+            KEY_FOLLOWINGS: FieldValue.arrayRemove([otherUserKey])
+          });
+
+          int currentFollowers = otherUserSnapshot.data[KEY_FOLLOWERS];
+          await tx.update(otherUserRef,
+              <String, dynamic>{KEY_FOLLOWERS: currentFollowers - 1});
+
+          print(
+              '@@@@@@ Complete ${otherUserSnapshot.data[KEY_USER_NAME]} UnFollow @@@@@@');
+        }
+      },
+    );
   }
 
   // Create A New Post. And Confirm Post Data Exists.
