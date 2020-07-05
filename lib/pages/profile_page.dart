@@ -38,29 +38,36 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kAppBarColor,
-      appBar: buildAppBar(context),
-      body: ListView(
-        children: <Widget>[
-          buildDivider(),
-          buildProfileHeader(),
-          buildUsrName(),
-          buildUsrInformation(),
-          buildEditBtn(),
-          buildDivider(),
-          buildGridBtn(),
-          buildAnimationLine(),
-          buildGridStack(),
-        ],
-      ),
+    return Consumer<MyUserData>(
+      builder: (context, userData, child) {
+        return Scaffold(
+          backgroundColor: kAppBarColor,
+          appBar: buildAppBar(context, userData.getUserData.userName),
+          body: ListView(
+            children: <Widget>[
+              buildDivider(),
+              buildProfileHeader(
+                  userData.getUserData.myPosts,
+                  userData.getUserData.followers,
+                  userData.getUserData.followings),
+              buildUsrName(userData.getUserData.userName),
+              buildUsrInformation(userData.getUserData.email),
+              buildEditBtn(),
+              buildDivider(),
+              buildGridBtn(),
+              buildAnimationLine(),
+              buildGridStack(),
+            ],
+          ),
+        );
+      },
     );
   }
 
-  AppBar buildAppBar(BuildContext context) {
+  AppBar buildAppBar(BuildContext context, String userName) {
     return AppBar(
       backgroundColor: kAppBarColor,
-      title: Text('userName 0'),
+      title: Text(userName),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.menu),
@@ -83,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Padding buildProfileHeader() {
+  Padding buildProfileHeader(List myPosts, int follower, List following) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
           kCommon_gap, kCommon_s_gap, kCommon_xxxl_gap, 0),
@@ -96,9 +103,9 @@ class _ProfilePageState extends State<ProfilePage> {
               getProfileImgPath('userName 0'),
             ),
           ),
-          buildStatusValueWidget('10', '게시물'),
-          buildStatusValueWidget('2346', '팔로워'),
-          buildStatusValueWidget('569', '팔로잉'),
+          buildStatusValueWidget(myPosts.length.toString(), '게시물'),
+          buildStatusValueWidget(follower.toString(), '팔로워'),
+          buildStatusValueWidget(following.length.toString(), '팔로잉'),
         ],
       ),
     );
@@ -113,22 +120,19 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Padding buildUsrName() {
+  Padding buildUsrName(String userName) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(kCommon_gap, kCommon_gap, 0, 0),
-      child: Consumer<MyUserData>(
-        builder: (context, value, child) =>
-            Text(value.getUserData.userName, style: kProfileText),
-      ),
+      child: Text(userName, style: kProfileText),
     );
   }
 
-  Padding buildUsrInformation() {
+  Padding buildUsrInformation(String email) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
           kCommon_gap, kCommon_xxxs_gap, 0, kCommon_s_gap),
       child: Text(
-        '안녕하세요. 최유빈입니다.',
+        email,
         style: kProfileInformationText,
       ),
     );
