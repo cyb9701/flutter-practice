@@ -140,13 +140,11 @@ class Database with Transformer {
     for (int i = 0; i < following.length; i++) {
       streams.add(postRef
           .where(KEY_USER_KEY, isEqualTo: following[i])
-          .orderBy(KEY_POST_TIME, descending: true)
           .snapshots()
           .transform(toPosts));
     }
     streams.add(postRef
         .where(KEY_USER_KEY, isEqualTo: userKey)
-        .orderBy(KEY_POST_TIME, descending: true)
         .snapshots()
         .transform(toPosts));
 
@@ -165,7 +163,6 @@ class Database with Transformer {
     return _firestore
         .collection(COLLECTION_POSTS)
         .where(KEY_USER_KEY, isEqualTo: userKey)
-        .orderBy(KEY_POST_TIME, descending: true)
         .snapshots()
         .transform(toPosts);
   }

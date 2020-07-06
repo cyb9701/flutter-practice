@@ -5,7 +5,6 @@ import 'package:flutterinstagramclone/data/comment.dart';
 import 'package:flutterinstagramclone/data/post.dart';
 import 'package:flutterinstagramclone/data/user.dart';
 import 'package:flutterinstagramclone/firebase/database.dart';
-import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:flutterinstagramclone/widget/caption_comment_form.dart';
 import 'package:provider/provider.dart';
 
@@ -162,9 +161,7 @@ class _CommentPageState extends State<CommentPage> {
   CircleAvatar _userProfileImg() {
     return CircleAvatar(
       radius: kSearchUsrImgRadius,
-      backgroundImage: NetworkImage(
-        getProfileImgPath(widget.user.userName),
-      ),
+      backgroundImage: AssetImage('assets/profile_Img.png'),
     );
   }
 

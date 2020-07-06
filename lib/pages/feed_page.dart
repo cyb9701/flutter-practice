@@ -6,7 +6,6 @@ import 'package:flutterinstagramclone/data/post.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/firebase/database.dart';
 import 'package:flutterinstagramclone/pages/comment_page.dart';
-import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:flutterinstagramclone/widget/caption_comment_form.dart';
 import 'package:flutterinstagramclone/widget/loading_widget.dart';
 import 'package:provider/provider.dart';
@@ -62,32 +61,33 @@ class FeedPage extends StatelessWidget {
       builder: (context, postList, child) {
         return ListView.builder(
           itemCount: postList == null ? 0 : postList.length,
-          itemBuilder: (context, index) => postItem(postList[index], context),
+          itemBuilder: (context, index) {
+            postList.sort((a, b) => b.postTime.compareTo(a.postTime));
+            return postItem(postList[index], context);
+          },
         );
       },
     );
   }
 
   Widget postItem(Post post, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: kCommon_gap),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          buildPostHeader(post.username),
-          buildPostImg(post.postUrl,
-              Provider.of<MyUserData>(context).getUserData.userKey, post),
-          buildBtn(context, post,
-              Provider.of<MyUserData>(context).getUserData.userKey),
-          buildLikesCount(post.numOfLikes, post.numOfComments),
-          postCaption(post.username, post.caption, post.postTime),
-          SizedBox(height: 5.0),
-          showAllComments(post.numOfComments, context, post),
-          SizedBox(height: 5.0),
-          lastComment(post.lastCommentUser, post.lastComment,
-              post.numOfComments, post.postTime),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        buildPostHeader(post.username),
+        buildPostImg(post.postUrl,
+            Provider.of<MyUserData>(context).getUserData.userKey, post),
+        buildBtn(context, post,
+            Provider.of<MyUserData>(context).getUserData.userKey),
+        buildLikesCount(post.numOfLikes, post.numOfComments),
+        postCaption(post.username, post.caption, post.postTime),
+        SizedBox(height: 5.0),
+        showAllComments(post.numOfComments, context, post),
+        SizedBox(height: 5.0),
+        lastComment(post.lastCommentUser, post.lastComment, post.numOfComments,
+            post.postTime),
+        Divider(color: Colors.grey[800]),
+      ],
     );
   }
 
@@ -95,7 +95,7 @@ class FeedPage extends StatelessWidget {
     return ListTile(
       leading: CircleAvatar(
         radius: kPostUsrImgRadius,
-        backgroundImage: NetworkImage(getProfileImgPath(userName)),
+        backgroundImage: AssetImage('assets/profile_Img.png'),
       ),
       title: Text(
         userName,

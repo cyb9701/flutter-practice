@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
-import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:intl/intl.dart';
 
 class CaptionCommentForm extends StatelessWidget {
@@ -30,7 +29,6 @@ class CaptionCommentForm extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               buildProfileImg(),
-
               // if profile img hide, sized box also hide.
               Visibility(
                 visible: showProfileImg,
@@ -58,7 +56,7 @@ class CaptionCommentForm extends StatelessWidget {
       visible: showProfileImg,
       child: CircleAvatar(
         radius: kPostUsrImgRadius,
-        backgroundImage: NetworkImage(getProfileImgPath(name)),
+        backgroundImage: AssetImage('assets/profile_Img.png'),
       ),
     );
   }
@@ -97,7 +95,7 @@ class CaptionCommentForm extends StatelessWidget {
       visible: showDivider,
       child: Divider(
         color: Colors.grey,
-        height: 40.0,
+        height: 30.0,
       ),
     );
   }

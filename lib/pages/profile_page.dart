@@ -6,7 +6,6 @@ import 'package:flutterinstagramclone/data/post.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/firebase/database.dart';
 import 'package:flutterinstagramclone/pages/profile_menu_page.dart';
-import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:flutterinstagramclone/widget/loading_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -103,9 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           CircleAvatar(
             radius: kUsrImgRadius,
-            backgroundImage: NetworkImage(
-              getProfileImgPath('userName 0'),
-            ),
+            backgroundImage: AssetImage('assets/profile_Img.png'),
           ),
           buildStatusValueWidget(myPosts.length.toString(), '게시물'),
           buildStatusValueWidget(follower.toString(), '팔로워'),
@@ -261,13 +258,45 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisSpacing: 2,
             crossAxisSpacing: 2,
             childAspectRatio: 1,
-            children: List.generate(myPostList == null ? 0 : myPostList.length,
-                (index) => myPostItem(myPostList[index])),
+            children: List.generate(
+              myPostList == null ? 0 : myPostList.length,
+              (index) {
+                myPostList.sort((a, b) => b.postTime.compareTo(a.postTime));
+                return myPostItem(myPostList[index]);
+              },
+            ),
           );
         },
       ),
     );
   }
+
+//  Widget get _likePosts {
+//    return StreamProvider<List<Post>>.value(
+//      value: database.fetchMyLikePosts(
+//          Provider.of<MyUserData>(context).getUserData.userKey),
+//      child: Consumer<List<Post>>(
+//        builder: (context, likePostList, child) {
+//          print('@@@@@@@@@ ${likePostList.length}');
+//          return GridView.count(
+//            physics: NeverScrollableScrollPhysics(),
+//            shrinkWrap: true,
+//            crossAxisCount: 3,
+//            mainAxisSpacing: 2,
+//            crossAxisSpacing: 2,
+//            childAspectRatio: 1,
+//            children: List.generate(
+//              likePostList == null ? 0 : likePostList.length,
+//              (index) {
+//                likePostList.sort((a, b) => b.postTime.compareTo(a.postTime));
+//                return myPostItem(likePostList[index]);
+//              },
+//            ),
+//          );
+//        },
+//      ),
+//    );
+//  }
 
   Widget myPostItem(Post post) {
     return CachedNetworkImage(

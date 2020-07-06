@@ -4,7 +4,6 @@ import 'package:flutterinstagramclone/constants/size.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
 import 'package:flutterinstagramclone/data/user.dart';
 import 'package:flutterinstagramclone/firebase/database.dart';
-import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
@@ -47,8 +46,7 @@ class SearchPage extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(
               radius: kSearchUsrImgRadius,
-              backgroundImage:
-                  NetworkImage(getProfileImgPath(otherUsers.userName)),
+              backgroundImage: AssetImage('assets/profile_Img.png'),
             ),
             title: Text(otherUsers.userName),
             subtitle: Text(otherUsers.email),
