@@ -118,7 +118,7 @@ class _AddPageState extends State<AddPage> {
 
   Widget buildLibraryPage() {
     return Container(
-      color: Colors.redAccent,
+      color: kBackgroundColor,
     );
   }
 
@@ -175,7 +175,7 @@ class _AddPageState extends State<AddPage> {
 
   Widget buildVideoPage() {
     return Container(
-      color: Colors.greenAccent,
+      color: kBackgroundColor,
     );
   }
 
