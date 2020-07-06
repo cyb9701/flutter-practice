@@ -28,7 +28,9 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<List<Post>>.value(
       value: database.fetchAllPostsFromFollowing(
-          Provider.of<MyUserData>(context).getUserData.followings),
+        Provider.of<MyUserData>(context).getUserData.followings,
+        Provider.of<MyUserData>(context).getUserData.userKey,
+      ),
       child: Scaffold(
         backgroundColor: kBackgroundColor,
         appBar: buildAppBar(),

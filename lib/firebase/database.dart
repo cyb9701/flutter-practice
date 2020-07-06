@@ -133,18 +133,22 @@ class Database with Transformer {
     });
   }
 
-  Stream<List<Post>> fetchAllPostsFromFollowing(List<dynamic> following) {
-    CollectionReference postRef = _firestore.collection(COLLECTION_POSTS);
+  Stream<List<Post>> fetchAllPostsFromFollowing(
+      List<dynamic> following, String userKey) {
+    final CollectionReference postRef = _firestore.collection(COLLECTION_POSTS);
     List<Stream<List<Post>>> streams = [];
     for (int i = 0; i < following.length; i++) {
-      streams.add(
-        postRef
-            .where(KEY_USER_KEY, isEqualTo: following[i])
-            .orderBy(KEY_POST_TIME, descending: true)
-            .snapshots()
-            .transform(toPosts),
-      );
+      streams.add(postRef
+          .where(KEY_USER_KEY, isEqualTo: following[i])
+          .orderBy(KEY_POST_TIME, descending: true)
+          .snapshots()
+          .transform(toPosts));
     }
+    streams.add(postRef
+        .where(KEY_USER_KEY, isEqualTo: userKey)
+        .orderBy(KEY_POST_TIME, descending: true)
+        .snapshots()
+        .transform(toPosts));
 
     //listOfPost = List<List<Post>>
     return CombineLatestStream(streams, (listOfPost) {

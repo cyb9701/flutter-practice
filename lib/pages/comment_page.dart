@@ -58,87 +58,102 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 
-  Stack commentPageBody() {
-    return Stack(
-      children: <Widget>[
-        allOfComments(),
-        commentTextField(),
-      ],
+  Widget commentPageBody() {
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          allOfComments(),
+          commentTextField(),
+        ],
+      ),
     );
   }
 
   //Used .value. Because Always Update Data.
   Widget allOfComments() {
-    return SafeArea(
-      child: StreamProvider<List<Comment>>.value(
-        value: database.fetchAllComments(widget.post.postKey),
-        child: Consumer<List<Comment>>(
-          builder: (context, commentList, child) {
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                Comment comment = commentList[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 30.0),
-                  child: CaptionCommentForm(
-                    name: comment.username,
-                    comment: comment.comment,
-                    dateTime: comment.commentTime,
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6.0),
+        child: StreamProvider<List<Comment>>.value(
+          value: database.fetchAllComments(widget.post.postKey),
+          child: Consumer<List<Comment>>(
+            builder: (context, commentList, child) {
+              return ListView(
+                children: <Widget>[
+                  CaptionCommentForm(
+                    name: widget.post.username,
+                    comment: widget.post.caption,
+                    dateTime: widget.post.postTime,
                     showProfileImg: true,
+                    showDivider: true,
                   ),
-                );
-              },
-              itemCount: commentList == null ? 0 : commentList.length,
-            );
-          },
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      Comment comment = commentList[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 30.0),
+                        child: CaptionCommentForm(
+                          name: comment.username,
+                          comment: comment.comment,
+                          dateTime: comment.commentTime,
+                          showProfileImg: true,
+                        ),
+                      );
+                    },
+                    itemCount: commentList == null ? 0 : commentList.length,
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  Positioned commentTextField() {
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      child: Form(
-        key: _formKey,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Colors.grey[700],
-              ),
+  Widget commentTextField() {
+    return Form(
+      key: _formKey,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
+        decoration: BoxDecoration(
+          color: kAppBarColor,
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey[700],
             ),
           ),
-          child: Row(
-            children: <Widget>[
-              _userProfileImg(),
-              SizedBox(width: 10.0),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(40.0),
-                    ),
-                    border: Border.all(
-                      color: Colors.grey[700],
-                      width: 2.0,
-                    ),
+        ),
+        child: Row(
+          children: <Widget>[
+            _userProfileImg(),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(40.0),
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: _commentTextFormField(),
-                      ),
-                      _createCommentBtn(),
-                    ],
+                  border: Border.all(
+                    color: Colors.grey[700],
+                    width: 2.0,
                   ),
                 ),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: _commentTextFormField(),
+                    ),
+                    _createCommentBtn(),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
