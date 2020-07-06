@@ -89,7 +89,7 @@ class _SharePostPageState extends State<SharePostPage> {
           child: Scaffold(
             backgroundColor: kBackgroundColor,
             appBar: sharePageAppBar(),
-            body: Column(
+            body: ListView(
               children: <Widget>[
                 thumbnailCaption(),
                 divider,

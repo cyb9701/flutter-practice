@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterinstagramclone/constants/color.dart';
 import 'package:flutterinstagramclone/constants/size.dart';
+import 'package:flutterinstagramclone/data/post.dart';
 import 'package:flutterinstagramclone/data/provider/my_user_data.dart';
+import 'package:flutterinstagramclone/firebase/database.dart';
 import 'package:flutterinstagramclone/pages/profile_menu_page.dart';
 import 'package:flutterinstagramclone/utils/profile_image_path.dart';
 import 'package:flutterinstagramclone/widget/loading_widget.dart';
@@ -45,7 +47,6 @@ class _ProfilePageState extends State<ProfilePage> {
           appBar: buildAppBar(context, userData.getUserData.userName),
           body: ListView(
             children: <Widget>[
-              buildDivider(),
               buildProfileHeader(
                   userData.getUserData.myPosts,
                   userData.getUserData.followers,
@@ -74,6 +75,9 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () {
             //click the button below to scroll through from the screen.
             showModalBottomSheet(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(kProfileMenuRadius),
+              ),
               context: context,
               isScrollControlled: true,
               builder: (context) => SingleChildScrollView(
@@ -159,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 5.0),
+          padding: EdgeInsets.symmetric(vertical: 7.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(kBtnRadius),
             border: Border.all(color: Colors.white, width: 0.2),
@@ -167,7 +171,10 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: kProfileText,
+            style: kProfileText.copyWith(
+              fontWeight: FontWeight.normal,
+              fontSize: 15.0,
+            ),
           ),
         ),
       ),
@@ -180,7 +187,10 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           width: kSize.width * 0.5,
           child: IconButton(
-            icon: Icon(Icons.grid_on),
+            icon: Icon(
+              Icons.grid_on,
+              color: _usrGrid == 0 ? Colors.white : Colors.grey,
+            ),
             onPressed: () {
               setTab(true);
             },
@@ -189,7 +199,10 @@ class _ProfilePageState extends State<ProfilePage> {
         Container(
           width: kSize.width * 0.5,
           child: IconButton(
-            icon: Icon(Icons.account_box),
+            icon: Icon(
+              Icons.account_box,
+              color: _tagGrid == 0 ? Colors.white : Colors.grey,
+            ),
             onPressed: () {
               setTab(false);
             },
@@ -223,30 +236,45 @@ class _ProfilePageState extends State<ProfilePage> {
           transform: Matrix4.translationValues(_tagGrid, 0, 0),
           duration: _duration,
           curve: Curves.easeInOut,
-          child: _imgGrid,
+          child: null,
         ),
         AnimatedContainer(
           transform: Matrix4.translationValues(_usrGrid, 0, 0),
           duration: _duration,
           curve: Curves.easeInOut,
-          child: _imgGrid,
+          child: _myPostImg,
         ),
       ],
     );
   }
 
-  GridView get _imgGrid => GridView.count(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        crossAxisCount: 3,
-        childAspectRatio: 1,
-        children: List.generate(9, (index) => _gridImgItem(index)),
-      );
+  Widget get _myPostImg {
+    return StreamProvider<List<Post>>.value(
+      value: database.fetchAllMyPosts(
+          Provider.of<MyUserData>(context).getUserData.userKey),
+      child: Consumer<List<Post>>(
+        builder: (context, myPostList, child) {
+          return GridView.count(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            childAspectRatio: 1,
+            children: List.generate(myPostList == null ? 0 : myPostList.length,
+                (index) => myPostItem(myPostList[index])),
+          );
+        },
+      ),
+    );
+  }
 
-  CachedNetworkImage _gridImgItem(int index) {
+  Widget myPostItem(Post post) {
     return CachedNetworkImage(
+      imageUrl: post.postUrl,
+      width: kSize.width / 3,
+      height: kSize.width / 3,
       fit: BoxFit.cover,
-      imageUrl: "https://picsum.photos/id/$index/1000/1000",
       placeholder: (context, url) {
         return LoadingWidget(
           width: kSize.width / 3,
@@ -255,6 +283,19 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
+
+//  CachedNetworkImage _gridImgItem(int index) {
+//    return CachedNetworkImage(
+//      fit: BoxFit.cover,
+//      imageUrl: "https://picsum.photos/id/$index/1000/1000",
+//      placeholder: (context, url) {
+//        return LoadingWidget(
+//          width: kSize.width / 3,
+//          height: kSize.width / 3,
+//        );
+//      },
+//    );
+//  }
 
   Divider buildDivider() => Divider(color: Colors.grey.withOpacity(0.3));
 }

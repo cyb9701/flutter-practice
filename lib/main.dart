@@ -20,9 +20,7 @@ class MyApp extends StatelessWidget {
     return GestureDetector(
       child: MaterialApp(
         title: 'Instagram Clone',
-        theme: ThemeData.dark().copyWith(
-          canvasColor: Colors.transparent,
-        ),
+        theme: ThemeData.dark(),
         home: Consumer<MyUserData>(
           builder: (context, myUserData, child) {
             switch (myUserData.getUserDataStatus) {

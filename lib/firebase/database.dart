@@ -140,6 +140,7 @@ class Database with Transformer {
       streams.add(
         postRef
             .where(KEY_USER_KEY, isEqualTo: following[i])
+            .orderBy(KEY_POST_TIME, descending: true)
             .snapshots()
             .transform(toPosts),
       );
@@ -153,6 +154,16 @@ class Database with Transformer {
       }
       return combinedPost;
     });
+  }
+
+  //Fetch Posts Only My Posts.
+  Stream<List<Post>> fetchAllMyPosts(String userKey) {
+    return _firestore
+        .collection(COLLECTION_POSTS)
+        .where(KEY_USER_KEY, isEqualTo: userKey)
+        .orderBy(KEY_POST_TIME, descending: true)
+        .snapshots()
+        .transform(toPosts);
   }
 
   Future<Map<String, dynamic>> createNewComment(

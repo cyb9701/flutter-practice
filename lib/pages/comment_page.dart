@@ -201,3 +201,11 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 }
+
+//CaptionCommentForm(
+//name: widget.post.username,
+//comment: widget.post.caption,
+//dateTime: widget.post.postTime,
+//showProfileImg: true,
+//showDivider: true,
+//),

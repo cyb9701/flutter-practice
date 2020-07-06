@@ -14,7 +14,7 @@ const double kSearchUsrImgRadius = 25.0;
 const double kUsrImgRadius = 35.0;
 const double kProfileMenuRadius = 15.0;
 const double kTextFieldRadius = 5.0;
-const double kBtnRadius = 3.0;
+const double kBtnRadius = 5.0;
 
 const kCommentText = TextStyle(fontSize: 15.0, color: Colors.grey);
 const kProfileText = TextStyle(fontWeight: FontWeight.bold, fontSize: 17.0);
