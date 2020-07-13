@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cryptocurrency_xrate/constants/color.dart';
 import 'package:flutter_cryptocurrency_xrate/constants/size.dart';
 import 'package:flutter_cryptocurrency_xrate/provider/is_from_selected.dart';
+import 'package:flutter_cryptocurrency_xrate/provider/is_updating.dart';
 import 'package:flutter_cryptocurrency_xrate/widgets/currency_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,6 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double iconSize = 100.0;
-    bool _test = false;
     if (kSize == null) kSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
@@ -20,8 +20,8 @@ class MainPage extends StatelessWidget {
           _fromCurrency(),
           _toCurrency(),
           _circleBackground(iconSize),
-          _arrowAsset(iconSize, _test),
-          _circleProgressAnimation(iconSize, _test),
+          _arrowAsset(iconSize),
+          _circleProgressAnimation(context, iconSize),
         ],
       ),
     );
@@ -70,14 +70,14 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Positioned _arrowAsset(double iconSize, bool _test) {
+  Positioned _arrowAsset(double iconSize) {
     return Positioned(
       width: iconSize,
       height: iconSize,
       child: Consumer<IsFromSelected>(
-        builder: (context, value, child) {
+        builder: (context, isFromSelected, child) {
           return Transform.rotate(
-            angle: value.getSelected ? pi : 0,
+            angle: isFromSelected.get ? pi : 0,
             child: Image.asset(
               'assets/scroll_up.png',
               color: kBtnColor,
@@ -88,20 +88,24 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Positioned _circleProgressAnimation(double iconSize, bool _test) {
+  Positioned _circleProgressAnimation(BuildContext context, double iconSize) {
     return Positioned(
       width: iconSize,
       height: iconSize,
-      child: Visibility(
-        visible: _test,
-        child: Padding(
-          padding: EdgeInsets.all(6),
-          child: CircularProgressIndicator(
-            strokeWidth: 6,
-            backgroundColor: kLightColor,
-            valueColor: AlwaysStoppedAnimation<Color>(kBtnColor),
-          ),
-        ),
+      child: Consumer<IsUpdating>(
+        builder: (context, isUpdating, child) {
+          return Visibility(
+            visible: isUpdating.get,
+            child: Padding(
+              padding: EdgeInsets.all(6),
+              child: CircularProgressIndicator(
+                strokeWidth: 6,
+                backgroundColor: kLightColor,
+                valueColor: AlwaysStoppedAnimation<Color>(kBtnColor),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

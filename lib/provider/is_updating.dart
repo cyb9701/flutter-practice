@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class IsUpdating extends ChangeNotifier {
   bool _isUpdating = false;
 
-  bool get getUpdating => _isUpdating;
+  bool get get => _isUpdating;
 
-  void setUpdating(bool isUpdating) {
+  void set(bool isUpdating) {
     _isUpdating = isUpdating;
     notifyListeners();
   }

@@ -9,15 +9,15 @@ class CachedCurrency extends ChangeNotifier {
 
   void setNewConversion(Map<String, dynamic> newConversion, bool isFromChange) {
     conversion = newConversion[tsym] ?? 0.0;
-    print('$fsym->$tsym = $conversion');
-    print('$fvalue || $tvalue');
+    print('---- $fsym->$tsym = $conversion ----');
+    print('---- $fvalue || $tvalue ----');
     if (isFromChange) {
       this.tvalue = this.conversion * this.fvalue;
     } else {
       this.fvalue = this.tvalue / this.conversion;
     }
-    print('----after conversion----');
-    print('$fvalue || $tvalue');
+    print('---- after conversion ----');
+    print('---- $fvalue || $tvalue ----');
     notifyListeners();
   }
 

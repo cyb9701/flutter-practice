@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class IsFromSelected extends ChangeNotifier {
   bool _isFromSelected = true;
 
-  bool get getSelected => _isFromSelected;
+  bool get get => _isFromSelected;
 
-  void setSelected(bool fromSelected) {
+  void set(bool fromSelected) {
     _isFromSelected = fromSelected;
     notifyListeners();
   }

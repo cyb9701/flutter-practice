@@ -22,7 +22,7 @@ class CurrencyWidget extends StatelessWidget {
               onTap: () {
                 if (isFromCurrency) {
                   Provider.of<IsFromSelected>(context, listen: false)
-                      .setSelected(isFromCurrency);
+                      .set(isFromCurrency);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -43,14 +43,16 @@ class CurrencyWidget extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Provider.of<IsFromSelected>(context, listen: false)
-                    .setSelected(isFromCurrency);
+                    .set(isFromCurrency);
               },
               child: Text(
                 isFromCurrency
                     ? currency.fvalue.toString()
                     : currency.tvalue.toString(),
                 style: TextStyle(
-                    color: isFromCurrency ? Colors.white : Colors.black),
+                    color: isFromCurrency ? Colors.white : Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40.0),
               ),
             ),
             _sizedBox(),
@@ -58,7 +60,7 @@ class CurrencyWidget extends StatelessWidget {
               onTap: () {
                 if (isFromCurrency == false) {
                   Provider.of<IsFromSelected>(context, listen: false)
-                      .setSelected(isFromCurrency);
+                      .set(isFromCurrency);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
