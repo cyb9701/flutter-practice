@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cryptocurrency_xrate/constants/color.dart';
 import 'package:flutter_cryptocurrency_xrate/constants/currency_code.dart';
 import 'package:flutter_cryptocurrency_xrate/provider/cached_currency.dart';
+import 'package:flutter_cryptocurrency_xrate/provider/is_from_selected.dart';
 import 'package:flutter_cryptocurrency_xrate/provider/is_updating.dart';
 import 'package:flutter_cryptocurrency_xrate/service/crypto_compare_api.dart';
 
@@ -22,12 +23,33 @@ class CurrencyListPage extends StatelessWidget {
     );
   }
 
+  AppBar _currencyListAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: isFromCurrency ? kDarkColor : kLightColor,
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          color: isFromCurrency ? kLightColor : kDarkColor,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      title: Text(
+        'Select Currency',
+        style: TextStyle(color: isFromCurrency ? kLightColor : kDarkColor),
+      ),
+    );
+  }
+
   ListView _currencyList() {
     return ListView.builder(
       itemCount: currencies.length,
       itemBuilder: (context, index) {
         return ListTile(
           onTap: () {
+            isFromSelected.set(isFromCurrency);
             isUpdating.set(true);
             print('---- IsUpdating: ${isUpdating.get} ----');
             if (isFromCurrency) {
@@ -37,43 +59,25 @@ class CurrencyListPage extends StatelessWidget {
             }
             cryptoCompareAPI
                 .getCurrency(cachedCurrency.fsym, cachedCurrency.tsym)
-                .then((conversion) {
-              cachedCurrency.setNewConversion(conversion, isFromCurrency);
-              isUpdating.set(false);
-            });
+                .then(
+              (conversion) {
+                cachedCurrency.setNewConversion(conversion, isFromCurrency);
+                isUpdating.set(false);
+              },
+            );
 
             Navigator.pop(context);
           },
           title: Text(
             currencies[index],
-            style:
-                TextStyle(color: isFromCurrency ? Colors.white : Colors.black),
+            style: TextStyle(color: isFromCurrency ? kLightColor : kDarkColor),
           ),
           subtitle: Text(
             nameToCode[currencies[index]],
-            style:
-                TextStyle(color: isFromCurrency ? Colors.white : Colors.black),
+            style: TextStyle(color: isFromCurrency ? kLightColor : kDarkColor),
           ),
         );
       },
-    );
-  }
-
-  AppBar _currencyListAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: isFromCurrency ? kDarkColor : kLightColor,
-      leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: isFromCurrency ? Colors.white : Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          }),
-      title: Text(
-        'Select Currency',
-        style: TextStyle(color: isFromCurrency ? Colors.white : Colors.black),
-      ),
     );
   }
 }
