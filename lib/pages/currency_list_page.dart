@@ -70,7 +70,9 @@ class CurrencyListPage extends StatelessWidget {
           },
           title: Text(
             currencies[index],
-            style: TextStyle(color: isFromCurrency ? kLightColor : kDarkColor),
+            style: TextStyle(
+                color: isFromCurrency ? kLightColor : kDarkColor,
+                fontSize: 23.0),
           ),
           subtitle: Text(
             nameToCode[currencies[index]],
