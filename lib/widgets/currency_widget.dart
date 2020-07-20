@@ -47,7 +47,7 @@ class CurrencyWidget extends StatelessWidget {
         isFromCurrency ? currency.fsym : currency.tsym,
         style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25.0,
+            fontSize: 30.0,
             color: isFromCurrency ? kLightColor : kDarkColor),
       ),
     );
@@ -56,7 +56,8 @@ class CurrencyWidget extends StatelessWidget {
   Text _currencyName(CachedCurrency currency) {
     return Text(
       isFromCurrency ? codeToName[currency.fsym] : codeToName[currency.tsym],
-      style: TextStyle(color: isFromCurrency ? kLightColor : kDarkColor),
+      style: TextStyle(
+          color: isFromCurrency ? kLightColor : kDarkColor, fontSize: 20),
     );
   }
 
