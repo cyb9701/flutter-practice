@@ -1,8 +1,9 @@
+import 'dart:math';
+
 import 'package:card_gradient/my_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'color.dart';
-import 'dart:ui' as ui;
 
 class CardPage extends StatefulWidget {
   const CardPage({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class _CardPageState extends State<CardPage> {
           children: [
             _appBar(),
             _myCard(),
+            const Spacer(),
             _copyButton(),
           ],
         ),
@@ -57,8 +59,19 @@ class _CardPageState extends State<CardPage> {
 
   // 카드.
   Widget _myCard() {
-    final double _width = _size.width - 64;
-    final double _height = (_size.width - 64) * 5 / 3;
+    // 카드 사이즈.
+    final double _width = _size.width - 32;
+    final double _height = (_size.width - 32) * 1.6;
+
+    // 그라데이션.
+    LinearGradient _gradient = const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.white,
+        Colors.black12,
+      ],
+    );
 
     return Stack(
       children: [
@@ -71,7 +84,7 @@ class _CardPageState extends State<CardPage> {
         // 카드 정보.
         Positioned(
           left: 30,
-          bottom: _height / 4,
+          bottom: _height / 3.5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -84,7 +97,7 @@ class _CardPageState extends State<CardPage> {
                 child: Row(
                   children: [
                     // 유효기간.
-                    _cardInformation(title: '유효기간', information: '03 / 20'),
+                    _cardInformation(title: '유효기간', information: '01 / 22'),
 
                     // padding.
                     const SizedBox(width: 32),
@@ -100,22 +113,22 @@ class _CardPageState extends State<CardPage> {
 
         // 토스 마크.
         Positioned(
-          right: 20,
+          right: 30,
           bottom: 20,
-          child: Text(
-            'toss bank',
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.w700,
-              foreground: Paint()
-                ..shader = ui.Gradient.linear(
-                  const Offset(0, 20),
-                  const Offset(150, 20),
-                  [
-                    Colors.white,
-                    Colors.black,
-                  ],
-                ),
+          child: ShaderMask(
+            blendMode: BlendMode.srcIn,
+            shaderCallback: (bounds) => _gradient.createShader(
+              Rect.fromCircle(
+                center: Offset(bounds.width, bounds.height / 2),
+                radius: 30,
+              ),
+            ),
+            child: const Text(
+              'toss bank',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
@@ -145,7 +158,7 @@ class _CardPageState extends State<CardPage> {
           information,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 20,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -154,7 +167,7 @@ class _CardPageState extends State<CardPage> {
   }
 
   // 복사 버튼.
-  CupertinoButton _copyButton() {
+  Widget _copyButton() {
     return CupertinoButton(
       pressedOpacity: 1,
       onPressed: () {},
