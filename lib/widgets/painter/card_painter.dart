@@ -1,4 +1,4 @@
-import 'package:card_gradient/color.dart';
+import 'package:card_gradient/constants/constants.dart';
 import 'package:flutter/rendering.dart';
 
 class CardPainter extends CustomPainter {

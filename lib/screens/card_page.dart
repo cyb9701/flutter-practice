@@ -1,9 +1,7 @@
-import 'dart:math';
-
-import 'package:card_gradient/my_card.dart';
+import 'package:card_gradient/constants/constants.dart';
+import 'package:card_gradient/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'color.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({Key? key}) : super(key: key);
@@ -63,16 +61,6 @@ class _CardPageState extends State<CardPage> {
     final double _width = _size.width - 32;
     final double _height = (_size.width - 32) * 1.6;
 
-    // 그라데이션.
-    LinearGradient _gradient = const LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Colors.white,
-        Colors.black12,
-      ],
-    );
-
     return Stack(
       children: [
         // 카드 형태.
@@ -97,7 +85,7 @@ class _CardPageState extends State<CardPage> {
                 child: Row(
                   children: [
                     // 유효기간.
-                    _cardInformation(title: '유효기간', information: '01 / 22'),
+                    _cardInformation(title: '유효기간', information: '00 / 00'),
 
                     // padding.
                     const SizedBox(width: 32),
@@ -111,26 +99,18 @@ class _CardPageState extends State<CardPage> {
           ),
         ),
 
-        // 토스 마크.
-        Positioned(
-          right: 30,
+        // 토스 로고.
+        const Positioned(
           bottom: 20,
-          child: ShaderMask(
-            blendMode: BlendMode.srcIn,
-            shaderCallback: (bounds) => _gradient.createShader(
-              Rect.fromCircle(
-                center: Offset(bounds.width, bounds.height / 2),
-                radius: 30,
-              ),
-            ),
-            child: const Text(
-              'toss bank',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
+          right: 30,
+          child: TossLogo(),
+        ),
+
+        // 마스터카드 로고.
+        const Positioned(
+          top: 30,
+          right: 30,
+          child: MastercardLogo(),
         ),
       ],
     );
