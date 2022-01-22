@@ -68,6 +68,7 @@ class MastercardLogo extends StatelessWidget {
     );
   }
 
+  // 테두리 그라데이션.
   ClipRRect _gradientCircle() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(40),
