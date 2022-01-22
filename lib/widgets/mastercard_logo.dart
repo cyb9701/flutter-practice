@@ -76,11 +76,7 @@ class MastercardLogo extends StatelessWidget {
         height: 80,
         decoration: const BoxDecoration(
           gradient: SweepGradient(
-            colors: [
-              ...Colors.accents,
-              Colors.black,
-              Colors.grey,
-            ],
+            colors: Colors.accents,
           ),
         ),
       ),
