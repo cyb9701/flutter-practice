@@ -15,7 +15,6 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
   Color _appBarColors = Colors.transparent;
 
   // size.
-  late Size _size;
   late EdgeInsets _padding;
 
   // scroll controller.
@@ -44,7 +43,6 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _size = MediaQuery.of(context).size;
     _padding = MediaQuery.of(context).padding;
     _appBarHeight = 64 + _padding.top;
   }
@@ -63,11 +61,20 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
                 EdgeInsets.only(top: _appBarHeight, bottom: _padding.bottom),
             children: [
               // 타이틀.
-              Text(
+              const Text(
                 '상품권을 선택해주세요',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
+                ),
+              ),
+
+              ...List.generate(
+                Colors.accents.length,
+                (index) => Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  height: 100,
+                  color: Colors.accents.elementAt(index),
                 ),
               ),
             ],
@@ -84,7 +91,7 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
   ClipRect _appbar() {
     return ClipRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           height: _appBarHeight,
           width: double.infinity,
@@ -99,4 +106,3 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
     );
   }
 }
-
