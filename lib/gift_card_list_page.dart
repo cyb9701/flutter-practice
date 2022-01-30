@@ -54,31 +54,7 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
       body: Stack(
         children: [
           // 리스트.
-          ListView(
-            controller: _scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20) +
-                EdgeInsets.only(top: _appBarHeight, bottom: _padding.bottom),
-            children: [
-              // 타이틀.
-              const Text(
-                '상품권을 선택해주세요',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-
-              ...List.generate(
-                Colors.accents.length,
-                (index) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  height: 100,
-                  color: Colors.accents.elementAt(index),
-                ),
-              ),
-            ],
-          ),
+          _list(),
 
           // 앱바.
           _appbar(),
@@ -87,9 +63,38 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
     );
   }
 
+  // 리스트.
+  ListView _list() {
+    return ListView(
+      controller: _scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20) +
+          EdgeInsets.only(top: _appBarHeight, bottom: _padding.bottom),
+      children: [
+        // 타이틀.
+        const Text(
+          '상품권을 선택해주세요',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+
+        ...List.generate(
+          Colors.accents.length,
+          (index) => Container(
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            height: 100,
+            color: Colors.accents.elementAt(index),
+          ),
+        ),
+      ],
+    );
+  }
+
   // 앱바.
-  ClipRect _appbar() {
-    return ClipRect(
+  Widget _appbar() {
+    return ClipRRect(
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
