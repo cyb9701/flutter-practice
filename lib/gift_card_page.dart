@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class GiftCardPage extends StatefulWidget {
   final Color colors;
@@ -15,52 +16,80 @@ class GiftCardPage extends StatefulWidget {
   _GiftCardPageState createState() => _GiftCardPageState();
 }
 
-class _GiftCardPageState extends State<GiftCardPage> {
+class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMixin {
   // 카드 수량.
   int _countCard = 1;
+
+  // 카드 위치 애니메이션.
+  late Animation<double> _animation;
+  late AnimationController _controller;
 
   // 증감 버튼 클릭.
   bool _clickedDecreaseButton = false;
   bool _clickedIncreaseButton = false;
 
-  // 애니메이션 효과 시간.
+  // 증감 버튼 애니메이션 효과 시간.
   final Duration _animationDuration = const Duration(milliseconds: 200);
 
   @override
+  void initState() {
+    super.initState();
+    // 카드 초기 애니메이션.
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 700),
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInSine,
+    )..addListener(() {
+        setState(() {});
+      });
+    _controller.forward();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // 앱바.
-            _appbar(),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              // 앱바.
+              _appbar(),
 
-            // 카드.
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Hero(
-                    tag: widget.tag,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: widget.colors,
-                        borderRadius: BorderRadius.circular(25),
+              // 카드.
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: widget.tag,
+                      child: Transform.rotate(
+                        angle: _animation.value * (-math.pi / 30),
+                        child: Container(
+                          width: 320,
+                          height: 200,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: widget.colors,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
                       ),
-                      height: 200,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
 
-            // 카드 수량 증감 버튼.
-            _countChangingButton(),
+              // 카드 수량 증감 버튼.
+              _countChangingButton(),
 
-            // 구매 버튼.
-            _paymentButton(),
-          ],
+              // 구매 버튼.
+              _paymentButton(),
+            ],
+          ),
         ),
       ),
     );
