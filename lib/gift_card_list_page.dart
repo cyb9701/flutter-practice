@@ -1,6 +1,9 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toss_gift_card_interaction/colors.dart';
+import 'package:toss_gift_card_interaction/gift_card_page.dart';
 
 class GiftCardListPage extends StatefulWidget {
   const GiftCardListPage({Key? key}) : super(key: key);
@@ -50,7 +53,7 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff18181f),
+      backgroundColor: kBackgroundColor,
       body: Stack(
         children: [
           // 리스트.
@@ -72,21 +75,50 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
           EdgeInsets.only(top: _appBarHeight, bottom: _padding.bottom),
       children: [
         // 타이틀.
-        const Text(
-          '상품권을 선택해주세요',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.w700,
+        const Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Text(
+            '상품권을 선택해주세요',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
 
+        // 상품권 카드.
         ...List.generate(
           Colors.accents.length,
-          (index) => Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            height: 100,
-            color: Colors.accents.elementAt(index),
-          ),
+          (index) {
+            final _color = Colors.accents.elementAt(index);
+
+            return Hero(
+              tag: index,
+              child: CupertinoButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GiftCardPage(
+                        colors: _color,
+                        tag: index,
+                      ),
+                    ),
+                  );
+                },
+                padding: EdgeInsets.zero,
+                pressedOpacity: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: _color,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  height: 150,
+                ),
+              ),
+            );
+          },
         ),
       ],
     );
