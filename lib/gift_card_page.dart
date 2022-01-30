@@ -17,6 +17,10 @@ class GiftCardPage extends StatefulWidget {
 }
 
 class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMixin {
+  // 카드 사이즈.
+  static const double _cardWidth = 320;
+  static const double _cardHeight = 200;
+
   // 카드 수량.
   int _countCard = 1;
 
@@ -43,6 +47,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
       parent: _controller,
       curve: Curves.easeInSine,
     )..addListener(() {
+        // 상태 변경.
         setState(() {});
       });
     _controller.forward();
@@ -64,19 +69,12 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    //
                     Hero(
                       tag: widget.tag,
                       child: Transform.rotate(
                         angle: _animation.value * (-math.pi / 30),
-                        child: Container(
-                          width: 320,
-                          height: 200,
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
-                          decoration: BoxDecoration(
-                            color: widget.colors,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                        ),
+                        child: _giftCard(),
                       ),
                     ),
                   ],
@@ -128,6 +126,18 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // 기프트 카드.
+  Container _giftCard() {
+    return Container(
+      width: _cardWidth,
+      height: _cardHeight,
+      decoration: BoxDecoration(
+        color: widget.colors,
+        borderRadius: BorderRadius.circular(25),
       ),
     );
   }
