@@ -22,7 +22,8 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   static const double _cardHeight = 200;
 
   // 카드 수량.
-  int _countCard = 1;
+  int _cardQuantity = 1;
+  int _animationCardQuantity = 1;
 
   // 카드 위치 애니메이션.
   late Animation<double> _animation;
@@ -33,7 +34,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   bool _clickedIncreaseButton = false;
 
   // 증감 버튼 애니메이션 효과 시간.
-  final Duration _animationDuration = const Duration(milliseconds: 200);
+  final Duration _animationDuration = const Duration(milliseconds: 100);
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     // 카드 초기 애니메이션.
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 700),
+      duration: const Duration(milliseconds: 1000),
     );
     _animation = CurvedAnimation(
       parent: _controller,
@@ -74,7 +75,27 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                       tag: widget.tag,
                       child: Transform.rotate(
                         angle: _animation.value * (-math.pi / 30),
-                        child: _giftCard(),
+                        child: Stack(
+                          children: List.generate(
+                            _animationCardQuantity,
+                            (index) {
+                              final _index = _animationCardQuantity - index - 1;
+                              return Transform(
+                                transform: Matrix4.identity()
+                                  // 원근법.
+                                  ..setEntry(3, 2, -0.000001 * _index)
+
+                                  // 이동.
+                                  ..setEntry(0, 3, -1.5 * _index)
+                                  ..setEntry(1, 3, -2.0 * _index)
+                                  // 회전.
+                                  ..rotateX(-0.075 * _index)
+                                  ..rotateY(0.07 * _index),
+                                child: _giftCard(index: _index),
+                              );
+                            },
+                          ).reversed.toList(),
+                        ),
                       ),
                     ),
                   ],
@@ -131,13 +152,28 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   }
 
   // 기프트 카드.
-  Container _giftCard() {
+  Container _giftCard({required int index}) {
+    final _shadowList = [
+      Colors.black12,
+      Colors.black26,
+      Colors.black38,
+      Colors.black45,
+      Colors.black54,
+    ];
     return Container(
       width: _cardWidth,
       height: _cardHeight,
       decoration: BoxDecoration(
         color: widget.colors,
         borderRadius: BorderRadius.circular(25),
+        boxShadow: [
+          BoxShadow(
+            color: _shadowList.elementAt(index),
+            spreadRadius: 0,
+            blurRadius: 15,
+            offset: const Offset(5, 5),
+          ),
+        ],
       ),
     );
   }
@@ -169,13 +205,17 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                 width: 84,
                 height: 84,
                 child: CupertinoButton(
-                  onPressed: (_countCard != 1)
+                  onPressed: (_cardQuantity != 1)
                       ? () {
                           // 수량 감소.
-                          setState(() {
-                            _countCard--;
-                            _clickedDecreaseButton = !_clickedDecreaseButton;
-                          });
+                          if (_cardQuantity < 6) {
+                            _animationCardQuantity--;
+                          }
+                          _cardQuantity--;
+                          _clickedDecreaseButton = !_clickedDecreaseButton;
+
+                          // 상태 변경.
+                          setState(() {});
 
                           Future.delayed(_animationDuration, () {
                             setState(() {
@@ -205,7 +245,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Text(
-                  '$_countCard개',
+                  '$_cardQuantity개',
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w700,
@@ -220,10 +260,14 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                 child: CupertinoButton(
                   onPressed: () {
                     // 수량 감소.
-                    setState(() {
-                      _countCard++;
-                      _clickedIncreaseButton = !_clickedIncreaseButton;
-                    });
+                    _cardQuantity++;
+                    _clickedIncreaseButton = !_clickedIncreaseButton;
+                    if (_animationCardQuantity < 5) {
+                      _animationCardQuantity++;
+                    }
+
+                    // 상태변경.
+                    setState(() {});
 
                     Future.delayed(_animationDuration, () {
                       setState(() {
@@ -266,7 +310,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
       ),
       child: Center(
         child: Text(
-          '30,000원 권 $_countCard개를 구매하기',
+          '30,000원 권 $_cardQuantity개를 구매하기',
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
