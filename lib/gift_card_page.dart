@@ -70,7 +70,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //
+                    //TODO: 카드 증가시, 바운스 애니메이션. 카드 추가 될때마다 아래에서 새로 나오는 애니메이션
                     Hero(
                       tag: widget.tag,
                       child: Transform.rotate(
