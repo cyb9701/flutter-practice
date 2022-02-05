@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:toss_gift_card_interaction/colors.dart';
 import 'package:toss_gift_card_interaction/gift_card_page.dart';
 
@@ -52,6 +53,7 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: Stack(

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:flutter/services.dart';
+
 class GiftCardPage extends StatefulWidget {
   final Color colors;
   final int tag;
@@ -100,6 +102,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
