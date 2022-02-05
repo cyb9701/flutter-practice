@@ -96,13 +96,27 @@ class _GiftCardListPageState extends State<GiftCardListPage> {
               tag: index,
               child: CupertinoButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GiftCardPage(
-                        colors: _color,
-                        tag: index,
-                      ),
+                  Navigator.of(context).push(
+                    PageRouteBuilder(
+                      opaque: false,
+                      transitionDuration: const Duration(milliseconds: 200),
+                      reverseTransitionDuration: const Duration(milliseconds: 200),
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return GiftCardPage(
+                          colors: _color,
+                          tag: index,
+                        );
+                      },
+                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                        const _begin = Offset(1.0, 0.0);
+                        const _end = Offset.zero;
+                        const _curve = Curves.ease;
+                        final _tween = Tween(begin: _begin, end: _end).chain(CurveTween(curve: _curve));
+                        return SlideTransition(
+                          position: animation.drive(_tween),
+                          child: child,
+                        );
+                      },
                     ),
                   );
                 },

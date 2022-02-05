@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
@@ -101,59 +103,36 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              // 앱바.
-              _appbar(),
-
-              // 카드.
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Hero(
-                      tag: widget.tag,
-                      child: Transform.rotate(
-                        angle: _cardRotateAnimation.value * (-math.pi / 30),
-                        child: Transform(
-                          alignment: Alignment.topLeft,
-                          transform: Matrix4.identity()
-                            // 회전.
-                            ..rotateX(_cardBounceController.value * (-math.pi / 400))
-                            ..rotateY(_cardBounceController.value * (math.pi / 400)),
-                          child: Stack(
-                            children: List.generate(
-                              _animationCardQuantity,
-                              (index) {
-                                final _index = _animationCardQuantity - 1 - index;
-                                return Transform(
-                                  transform: Matrix4.identity()
-                                    // 이동.
-                                    ..setEntry(0, 3, -1.5 * _index)
-                                    ..setEntry(1, 3, -2.0 * _index)
-                                    // 회전.
-                                    ..rotateX(-0.075 * _index)
-                                    ..rotateY(0.07 * _index),
-                                  child: _giftCard(index: index),
-                                );
-                              },
-                            ).reversed.toList(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+        backgroundColor: Colors.black12.withOpacity(0.2),
+        body: Stack(
+          children: [
+            // 배경색.
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 70, sigmaY: 70),
+                child: Container(),
               ),
+            ),
 
-              // 카드 수량 증감 버튼.
-              _countChangingButton(),
+            // 카드 화면.
+            SafeArea(
+              child: Column(
+                children: [
+                  // 앱바.
+                  _appbar(),
 
-              // 구매 버튼.
-              _paymentButton(),
-            ],
-          ),
+                  // 카드.
+                  _cards(),
+
+                  // 카드 수량 증감 버튼.
+                  _countChangingButton(),
+
+                  // 구매 버튼.
+                  _paymentButton(),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -196,15 +175,50 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     );
   }
 
+  // 카드.
+  Expanded _cards() {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Hero(
+            tag: widget.tag,
+            child: Transform.rotate(
+              angle: _cardRotateAnimation.value * (-math.pi / 30),
+              child: Transform(
+                alignment: Alignment.topLeft,
+                transform: Matrix4.identity()
+                  // 회전.
+                  ..rotateX(_cardBounceController.value * (-math.pi / 400))
+                  ..rotateY(_cardBounceController.value * (math.pi / 400)),
+                child: Stack(
+                  children: List.generate(
+                    _animationCardQuantity,
+                    (index) {
+                      final _index = _animationCardQuantity - 1 - index;
+                      return Transform(
+                        transform: Matrix4.identity()
+                          // 이동.
+                          ..setEntry(0, 3, -1.5 * _index)
+                          ..setEntry(1, 3, -2.0 * _index)
+                          // 회전.
+                          ..rotateX(-0.075 * _index)
+                          ..rotateY(0.07 * _index),
+                        child: _giftCard(index: index),
+                      );
+                    },
+                  ).reversed.toList(),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   // 기프트 카드.
   Container _giftCard({required int index}) {
-    final _shadowList = [
-      Colors.black38,
-      Colors.black45,
-      Colors.black54,
-      Colors.black54,
-      Colors.black54,
-    ];
     return Container(
       width: _cardWidth,
       height: _cardHeight,
@@ -212,12 +226,12 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
       decoration: BoxDecoration(
         color: widget.colors,
         borderRadius: BorderRadius.circular(25),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: _shadowList.elementAt(index),
+            color: Colors.black45,
             spreadRadius: 0,
             blurRadius: 15,
-            offset: const Offset(5, 5),
+            offset: Offset(5, 5),
           ),
         ],
       ),
@@ -239,7 +253,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   // 카드 수량 증감 버튼.
   Container _countChangingButton() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+      margin: const EdgeInsets.symmetric(horizontal: 16) + const EdgeInsets.only(bottom: 40),
       child: Column(
         children: [
           // 타이틀.
