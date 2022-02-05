@@ -112,7 +112,6 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //TODO: 카드 추가 될때마다 아래에서 새로 나오는 애니메이션
                     Hero(
                       tag: widget.tag,
                       child: Transform.rotate(
@@ -300,12 +299,6 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                     _animationCardQuantity++;
                   }
 
-                  // 카드 바운스 애니메이션.
-                  _cardBounceController.forward();
-                  Future.delayed(_bounceAnimationDuration, () {
-                    _cardBounceController.reverse();
-                  });
-
                   // 상태변경.
                   setState(() {});
                 },
@@ -335,6 +328,12 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
         if (voidCallback != null) {
           voidCallback.call();
         }
+
+        // 카드 바운스 애니메이션.
+        _cardBounceController.forward();
+        Future.delayed(_bounceAnimationDuration, () {
+          _cardBounceController.reverse();
+        });
       },
       child: Transform.scale(
         scale: 1 + animationController.value,
