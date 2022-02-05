@@ -25,33 +25,63 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   int _cardQuantity = 1;
   int _animationCardQuantity = 1;
 
-  // 카드 위치 애니메이션.
-  late Animation<double> _animation;
-  late AnimationController _controller;
+  // 카드 회전 애니메이션.
+  late Animation<double> _cardRotateAnimation;
+  late AnimationController _cardRotateController;
 
-  // 증감 버튼 클릭.
-  bool _clickedDecreaseButton = false;
-  bool _clickedIncreaseButton = false;
-
-  // 증감 버튼 애니메이션 효과 시간.
+  // 증감 버튼 크기 애니메이션.
+  late AnimationController _decreaseButtonScaleController;
+  late AnimationController _increaseButtonScaleController;
   final Duration _animationDuration = const Duration(milliseconds: 100);
 
-  @override
-  void initState() {
-    super.initState();
-    // 카드 초기 애니메이션.
-    _controller = AnimationController(
+  // 카드 회전 애니메이션 설정.
+  void _setCardRotateAnimation() {
+    _cardRotateController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(seconds: 1),
     );
-    _animation = CurvedAnimation(
-      parent: _controller,
+    _cardRotateAnimation = CurvedAnimation(
+      parent: _cardRotateController,
       curve: Curves.easeInSine,
     )..addListener(() {
         // 상태 변경.
         setState(() {});
       });
-    _controller.forward();
+    _cardRotateController.forward();
+  }
+
+  // 버튼 크기 애니메이션 설정.
+  void _setButtonScaleAnimation() {
+    // 감소 버튼 애니메이션.
+    _decreaseButtonScaleController = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+      lowerBound: 0.0,
+      upperBound: 0.6,
+    )..addListener(() => setState(() {}));
+
+    // 증가 버튼 애니메이션.
+    _increaseButtonScaleController = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+      lowerBound: 0.0,
+      upperBound: 0.6,
+    )..addListener(() => setState(() {}));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setCardRotateAnimation();
+    _setButtonScaleAnimation();
+  }
+
+  @override
+  void dispose() {
+    _cardRotateController.dispose();
+    _decreaseButtonScaleController.dispose();
+    _increaseButtonScaleController.dispose();
+    super.dispose();
   }
 
   @override
@@ -74,7 +104,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                     Hero(
                       tag: widget.tag,
                       child: Transform.rotate(
-                        angle: _animation.value * (-math.pi / 30),
+                        angle: _cardRotateAnimation.value * (-math.pi / 30),
                         child: Stack(
                           children: List.generate(
                             _animationCardQuantity,
@@ -201,44 +231,21 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 감소 버튼.
-              SizedBox(
-                width: 84,
-                height: 84,
-                child: CupertinoButton(
-                  onPressed: (_cardQuantity != 1)
-                      ? () {
-                          // 수량 감소.
-                          if (_cardQuantity < 6) {
-                            _animationCardQuantity--;
-                          }
-                          _cardQuantity--;
-                          _clickedDecreaseButton = !_clickedDecreaseButton;
-
-                          // 상태 변경.
-                          setState(() {});
-
-                          Future.delayed(_animationDuration, () {
-                            setState(() {
-                              _clickedDecreaseButton = !_clickedDecreaseButton;
-                            });
-                          });
+              _button(
+                animationController: _decreaseButtonScaleController,
+                iconData: Icons.remove_rounded,
+                voidCallback: (_cardQuantity != 1)
+                    ? () {
+                        // 수량 감소.
+                        if (_cardQuantity < 6) {
+                          _animationCardQuantity--;
                         }
-                      : null,
-                  child: AnimatedContainer(
-                    width: !_clickedDecreaseButton ? 42 : 52,
-                    height: !_clickedDecreaseButton ? 42 : 52,
-                    duration: _animationDuration,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey.withOpacity(0.2),
-                    ),
-                    child: const Icon(
-                      Icons.remove_rounded,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                        _cardQuantity--;
+
+                        // 상태 변경.
+                        setState(() {});
+                      }
+                    : null,
               ),
 
               // 수량.
@@ -254,46 +261,60 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
               ),
 
               // 증가 버튼.
-              SizedBox(
-                width: 84,
-                height: 84,
-                child: CupertinoButton(
-                  onPressed: () {
-                    // 수량 감소.
-                    _cardQuantity++;
-                    _clickedIncreaseButton = !_clickedIncreaseButton;
-                    if (_animationCardQuantity < 5) {
-                      _animationCardQuantity++;
-                    }
+              _button(
+                animationController: _increaseButtonScaleController,
+                iconData: Icons.add_rounded,
+                voidCallback: () {
+                  // 수량 증가.
+                  _cardQuantity++;
+                  if (_animationCardQuantity < 5) {
+                    _animationCardQuantity++;
+                  }
 
-                    // 상태변경.
-                    setState(() {});
-
-                    Future.delayed(_animationDuration, () {
-                      setState(() {
-                        _clickedIncreaseButton = !_clickedIncreaseButton;
-                      });
-                    });
-                  },
-                  child: AnimatedContainer(
-                    width: !_clickedIncreaseButton ? 42 : 52,
-                    height: !_clickedIncreaseButton ? 42 : 52,
-                    duration: _animationDuration,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.grey.withOpacity(0.2),
-                    ),
-                    child: const Icon(
-                      Icons.add_rounded,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                  // 상태변경.
+                  setState(() {});
+                },
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  // 버튼.
+  Widget _button({
+    required AnimationController animationController,
+    VoidCallback? voidCallback,
+    required IconData iconData,
+  }) {
+    return CupertinoButton(
+      onPressed: () {
+        // 애니메이션 효과.
+        animationController.forward();
+        Future.delayed(_animationDuration, () {
+          animationController.reverse();
+        });
+
+        // 값 변경.
+        if (voidCallback != null) {
+          voidCallback.call();
+        }
+      },
+      child: Transform.scale(
+        scale: 1 + animationController.value,
+        child: Container(
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.grey.withOpacity(0.2),
+          ),
+          child: Icon(
+            iconData,
+            size: 36,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
