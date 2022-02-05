@@ -30,7 +30,6 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   int _animationCardQuantity = 1;
 
   // 카드 애니메이션.
-  late Animation<double> _cardRotateAnimation;
   late AnimationController _cardRotateController;
   late AnimationController _cardBounceController;
 
@@ -47,14 +46,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     _cardRotateController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
-    );
-    _cardRotateAnimation = CurvedAnimation(
-      parent: _cardRotateController,
-      curve: Curves.easeInSine,
-    )..addListener(() {
-        // 상태 변경.
-        setState(() {});
-      });
+    )..addListener(() => setState(() {}));
     _cardRotateController.forward();
 
     // 카드 바운스 애니메이션.
@@ -187,7 +179,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
           Hero(
             tag: widget.tag,
             child: Transform.rotate(
-              angle: _cardRotateAnimation.value * (-math.pi / 30),
+              angle: _cardRotateController.value * (-math.pi / 30),
               child: Transform(
                 alignment: Alignment.topLeft,
                 transform: Matrix4.identity()
