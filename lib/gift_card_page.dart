@@ -112,7 +112,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //TODO: 카드 증가시, 바운스 애니메이션. 카드 추가 될때마다 아래에서 새로 나오는 애니메이션
+                    //TODO: 카드 추가 될때마다 아래에서 새로 나오는 애니메이션
                     Hero(
                       tag: widget.tag,
                       child: Transform.rotate(
@@ -209,7 +209,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     return Container(
       width: _cardWidth,
       height: _cardHeight,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: widget.colors,
         borderRadius: BorderRadius.circular(25),
@@ -223,11 +223,14 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
         ],
       ),
       child: (index == 0)
-          ? const Text(
-              '상품권',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w700,
+          ? const Material(
+              type: MaterialType.transparency,
+              child: Text(
+                '상품권',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             )
           : const SizedBox.shrink(),
