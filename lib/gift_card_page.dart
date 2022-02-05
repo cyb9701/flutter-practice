@@ -25,17 +25,21 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   int _cardQuantity = 1;
   int _animationCardQuantity = 1;
 
-  // 카드 회전 애니메이션.
+  // 카드 애니메이션.
   late Animation<double> _cardRotateAnimation;
   late AnimationController _cardRotateController;
+  late AnimationController _cardBounceController;
 
   // 증감 버튼 크기 애니메이션.
   late AnimationController _decreaseButtonScaleController;
   late AnimationController _increaseButtonScaleController;
-  final Duration _animationDuration = const Duration(milliseconds: 100);
 
-  // 카드 회전 애니메이션 설정.
+  // 바운스 애니메이션.
+  final Duration _bounceAnimationDuration = const Duration(milliseconds: 100);
+
+  // 카드 애니메이션 설정.
   void _setCardRotateAnimation() {
+    // 카드 회전 애니메이션.
     _cardRotateController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -48,6 +52,14 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
         setState(() {});
       });
     _cardRotateController.forward();
+
+    // 카드 바운스 애니메이션.
+    _cardBounceController = AnimationController(
+      vsync: this,
+      duration: _bounceAnimationDuration,
+      lowerBound: 0.0,
+      upperBound: 10.0,
+    )..addListener(() => setState(() {}));
   }
 
   // 버튼 크기 애니메이션 설정.
@@ -55,7 +67,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     // 감소 버튼 애니메이션.
     _decreaseButtonScaleController = AnimationController(
       vsync: this,
-      duration: _animationDuration,
+      duration: _bounceAnimationDuration,
       lowerBound: 0.0,
       upperBound: 0.6,
     )..addListener(() => setState(() {}));
@@ -63,7 +75,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
     // 증가 버튼 애니메이션.
     _increaseButtonScaleController = AnimationController(
       vsync: this,
-      duration: _animationDuration,
+      duration: _bounceAnimationDuration,
       lowerBound: 0.0,
       upperBound: 0.6,
     )..addListener(() => setState(() {}));
@@ -105,26 +117,30 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                       tag: widget.tag,
                       child: Transform.rotate(
                         angle: _cardRotateAnimation.value * (-math.pi / 30),
-                        child: Stack(
-                          children: List.generate(
-                            _animationCardQuantity,
-                            (index) {
-                              final _index = _animationCardQuantity - index - 1;
-                              return Transform(
-                                transform: Matrix4.identity()
-                                  // 원근법.
-                                  ..setEntry(3, 2, -0.000001 * _index)
-
-                                  // 이동.
-                                  ..setEntry(0, 3, -1.5 * _index)
-                                  ..setEntry(1, 3, -2.0 * _index)
-                                  // 회전.
-                                  ..rotateX(-0.075 * _index)
-                                  ..rotateY(0.07 * _index),
-                                child: _giftCard(index: _index),
-                              );
-                            },
-                          ).reversed.toList(),
+                        child: Transform(
+                          alignment: Alignment.topLeft,
+                          transform: Matrix4.identity()
+                            // 회전.
+                            ..rotateX(_cardBounceController.value * (-math.pi / 400))
+                            ..rotateY(_cardBounceController.value * (math.pi / 400)),
+                          child: Stack(
+                            children: List.generate(
+                              _animationCardQuantity,
+                              (index) {
+                                final _index = _animationCardQuantity - 1 - index;
+                                return Transform(
+                                  transform: Matrix4.identity()
+                                    // 이동.
+                                    ..setEntry(0, 3, -1.5 * _index)
+                                    ..setEntry(1, 3, -2.0 * _index)
+                                    // 회전.
+                                    ..rotateX(-0.075 * _index)
+                                    ..rotateY(0.07 * _index),
+                                  child: _giftCard(index: index),
+                                );
+                              },
+                            ).reversed.toList(),
+                          ),
                         ),
                       ),
                     ),
@@ -184,15 +200,16 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
   // 기프트 카드.
   Container _giftCard({required int index}) {
     final _shadowList = [
-      Colors.black12,
-      Colors.black26,
       Colors.black38,
       Colors.black45,
+      Colors.black54,
+      Colors.black54,
       Colors.black54,
     ];
     return Container(
       width: _cardWidth,
       height: _cardHeight,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: widget.colors,
         borderRadius: BorderRadius.circular(25),
@@ -205,6 +222,15 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
           ),
         ],
       ),
+      child: (index == 0)
+          ? const Text(
+              '상품권',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w700,
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 
@@ -271,6 +297,12 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
                     _animationCardQuantity++;
                   }
 
+                  // 카드 바운스 애니메이션.
+                  _cardBounceController.forward();
+                  Future.delayed(_bounceAnimationDuration, () {
+                    _cardBounceController.reverse();
+                  });
+
                   // 상태변경.
                   setState(() {});
                 },
@@ -292,7 +324,7 @@ class _GiftCardPageState extends State<GiftCardPage> with TickerProviderStateMix
       onPressed: () {
         // 애니메이션 효과.
         animationController.forward();
-        Future.delayed(_animationDuration, () {
+        Future.delayed(_bounceAnimationDuration, () {
           animationController.reverse();
         });
 
