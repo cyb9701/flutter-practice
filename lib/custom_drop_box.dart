@@ -57,6 +57,11 @@ class CustomDropBox {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         '${controller.text}${_emailList.elementAt(index)}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          height: 22 / 16,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   );
