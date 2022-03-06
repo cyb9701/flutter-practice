@@ -91,7 +91,7 @@ class _CustomDropdownPageState extends State<CustomDropdownPage> {
     );
   }
 
-  // 드롭박스.
+  // 드롭다운.
   OverlayEntry _customDropdown() {
     return OverlayEntry(
       maintainState: true,
@@ -153,4 +153,3 @@ class _CustomDropdownPageState extends State<CustomDropdownPage> {
     );
   }
 }
-
