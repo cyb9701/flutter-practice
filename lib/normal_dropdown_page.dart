@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomDropBoxPage extends StatefulWidget {
-  const CustomDropBoxPage({Key? key}) : super(key: key);
+class CustomDropdownPage extends StatefulWidget {
+  const CustomDropdownPage({Key? key}) : super(key: key);
 
   @override
-  State<CustomDropBoxPage> createState() => _CustomDropBoxPageState();
+  State<CustomDropdownPage> createState() => _CustomDropdownPageState();
 }
 
-class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
+class _CustomDropdownPageState extends State<CustomDropdownPage> {
   // 드롭다운 리스트.
   static const List<String> _dropdownList = ['One', 'Two', 'Three', 'Four', 'Five'];
 
@@ -24,7 +24,7 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
   // 드롭다운 생성.
   void _createOverlay() {
     if (_overlayEntry == null) {
-      _overlayEntry = _customDropBox();
+      _overlayEntry = _customDropdown();
       Overlay.of(context)?.insert(_overlayEntry!);
     }
   }
@@ -92,7 +92,7 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
   }
 
   // 드롭박스.
-  OverlayEntry _customDropBox() {
+  OverlayEntry _customDropdown() {
     return OverlayEntry(
       maintainState: true,
       builder: (context) => Positioned(

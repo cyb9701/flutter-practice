@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-CustomDropBox customDropBox = CustomDropBox();
+CustomDropdown customDropdown = CustomDropdown();
 
-class CustomDropBox {
+class CustomDropdown {
   // 이메일 자동 입력창.
   OverlayEntry emailRecommendation({
     required double width,

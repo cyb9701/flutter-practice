@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FlutterDropBoxPage extends StatefulWidget {
-  const FlutterDropBoxPage({Key? key}) : super(key: key);
+class FlutterDropdownPage extends StatefulWidget {
+  const FlutterDropdownPage({Key? key}) : super(key: key);
 
   @override
-  State<FlutterDropBoxPage> createState() => _FlutterDropBoxPageState();
+  State<FlutterDropdownPage> createState() => _FlutterDropdownPageState();
 }
 
-class _FlutterDropBoxPageState extends State<FlutterDropBoxPage> {
+class _FlutterDropdownPageState extends State<FlutterDropdownPage> {
   String dropdownValue = 'One';
 
   @override

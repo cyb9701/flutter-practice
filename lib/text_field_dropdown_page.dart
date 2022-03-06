@@ -1,14 +1,14 @@
-import 'package:custom_drop_box/custom_email_drop_box.dart';
+import 'package:custom_drop_box/custom_email_dropdown.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextFieldDropBoxPage extends StatefulWidget {
-  const CustomTextFieldDropBoxPage({Key? key}) : super(key: key);
+class CustomTextFieldDropdownPage extends StatefulWidget {
+  const CustomTextFieldDropdownPage({Key? key}) : super(key: key);
 
   @override
-  State<CustomTextFieldDropBoxPage> createState() => _CustomTextFieldDropBoxPageState();
+  State<CustomTextFieldDropdownPage> createState() => _CustomTextFieldDropdownPageState();
 }
 
-class _CustomTextFieldDropBoxPageState extends State<CustomTextFieldDropBoxPage> {
+class _CustomTextFieldDropdownPageState extends State<CustomTextFieldDropdownPage> {
   // 이메일.
   late TextEditingController _emailController;
   late FocusNode _emailFocusNode;
@@ -139,7 +139,7 @@ class _CustomTextFieldDropBoxPageState extends State<CustomTextFieldDropBoxPage>
 
   // 이메일 자동 입력창.
   OverlayEntry _emailListOverlayEntry() {
-    return customDropBox.emailRecommendation(
+    return customDropdown.emailRecommendation(
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(horizontal: 20),
       layerLink: _layerLink,

@@ -1,6 +1,6 @@
-import 'package:custom_drop_box/flutter_drop_box_page.dart';
-import 'package:custom_drop_box/normal_drop_box_page.dart';
-import 'package:custom_drop_box/text_field_drop_box_page.dart';
+import 'package:custom_drop_box/flutter_dropdown_page.dart';
+import 'package:custom_drop_box/normal_dropdown_page.dart';
+import 'package:custom_drop_box/text_field_dropdown_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const FlutterDropBoxPage(),
+                    builder: (context) => const FlutterDropdownPage(),
                   ),
                 );
               },
@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CustomDropBoxPage(),
+                    builder: (context) => const CustomDropdownPage(),
                   ),
                 );
               },
@@ -82,7 +82,7 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const CustomTextFieldDropBoxPage(),
+                    builder: (context) => const CustomTextFieldDropdownPage(),
                   ),
                 );
               },
