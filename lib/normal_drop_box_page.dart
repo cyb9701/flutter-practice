@@ -9,19 +9,19 @@ class CustomDropBoxPage extends StatefulWidget {
 }
 
 class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
-  // 드롭박스 리스트.
-  static const List<String> _dropBoxList = ['One', 'Two', 'Three', 'Four', 'Five'];
+  // 드롭다운 리스트.
+  static const List<String> _dropdownList = ['One', 'Two', 'Three', 'Four', 'Five'];
 
   // 선택값.
-  String _dropBoxValue = 'One';
+  String _dropdownValue = 'One';
 
   // 드롭박스.
-  OverlayEntry? _overlayEntry; // 이메일 자동 추천 드롭 박스.
+  OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
-  static const double _dropBoxWidth = 200;
-  static const double _dropBoxHeight = 48;
+  static const double _dropdownWidth = 200;
+  static const double _dropdownHeight = 48;
 
-  // 드롭박스 생성.
+  // 드롭다운 생성.
   void _createOverlay() {
     if (_overlayEntry == null) {
       _overlayEntry = _customDropBox();
@@ -29,7 +29,7 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
     }
   }
 
-  // 드롭박스 해제.
+  // 드롭다운 해제.
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;
@@ -54,8 +54,8 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
             child: CompositedTransformTarget(
               link: _layerLink,
               child: Container(
-                width: _dropBoxWidth,
-                height: _dropBoxHeight,
+                width: _dropdownWidth,
+                height: _dropdownHeight,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -68,7 +68,7 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
                   children: [
                     // 선택값.
                     Text(
-                      _dropBoxValue,
+                      _dropdownValue,
                       style: const TextStyle(
                         fontSize: 16,
                         height: 22 / 16,
@@ -96,14 +96,14 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
     return OverlayEntry(
       maintainState: true,
       builder: (context) => Positioned(
-        width: _dropBoxWidth,
+        width: _dropdownWidth,
         child: CompositedTransformFollower(
           link: _layerLink,
-          offset: const Offset(0, _dropBoxHeight),
+          offset: const Offset(0, _dropdownHeight),
           child: Material(
             color: Colors.white,
             child: Container(
-              height: (22.0 * _dropBoxList.length) + (21 * (_dropBoxList.length - 1)) + 20,
+              height: (22.0 * _dropdownList.length) + (21 * (_dropdownList.length - 1)) + 20,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5),
@@ -111,7 +111,7 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
               child: ListView.separated(
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                itemCount: _dropBoxList.length,
+                itemCount: _dropdownList.length,
                 itemBuilder: (context, index) {
                   return CupertinoButton(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -119,14 +119,14 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
                     minSize: 0,
                     onPressed: () {
                       setState(() {
-                        _dropBoxValue = _dropBoxList.elementAt(index);
+                        _dropdownValue = _dropdownList.elementAt(index);
                       });
                       _removeOverlay();
                     },
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        _dropBoxList.elementAt(index),
+                        _dropdownList.elementAt(index),
                         style: const TextStyle(
                           fontSize: 16,
                           height: 22 / 16,
@@ -153,3 +153,4 @@ class _CustomDropBoxPageState extends State<CustomDropBoxPage> {
     );
   }
 }
+

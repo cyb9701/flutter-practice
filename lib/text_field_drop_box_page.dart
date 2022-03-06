@@ -146,6 +146,7 @@ class _CustomTextFieldDropBoxPageState extends State<CustomTextFieldDropBoxPage>
       controller: _emailController,
       onPressed: () {
         setState(() {
+          _emailFocusNode.unfocus();
           _removeEmailOverlay();
         });
       },
