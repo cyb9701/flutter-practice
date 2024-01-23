@@ -1,16 +1,6 @@
-# flutteridmemo
-
-A new Flutter application.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![iScreen Shoter - Safari - 240123212648](https://github.com/cyb9701/flutter-practice/assets/59527787/f30bf434-4bf3-433f-a29a-2d902501d7b3)
+![unnamed](https://github.com/cyb9701/flutter-practice/assets/59527787/ffe720c9-ad8a-4277-832c-79a145cbb31d)
+![unnamed-2](https://github.com/cyb9701/flutter-practice/assets/59527787/6548c818-604a-4f3b-85d0-cce4fac0a7e5)
+![unnamed-3](https://github.com/cyb9701/flutter-practice/assets/59527787/ef342912-40d1-4b92-a5f6-ba9a59b008d6)
+![unnamed-4](https://github.com/cyb9701/flutter-practice/assets/59527787/af3b65d8-f06b-4753-b3f2-acf0d8ffdb10)
+![iScreen Shoter - Safari - 240123213153](https://github.com/cyb9701/flutter-practice/assets/59527787/8f263e2b-242c-41b8-9867-6d37a87c6b09)
